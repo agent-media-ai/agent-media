@@ -1,0 +1,28 @@
+{
+  "name": "agent-media",
+  "description": "Make UGC video ads from your AI agent. Describe your product and get a ready-to-post vertical video with an AI actor, voice and captions, plus images, Seedance clips and voiceovers. One connection, browser sign-in, and a price quote before anything is spent. Tools: make_ugc, generate_video, generate_image, generate_audio, quote.",
+  "version": "2.4.2",
+  "author": {
+    "name": "agent-media",
+    "url": "https://github.com/agent-media-ai"
+  },
+  "homepage": "https://agent-media.ai",
+  "repository": "https://github.com/agent-media-ai/agent-media",
+  "license": "Apache-2.0",
+  "keywords": [
+    "claude-plugin",
+    "claude-skill",
+    "claude-code",
+    "mcp",
+    "model-context-protocol",
+    "ugc-video",
+    "ai-video",
+    "ai-actors",
+    "tiktok",
+    "hormozi-subtitles",
+    "gpt-image-2",
+    "seedance",
+    "video-generation",
+    "agent-media"
+  ]
+}
