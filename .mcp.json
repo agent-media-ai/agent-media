@@ -1,7 +1,7 @@
 {
   "mcpServers": {
     "agent-media": {
-      "type": "http",
+      "type": "streamable-http",
       "url": "https://api.agent-media.ai/mcp"
     }
   }

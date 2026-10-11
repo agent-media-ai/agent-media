@@ -1,0 +1,15 @@
+{
+  "$schema": "https://skills.sh/schemas/skills.sh.schema.json",
+  "notGrouped": "bottom",
+  "groupings": [
+    {
+      "title": "Video",
+      "description": "UGC video, media generation and publishing skills for agent workflows.",
+      "skills": [
+        "agent-media",
+        "ai-ugc-test-loop",
+        "publish-to-social"
+      ]
+    }
+  ]
+}
