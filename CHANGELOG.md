@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.5.0
+
+- Document the free first ad for eligible new OAuth connector accounts and how `get_account`, `quote`, `quote_ugc`, `generate_video` and `make_ugc` expose or consume it.
+- Add the `ai-ugc-test-loop` skill for research-first UGC testing: outlier scoring, one-variable variants, one Agent Media test take, approval-gated batching, real app-screen finishing and UTM publish packets.
+
 ## 2.4.2
 
 - Define Agent Media as one composable connection for uploads, image inspection, images, storyboards and frames, video, voice, characters, quotes and run tracking.

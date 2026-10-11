@@ -5,13 +5,14 @@
     "email": "info@agent-media.ai"
   },
   "metadata": {
-    "description": "One media toolbox for agents: uploads, images, storyboards, video and voice. Browser sign-in."
+    "description": "One media toolbox for agents: uploads, images, storyboards, video and voice. Browser sign-in.",
+    "version": "2.5.0"
   },
   "plugins": [
     {
       "name": "agent-media",
       "source": "./",
-      "description": "One media toolbox for agents: upload, images, storyboards, video and voice over one hosted MCP connection.",
+      "description": "One media toolbox for agents: upload, images, storyboards, video and voice over one hosted MCP connection, plus a free first ad for eligible new OAuth accounts.",
       "minClientVersions": {
         "cursor": "3.13.0"
       }

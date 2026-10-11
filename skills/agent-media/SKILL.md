@@ -3,12 +3,18 @@ name: 'agent-media'
 description: 'Use Agent Media as one composable media toolbox: upload and inspect reference images, generate or edit images, build storyboards and frames, generate video and speech, reuse characters, quote costs and track runs. For an upload-only request, open the existing panel with open_upload_panel, or upload_image with {} if only older tools are available; show the browser link and wait. Do not build an upload page or request a local folder. Select live models with list_models, quote when needed, generate, then poll get_run_status. Covers UGC, portraits, product photos, image-to-video, reference video, voiceover and recurring characters.'
 allowed-tools: ['mcp__agent-media__make_ugc', 'mcp__agent-media__quote_ugc', 'mcp__agent-media__generate_video', 'mcp__agent-media__generate_image', 'mcp__agent-media__generate_audio', 'mcp__agent-media__quote', 'mcp__agent-media__list_models', 'mcp__agent-media__get_account', 'mcp__agent-media__list_characters', 'mcp__agent-media__get_run_status', 'mcp__agent-media__upload_image', 'mcp__agent-media__rate_run', 'mcp__agent-media__open_upload_panel', 'mcp__agent-media__get_uploads']
 x-skill-slug: 'agent-media'
-x-skill-version: '2.4.2'
+x-skill-version: '2.5.0'
 x-surface: 'loose'
 ---
 # agent-media, the skill
 
 Treat Agent Media as one composable media toolbox. Start from the user's outcome, then freely combine uploads, image inspection, `generate_image`, `generate_video`, `generate_audio`, saved characters, quotes and status. Use `generate_image` for any needed storyboard, contact sheet, keyframe or intermediate visual; pass the returned URLs into later calls. Use `make_ugc` only as an optional shortcut when the user wants its server-composed vertical-video result.
+
+## Free first ad for OAuth accounts
+
+New accounts signed in through the connector with OAuth, not `ma_` API keys, can have one free first ad. Call `get_account` before the first generation and read `free_first_ad_available`; when it is true, tell the user the next eligible video is free. The first eligible `make_ugc` or `generate_video` call consumes it as one 10 second, 480p, 9:16, watermarked Seedance 2.5 video at 0 credits. `quote_ugc` and `quote` say when the next video is free and return a 0-credit quote for eligible inputs; still ask the user to approve the free watermarked ad before submitting.
+
+Keep the free request inside the free limits. For `make_ugc`, use a short script that fits one 10 second take, no captions, no music, no b-roll, and at most two eligible image references. For `generate_video`, use a prompt with optional eligible `refs`, 10 seconds, 480p, 9:16, and audio on. If the quote or submit response says the request cannot be served as the free first ad, ask whether to fit the free limits or use the normal paid workflow. If `free_first_ad_available` is false or missing, use the normal quote and balance flow.
 
 ## User-provided images: offer the upload panel
 

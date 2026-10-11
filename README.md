@@ -36,6 +36,20 @@ Claude Code: after adding the server, run `/mcp`, select agent-media, and sign i
 
 Check setup without spending credits: call `get_account` (or `list_models` for a cached catalog), then open the existing image upload panel (`open_upload_panel` when listed, otherwise `upload_image` with `{}`). Use the account check for credit balance; opening the panel checks upload access separately. Ask for a quote before the first generation.
 
+## Free first ad
+
+New accounts signed in through the hosted connector with OAuth, not `ma_` API keys, can have one free first ad. `get_account` shows `free_first_ad_available`; when it is true, `quote_ugc` or `quote` tells the agent the next eligible video is free. The first eligible `make_ugc` or `generate_video` call uses the grant: one 10 second, 480p, 9:16, watermarked Seedance 2.5 video at 0 credits. If the request does not fit those limits, the quote response tells the agent to ask whether to fit the free limits or use the normal paid workflow.
+
+## AI UGC test loop skill
+
+`skills/ai-ugc-test-loop/SKILL.md` adds a research-first testing loop: collect references, score outliers against the account baseline, change one variable per variant, render one Agent Media test take, batch only after approval, finish with real app screen recording plus captions, and prepare a publish packet with UTM links using `utm_source=skill`.
+
+Install line:
+
+```text
+/plugin marketplace add agent-media-ai/agent-media
+```
+
 ## 2. Auth
 
 OAuth (above) is the default and needs no key. You need credits on the account, buy at agent-media.ai. 100 credits = 1 USD.
