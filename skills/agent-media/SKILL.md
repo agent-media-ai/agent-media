@@ -3,7 +3,7 @@ name: 'agent-media'
 description: 'Use Agent Media as one composable media toolbox: upload and inspect reference images, generate or edit images, build storyboards and frames, generate video and speech, reuse characters, quote costs and track runs. For an upload-only request, open the existing panel with open_upload_panel, or upload_image with {} if only older tools are available; show the browser link and wait. Do not build an upload page or request a local folder. Select live models with list_models, quote when needed, generate, then poll get_run_status. Covers UGC, portraits, product photos, image-to-video, reference video, voiceover and recurring characters.'
 allowed-tools: ['mcp__agent-media__make_ugc', 'mcp__agent-media__quote_ugc', 'mcp__agent-media__generate_video', 'mcp__agent-media__generate_image', 'mcp__agent-media__generate_audio', 'mcp__agent-media__quote', 'mcp__agent-media__list_models', 'mcp__agent-media__get_account', 'mcp__agent-media__list_characters', 'mcp__agent-media__get_run_status', 'mcp__agent-media__upload_image', 'mcp__agent-media__rate_run', 'mcp__agent-media__open_upload_panel', 'mcp__agent-media__get_uploads']
 x-skill-slug: 'agent-media'
-x-skill-version: '2.5.0'
+x-skill-version: '2.5.1'
 x-surface: 'loose'
 ---
 # agent-media, the skill
@@ -36,14 +36,14 @@ Use `image` for a person photo, `product_image` for a product photo, and `charac
 
 1. **Decide the shot** in words: who, where, what happens, camera, and, if anyone speaks, the exact words in quotes.
 2. **Pick the mode.** A still to animate: image-to-video (`first_frame`, optional `last_frame`). An identity, a look, a motion or a sound to keep: reference (`refs`, `video_refs`, `audio_refs`). Neither: text. Frames and refs cannot be mixed on Seedance.
-3. **Pick the model.** Omit `model` and you get the default (`seedance-2.0` for video, `gpt-image-2.5` for images, `elevenlabs-tts` for speech); pass `"auto"` to let recent results decide. Call `list_models` when the job is unusual, it says what each model is good at, bad at, its modes and limits, what it costs per quality, and how it has actually performed lately. Only live models are accepted; naming a planned one returns the live list.
+3. **Pick the model.** Omit `model` and you get the default (`seedance-2.5` for video, `gpt-image-2.5` for images, `elevenlabs-tts` for speech); pass `"auto"` to let recent results decide. Call `list_models` when the job is unusual, it says what each model is good at, bad at, its modes and limits, what it costs per quality, and how it has actually performed lately. Only live models are accepted; naming a planned one returns the live list.
 4. **Get identity right.** Same face across clips: pass the same reference URL in `refs` every time and call it @image1 in the prompt. Make the reference with `generate_image` (a clean portrait), take it from `list_characters` (a saved character sheet), or `upload_image` the user's photo. References are the only way a series stays consistent; there is no other handle.
 5. **Quote before the first generation** (`quote` costs nothing), compare the cost with the account balance, then submit within the user-approved budget.
 6. **Poll `get_run_status`** with the job id (`wait: true`) until it is `completed`, and hand the user the URL. Never report success before you hold the URL.
 
 ## The tools
 
-### generate_video, 300 / 600 / 900 credits for 5 / 10 / 15 s on seedance-2.0 at 720p (150 at 480p, 750 at 1080p for 5 s; 140 for 5 s on seedance-2.5)
+### generate_video, 140 / 280 / 420 credits for 5 / 10 / 15 s on seedance-2.5 at its default quality (140 at 480p, 750 at 1080p for 5 s; 300 for 5 s on seedance-2.0)
 
 Three modes, chosen by the fields you pass:
 
@@ -74,8 +74,8 @@ Image-to-video:
 }
 ```
 
-- `seconds` 4 to 15 on the live Seedance models (the exact range per model and mode is below), `aspect` `9:16`, `16:9`, `1:1`, `4:3`, `3:4`, `21:9`, `adaptive`, `quality` `480p`, `720p`, `1080p` (default 720p), `audio` true by default, `model` a live video id.
-- Price ladder, credits per output second: seedance-2.0: 30 credits/s at 480p, 60 at 720p, 150 at 1080p; seedance-2.5: 28 credits/s at 480p, 60 at 720p, 150 at 1080p. A 5 s clip plus a 5 s reference clip on seedance-2.0 at 720p is 600 credits.
+- `seconds` 4 to 30 on the live Seedance models (the exact range per model and mode is below), `aspect` `9:16`, `16:9`, `1:1`, `4:3`, `3:4`, `21:9`, `adaptive`, `quality` `480p`, `720p`, `1080p` (omit for the selected model's default), `audio` true by default, `model` a live video id.
+- Price ladder, credits per output second: seedance-2.0: 30 credits/s at 480p, 60 at 720p, 150 at 1080p; seedance-2.5: 28 credits/s at 480p, 60 at 720p, 150 at 1080p. A 5 s clip plus a 5 s reference clip on seedance-2.5 at 480p is 280 credits.
 - seedance-2.0 modes: text (prompt only): 4 to 15 s, default aspect 9:16, 480p/720p/1080p; image-to-video (first_frame + optional last_frame): 4 to 15 s, default aspect adaptive, 480p/720p/1080p; reference (refs / video_refs / audio_refs, up to 9 images, 3 clips, 15 s total, 3 audio, 15 s total, not alone): 4 to 15 s, default aspect 9:16, 480p/720p/1080p.
 - seedance-2.5 modes: text (prompt only): 4 to 30 s, default aspect 9:16, 480p/720p/1080p; image-to-video (first_frame + optional last_frame): 4 to 30 s, aspect adaptive only, 480p/720p/1080p; reference (refs / video_refs / audio_refs, up to 30 images, 10 clips, 30 s total, 10 audio, 30 s total): 4 to 30 s, default aspect 9:16, 480p/720p/1080p.
 - Speech: put the exact words in quotes in the prompt and leave `audio: true`. The model renders the voice and lip-sync natively, you do not need `generate_audio` for a talking head.
@@ -115,11 +115,11 @@ Every loose-surface job is scored by an auto-judge (3 frames or the image agains
 
 From the catalog `usage` card. `list_models` returns the same text plus the last 30 days of real results.
 
-### seedance-2.0 (default video)
+### seedance-2.0
 
-- **Pick it when** you need a real-looking person saying real words, or a still brought to life, at a normal budget.
-- **Best for:** talking-head UGC; product in hands; crazy look; bulk daily posts; animating a still (first frame) into a clip.
-- **Avoid for:** clips over 15s; hero shots where 2.5 detail is worth the longer wait; anything that needs a seed.
+- **Pick it when** you explicitly want the older faster standard engine, or you are making volume drafts where the shorter wait matters more than 2.5 detail.
+- **Best for:** faster paid drafts; bulk daily posts; legacy 720p workflows; talking-head UGC; animating a still (first frame) into a clip.
+- **Avoid for:** clips over 15s; hero shots where 2.5 detail is the default expectation; anything that needs a seed.
 - **Latency:** about 3 minutes for a 5 s clip at 720p.
 - **Price:** 30 credits/s at 480p, 60 at 720p, 150 at 1080p; reference clip seconds (video_refs) are billed at the same per-second rate as output seconds.
 - **Modes:**
@@ -131,11 +131,11 @@ From the catalog `usage` card. `list_models` returns the same text plus the last
   - Keep a person consistent across clips with refs (a portrait or a character sheet), addressed as @image1; the model has no seed.
   - To animate a specific still, pass it as first_frame; add last_frame to control where the motion ends.
 
-### seedance-2.5
+### seedance-2.5 (default video)
 
-- **Pick it when** the user asked for the best possible single clip and accepts the wait (12 to 25 minutes); at 480p it costs the same as 2.0.
-- **Best for:** hero product ads; close-up faces; one clip that has to be the best.
-- **Avoid for:** drafts; bulk; anyone who cannot wait 15 to 30 minutes.
+- **Pick it when** you are making paid video and the user did not explicitly ask for the older faster 2.0 engine; default 480p keeps the draft tier cheap.
+- **Best for:** paid video default; hero product ads; close-up faces; one clip that has to be the best.
+- **Avoid for:** jobs where the user explicitly wants the older faster 2.0 engine; anyone who cannot wait 15 to 30 minutes.
 - **Latency:** 12 to 25 minutes per clip; plan the wait.
 - **Price:** 28 credits/s at 480p, 60 at 720p, 150 at 1080p; reference clip seconds (video_refs) are billed at the same per-second rate as output seconds.
 - **Modes:**
@@ -226,12 +226,12 @@ The things the old fixed skills did, as prompts you write yourself, see [referen
 - **Crazy look**, silent 5 s extreme close-up, one exaggerated expression held to the lens, `audio: false`; burn the caption in your editor or ask for it in the prompt.
 - **B-roll voiceover**, generate_audio the narration; the user overlays it on their footage (agent-media does not mux external video on this surface).
 - **A series with one face**, one generate_image portrait, then N generate_video calls with the same `refs` and the same person and setting wording.
-- **Hero clip**, the one clip that must be the best: `model: "seedance-2.5"` (about 0.9x the credits at 480p, and a much longer wait). Never for drafts or bulk.
+- **Hero clip**, the one clip that must be the best: omit `model` or pass `model: "seedance-2.5"` (28 credits/s at 480p, 60 at 720p, 150 at 1080p). Use `model: "seedance-2.0"` only when the user explicitly asks for the older faster path.
 
 ## Rules
 
 - Ask before spending big: quote a 15 s seedance-2.5 clip, or any 1080p clip, before running it.
-- Default model and default quality for everything unless the user asked for the best possible single clip.
+- Default paid video model and default quality for everything unless the user explicitly asks for the older faster 2.0 engine.
 - Every image, clip and audio URL must be https (upload_image first for images). Refs are kept private to the account.
 - Never downscale a photo the user gave you. `upload_image` with `file_bytes` streams the original file straight to storage (up to 25 MB) and hands back a URL; resizing to fit a context window is what turns a customer product shot into a thumbnail.
 - One mode per call: a first frame OR references, never both on Seedance.

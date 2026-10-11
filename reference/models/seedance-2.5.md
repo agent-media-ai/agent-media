@@ -6,7 +6,7 @@ The premium video engine. Same inputs and pipeline as 2.0, the provider's newer 
 
 | | |
 |---|---|
-| Kind | video |
+| Kind | video (default for `generate_video`) |
 | Tier | premium |
 | Status | **live** |
 | Provider | evolink |
@@ -38,11 +38,11 @@ The mode is derived from the request: `first_frame` means image mode, `refs` / `
 
 ## How to use it
 
-**Pick this when** the user asked for the best possible single clip and accepts the wait (12 to 25 minutes); at 480p it costs the same as 2.0.
+**Pick this when** you are making paid video and the user did not explicitly ask for the older faster 2.0 engine; default 480p keeps the draft tier cheap.
 
-**Best for:** hero product ads; close-up faces; one clip that has to be the best.
+**Best for:** paid video default; hero product ads; close-up faces; one clip that has to be the best.
 
-**Avoid for:** drafts; bulk; anyone who cannot wait 15 to 30 minutes.
+**Avoid for:** jobs where the user explicitly wants the older faster 2.0 engine; anyone who cannot wait 15 to 30 minutes.
 
 **Prompting:**
 
@@ -55,13 +55,13 @@ The mode is derived from the request: `first_frame` means image mode, `refs` / `
 
 ## Usage notes
 
-- Only choose it when the user asks for top quality or a hero clip.
+- This is the paid default for loose video generation and the paid fixed `selfie` / `crazy-look` engine.
 - Recorded runs: text mode job 431f82ba (2026-09-05, 4s, 396 credits, about 25 minutes at the provider) and a reference-mode 8s product clip (2026-09-06). Budget for the wait (2.0 renders 5s in about 3 minutes).
 - Max 15s per take through agent-media even though the provider allows up to 30s.
 
 ## How to select it
 
-- `generate_video` over MCP with `"model": "seedance-2.5"`; `POST /v2/generate/video` over REST, same body. The provider model follows the mode: `first_frame` uses `seedance-2.5-image-to-video`, references use `seedance-2.5-reference-to-video`, a bare prompt uses `seedance-2.5-text-to-video`
-- `agent-media selfie --engine seedance-2.5 ...` or `agent-media crazy-look --engine seedance-2.5 ...`
-- `POST /v2/selfie` / `POST /v2/crazy-look` over REST with `"engine": "seedance-2.5"`
+- `generate_video` over MCP by omitting `model` (the paid default) or with `"model": "seedance-2.5"`; `POST /v2/generate/video` over REST, same body. The provider model follows the mode: `first_frame` uses `seedance-2.5-image-to-video`, references use `seedance-2.5-reference-to-video`, a bare prompt uses `seedance-2.5-text-to-video`
+- `agent-media selfie ...` or `agent-media crazy-look ...` with no `--engine`, or pass `--engine seedance-2.5` explicitly
+- `POST /v2/selfie` / `POST /v2/crazy-look` over REST with `"engine": "seedance-2.5"` or with `engine` omitted
 - `make_ugc` has no engine field and always renders on seedance-2.0

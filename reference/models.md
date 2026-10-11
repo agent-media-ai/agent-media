@@ -4,7 +4,7 @@ Generated from `packages/schema/src/v2/models.ts`. Call the `list_models` MCP to
 
 ## The one rule
 
-**Default to `seedance-2.0`.** It is right for talking-head UGC, product-in-hand, animating a still and crazy-look at 30 credits/s at 480p, 60 at 720p, 150 at 1080p. `seedance-2.5`: about 0.9x the credits at 480p (28 credits/s at 480p, 60 at 720p, 150 at 1080p); pick it only when the user asks for the best possible single clip and accepts the wait. Never for drafts or bulk. Default quality: 480p on `seedance-2.5`, 720p on `seedance-2.0`; 480p is the cheap draft, 1080p the dear finish.
+**Default paid video to `seedance-2.5`.** It is the recommended paid model for talking-head UGC, product-in-hand, animating a still and crazy-look at 28 credits/s at 480p, 60 at 720p, 150 at 1080p. `seedance-2.0` remains selectable for the older faster path at 30 credits/s at 480p, 60 at 720p, 150 at 1080p. Default quality: 480p on `seedance-2.5`, 720p on `seedance-2.0`; 480p is the cheap draft, 1080p the dear finish.
 
 ## How to select
 
@@ -54,8 +54,8 @@ Notes for seedance-2.5:
 
 | Model | Kind | Tier | Price | Modes and limits | Best for | Avoid for |
 |---|---|---|---|---|---|---|
-| [seedance-2.0](models/seedance-2.0.md) (default) | video | standard | 30 credits/s at 480p, 60 at 720p, 150 at 1080p | text (prompt only): 4 to 15 s, default aspect 9:16, 480p/720p/1080p; image-to-video (first_frame + optional last_frame): 4 to 15 s, default aspect adaptive, 480p/720p/1080p; reference (refs / video_refs / audio_refs, up to 9 images, 3 clips, 15 s total, 3 audio, 15 s total, not alone): 4 to 15 s, default aspect 9:16, 480p/720p/1080p | talking-head UGC; product in hands; crazy look; bulk daily posts; animating a still (first frame) into a clip | clips over 15s; hero shots where 2.5 detail is worth the longer wait; anything that needs a seed |
-| [seedance-2.5](models/seedance-2.5.md) | video | premium | 28 credits/s at 480p, 60 at 720p, 150 at 1080p | text (prompt only): 4 to 30 s, default aspect 9:16, 480p/720p/1080p; image-to-video (first_frame + optional last_frame): 4 to 30 s, aspect adaptive only, 480p/720p/1080p; reference (refs / video_refs / audio_refs, up to 30 images, 10 clips, 30 s total, 10 audio, 30 s total): 4 to 30 s, default aspect 9:16, 480p/720p/1080p | hero product ads; close-up faces; one clip that has to be the best | drafts; bulk; anyone who cannot wait 15 to 30 minutes |
+| [seedance-2.0](models/seedance-2.0.md) | video | standard | 30 credits/s at 480p, 60 at 720p, 150 at 1080p | text (prompt only): 4 to 15 s, default aspect 9:16, 480p/720p/1080p; image-to-video (first_frame + optional last_frame): 4 to 15 s, default aspect adaptive, 480p/720p/1080p; reference (refs / video_refs / audio_refs, up to 9 images, 3 clips, 15 s total, 3 audio, 15 s total, not alone): 4 to 15 s, default aspect 9:16, 480p/720p/1080p | faster paid drafts; bulk daily posts; legacy 720p workflows; talking-head UGC; animating a still (first frame) into a clip | clips over 15s; hero shots where 2.5 detail is the default expectation; anything that needs a seed |
+| [seedance-2.5](models/seedance-2.5.md) (default) | video | premium | 28 credits/s at 480p, 60 at 720p, 150 at 1080p | text (prompt only): 4 to 30 s, default aspect 9:16, 480p/720p/1080p; image-to-video (first_frame + optional last_frame): 4 to 30 s, aspect adaptive only, 480p/720p/1080p; reference (refs / video_refs / audio_refs, up to 30 images, 10 clips, 30 s total, 10 audio, 30 s total): 4 to 30 s, default aspect 9:16, 480p/720p/1080p | paid video default; hero product ads; close-up faces; one clip that has to be the best | jobs where the user explicitly wants the older faster 2.0 engine; anyone who cannot wait 15 to 30 minutes |
 | [gpt-image-2.5](models/gpt-image-2.5.md) (default) | image | premium | 20 credits per image | 1024x1024, 1024x1536, 1536x1024; refs up to 4 | portraits and character sheets that a video has to keep; the first frame of a clip; product in hand; edits that must not lose the face | bulk throwaway drafts where gpt-image-2.5-flare is faster |
 | [gpt-image-2.5-flare](models/gpt-image-2.5-flare.md) | image | standard | 20 credits per image | 1024x1024, 1024x1536, 1536x1024; refs up to 4 | variants and drafts at the same quality tier; batches of frames; anything where a few seconds matter | the one sheet a whole series depends on, where gpt-image-2.5 edits hold identity a little better |
 | [gpt-image-2](models/gpt-image-2.md) | image | standard | 20 credits per image | 1024x1024, 1024x1536, 1536x1024; refs up to 4 | the previous generation, kept selectable for runs that were built on it | new work: gpt-image-2.5 is the default and holds identity better |
@@ -65,11 +65,11 @@ Notes for seedance-2.5:
 
 From the catalog `usage` card. `list_models` returns the same text plus the last 30 days of real results.
 
-### seedance-2.0 (default video)
+### seedance-2.0
 
-- **Pick it when** you need a real-looking person saying real words, or a still brought to life, at a normal budget.
-- **Best for:** talking-head UGC; product in hands; crazy look; bulk daily posts; animating a still (first frame) into a clip.
-- **Avoid for:** clips over 15s; hero shots where 2.5 detail is worth the longer wait; anything that needs a seed.
+- **Pick it when** you explicitly want the older faster standard engine, or you are making volume drafts where the shorter wait matters more than 2.5 detail.
+- **Best for:** faster paid drafts; bulk daily posts; legacy 720p workflows; talking-head UGC; animating a still (first frame) into a clip.
+- **Avoid for:** clips over 15s; hero shots where 2.5 detail is the default expectation; anything that needs a seed.
 - **Latency:** about 3 minutes for a 5 s clip at 720p.
 - **Price:** 30 credits/s at 480p, 60 at 720p, 150 at 1080p; reference clip seconds (video_refs) are billed at the same per-second rate as output seconds.
 - **Modes:**
@@ -81,11 +81,11 @@ From the catalog `usage` card. `list_models` returns the same text plus the last
   - Keep a person consistent across clips with refs (a portrait or a character sheet), addressed as @image1; the model has no seed.
   - To animate a specific still, pass it as first_frame; add last_frame to control where the motion ends.
 
-### seedance-2.5
+### seedance-2.5 (default video)
 
-- **Pick it when** the user asked for the best possible single clip and accepts the wait (12 to 25 minutes); at 480p it costs the same as 2.0.
-- **Best for:** hero product ads; close-up faces; one clip that has to be the best.
-- **Avoid for:** drafts; bulk; anyone who cannot wait 15 to 30 minutes.
+- **Pick it when** you are making paid video and the user did not explicitly ask for the older faster 2.0 engine; default 480p keeps the draft tier cheap.
+- **Best for:** paid video default; hero product ads; close-up faces; one clip that has to be the best.
+- **Avoid for:** jobs where the user explicitly wants the older faster 2.0 engine; anyone who cannot wait 15 to 30 minutes.
 - **Latency:** 12 to 25 minutes per clip; plan the wait.
 - **Price:** 28 credits/s at 480p, 60 at 720p, 150 at 1080p; reference clip seconds (video_refs) are billed at the same per-second rate as output seconds.
 - **Modes:**

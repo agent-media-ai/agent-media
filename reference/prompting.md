@@ -33,7 +33,7 @@ Critical realism rules (must all be visible in the frame):
 
 ## Worked prompts
 
-**Talking head, 5 s, seedance-2.0, text mode** (generate_video)
+**Talking head, 5 s, seedance-2.5, text mode** (generate_video)
 
 > A 28-year-old woman in a bright apartment kitchen, phone-camera framing slightly off-axis, natural skin texture with a little T-zone sheen, soft window daylight from the left and a warm lamp behind her. She holds a small amber serum bottle up near her cheek, tilts her head and says: "Okay. I did not expect this to actually work." Eyes just off the lens, mouth caught mid-word.
 

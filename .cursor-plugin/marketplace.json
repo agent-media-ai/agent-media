@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "One media toolbox for agents: uploads, images, storyboards, video and voice. Browser sign-in.",
-    "version": "2.5.0"
+    "version": "2.5.1"
   },
   "plugins": [
     {

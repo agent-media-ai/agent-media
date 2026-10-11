@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.5.1
+
+- Make Seedance 2.5 the default and recommended paid video model while keeping Seedance 2.0 selectable as the older faster option.
+
 ## 2.5.0
 
 - Document the free first ad for eligible new OAuth connector accounts and how `get_account`, `quote`, `quote_ugc`, `generate_video` and `make_ugc` expose or consume it.
