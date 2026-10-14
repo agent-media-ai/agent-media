@@ -25,7 +25,7 @@ Free accounts cannot cast from an agent: the tools answer `VIRAL_CAST_NEEDS_PLAN
 4. **Place and move** are optional: `place`, `move`. Left out, they are picked to suit the who. `move` needs `place` and must be one of that place's moves.
 5. **Quote.** Call `create_crazy_character` WITHOUT `confirm`. It returns the server's price (725 credits) and creates and charges nothing. Show the price and wait for a clear yes.
 6. **Cast.** Call `create_crazy_character` again with the SAME input plus `confirm: true` and a fresh UUID in `request_id`. The quoted price is sent along, so a price that moved in between is refused (`PRICE_CHANGED`) before any charge. The 725 credits are charged once, and refunded if the job fails.
-7. **Wait.** Call `get_run_status` with the returned job id (`wait: true`) and keep calling until it is completed or failed. A whole character takes a while: say so once and do not spam status. Hand over the video link only when you hold it. The status also shows the character's name, the saved star's `character_id`, the take photo and the sheet.
+7. **Wait.** Call `get_run_status` with the returned job id (`wait: true`) and keep calling until it is completed or failed. A whole character takes a while: say so once and do not spam status. Hand over the video link only when you hold it. The status also shows the character's name, the take photo and, once the sheet is saved, the sheet and the star's `character_id`.
 8. **More clips.** `crazy_scene` with `character_id` (from the status or `list_my_stars`) makes a new 10 second clip of the same star, 600 credits, with the same gate: first without `confirm` for the price, then with `confirm: true` after a yes.
 
 ## Format rules
