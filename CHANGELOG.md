@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.7.0
+
+- Add crazy characters for agents: `list_crazy_traits`, `create_crazy_character` (one call: one take, a named sheet saved as a star, and a 10 second clip with sound, quoted first and confirmed with `confirm: true`), `crazy_scene` (a new clip of a saved star) and `list_my_stars`. A who is a catalog id or a described new adult; agents may cast every castable trait. Needs a plan or credits.
+- Add the `make-viral-ad` skill, built around the one-call flow.
+
 ## 2.5.1
 
 - Make Seedance 2.5 the default and recommended paid video model while keeping Seedance 2.0 selectable as the older faster option.

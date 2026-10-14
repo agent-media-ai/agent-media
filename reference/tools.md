@@ -595,3 +595,190 @@ The JSON schema is the envelope; the per-model, per-mode limits (seconds, aspect
   "additionalProperties": false
 }
 ```
+
+## list_crazy_traits
+
+```json
+{
+  "type": "object",
+  "properties": {},
+  "additionalProperties": false
+}
+```
+
+## create_crazy_character
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "who": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 160,
+      "description": "A catalog who id (club_girl, pool_party_girl, festival_girl, glam_girl, bar_girl, laundromat_girl, drive_thru_girl, tracksuit_girl, casino_granny, crop_top_granny, speedo_grandpa, bbq_dad, beach_bro, gas_station_guy) or a short plain description of a new ADULT character, for example \"a 60-year-old lifeguard\" or \"a tired night-shift nurse\". Original people only: no celebrities, real people, franchise characters or brands. Describe positively (\"bald\", not \"no hair\")."
+    },
+    "who_gender": {
+      "type": "string",
+      "enum": [
+        "female",
+        "male"
+      ],
+      "description": "Required when who is a description: the character's gender (sets pronouns and the name)."
+    },
+    "who_age": {
+      "type": "integer",
+      "minimum": 21,
+      "maximum": 90,
+      "description": "Required when who is a description: an adult age, 21 to 90."
+    },
+    "outfit": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 160,
+      "description": "Optional, with a described who: what they wear (mundane, minimal, inside platform rules). Default: a minimal summer outfit (a cropped tank top, denim shorts and sneakers for a woman; a loud floral shirt, swim shorts and flip-flops for a man)."
+    },
+    "trait": {
+      "type": "string",
+      "enum": [
+        "two_heads",
+        "three_heads",
+        "four_arms",
+        "giant_beehive",
+        "pink_mohawk",
+        "bowl_cut",
+        "giant_quiff",
+        "ten_foot_hair",
+        "handlebar_mustache",
+        "unibrow",
+        "giant_glasses",
+        "mini_me",
+        "eight_feet_tall",
+        "giant_white_moustache"
+      ],
+      "description": "The ONE absurd trait. Castable now: two_heads, three_heads, four_arms, giant_beehive, pink_mohawk, bowl_cut, giant_quiff, ten_foot_hair, handlebar_mustache, unibrow, giant_glasses, mini_me, giant_white_moustache. list_crazy_traits says what each looks like."
+    },
+    "place": {
+      "type": "string",
+      "enum": [
+        "club_bathroom",
+        "casino",
+        "gas_station",
+        "pool_party",
+        "laundromat",
+        "bingo_hall",
+        "beach_bar",
+        "drive_thru",
+        "parking_lot_bbq",
+        "nail_salon",
+        "sports_bar",
+        "festival_field"
+      ],
+      "description": "Optional place (list_crazy_traits). A catalog who has its own places."
+    },
+    "move": {
+      "type": "string",
+      "enum": [
+        "strut",
+        "walk_past",
+        "full_dance",
+        "drop_jump",
+        "spin",
+        "club_dance",
+        "line_dance"
+      ],
+      "description": "Optional move; needs place, and must be one of that place's moves (list_crazy_traits)."
+    },
+    "confirm": {
+      "type": "boolean",
+      "description": "Leave out (or false) to get the price only: nothing is created or charged. Set true only after the user agreed to the price shown."
+    },
+    "request_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9._:-]{1,128}$",
+      "description": "Unique request identity (prefer a UUID), used with confirm:true. Reuse with identical inputs only to recover a lost response."
+    }
+  },
+  "required": [
+    "who",
+    "trait"
+  ],
+  "additionalProperties": false
+}
+```
+
+## crazy_scene
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "character_id": {
+      "type": "string",
+      "pattern": "^(char_[A-Za-z0-9]{4,24}|[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$",
+      "description": "The star's id (char_...) from list_my_stars or get_run_status."
+    },
+    "place": {
+      "type": "string",
+      "enum": [
+        "club_bathroom",
+        "casino",
+        "gas_station",
+        "pool_party",
+        "laundromat",
+        "bingo_hall",
+        "beach_bar",
+        "drive_thru",
+        "parking_lot_bbq",
+        "nail_salon",
+        "sports_bar",
+        "festival_field"
+      ],
+      "description": "Optional place (list_crazy_traits)."
+    },
+    "move": {
+      "type": "string",
+      "enum": [
+        "strut",
+        "walk_past",
+        "full_dance",
+        "drop_jump",
+        "spin",
+        "club_dance",
+        "line_dance"
+      ],
+      "description": "Optional move; needs place."
+    },
+    "confirm": {
+      "type": "boolean",
+      "description": "Leave out (or false) to get the price only: nothing is created or charged. Set true only after the user agreed to the price shown."
+    },
+    "request_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9._:-]{1,128}$",
+      "description": "Unique request identity (prefer a UUID), used with confirm:true. Reuse with identical inputs only to recover a lost response."
+    }
+  },
+  "required": [
+    "character_id"
+  ],
+  "additionalProperties": false
+}
+```
+
+## list_my_stars
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "limit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 50,
+      "description": "Max stars to return (default 20)."
+    }
+  },
+  "additionalProperties": false
+}
+```

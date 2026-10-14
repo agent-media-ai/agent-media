@@ -50,6 +50,10 @@ Install line:
 /plugin marketplace add agent-media-ai/agent-media
 ```
 
+## Crazy characters skill
+
+`skills/make-viral-ad/SKILL.md` makes a crazy character in one call: a real-looking adult with ONE absurd trait, a named character sheet saved as a reusable star, and a 10 second clip with sound. `list_crazy_traits` shows the traits, whos, places and prices; `create_crazy_character` without `confirm` returns the price and charges nothing, and with `confirm: true` it casts; `crazy_scene` makes a new clip of a saved star; `list_my_stars` lists them. Needs a plan or credits.
+
 ## 2. Auth
 
 OAuth (above) is the default and needs no key. You need credits on the account, buy at agent-media.ai. 100 credits = 1 USD.

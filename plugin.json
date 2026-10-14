@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "agent-media",
-  "version": "2.5.1",
+  "version": "2.7.0",
   "description": "The video step for Claude/Codex UGC workflows: skills and a hosted MCP server for captioned vertical videos, narrated b-roll, reusable characters, images and voice.",
   "author": {
     "name": "agent-media",
