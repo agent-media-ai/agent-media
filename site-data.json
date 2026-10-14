@@ -637,6 +637,193 @@
       }
     },
     {
+      "name": "list_crazy_traits",
+      "title": "List Crazy Character Traits",
+      "read_only": true,
+      "spends_credits": false,
+      "description": "List what a crazy character can be made of, before creating one: every TRAIT (one per character, for example two heads or four arms) with what it looks like, whether an agent can cast it now (castable) and whether it is also on the agent-media app board (app_live); the catalog WHOS with a short description; the PLACES and their MOVES; the prices (a new character with its first clip, a new scene of a saved star); and whether this account can cast right now. Costs nothing and creates nothing. Call this before create_crazy_character.",
+      "input_schema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "create_crazy_character",
+      "title": "Create Crazy Character",
+      "read_only": false,
+      "spends_credits": true,
+      "description": "Create ONE new crazy character and its first video in a single call: a photoreal adult with ONE absurd trait, a landscape character sheet with their name (saved as a reusable star), and a 10 second vertical clip with sound (Seedance 2.5, 480p, with a burned-in \"AI · agent-media.ai\" mark). There is no second take and no picking step. Needs a plan or credits: free accounts get VIRAL_CAST_NEEDS_PLAN and nothing is charged. WHO is either a catalog who id from list_crazy_traits (for example casino_granny) or your own short description of a NEW adult character (for example \"a 60-year-old lifeguard\"); a description also needs who_gender and who_age. TRAIT is one castable trait from list_crazy_traits. place and move are optional; left out, they are picked to suit the who. COST: 725 credits, charged once when it starts and refunded if it fails. Call it FIRST WITHOUT confirm: you get the server's price quote and nothing is created or charged. Show the price to the user; after they agree, call again with the same input plus confirm:true (the quoted price is sent along, so a price that changed in between is refused before any charge). Then call get_run_status with the returned job id (wait:true) and keep calling until it is completed or failed. Afterwards offer crazy_scene (600 credits per new clip). FORMAT RULES (the crazy character format): ONE absurd trait on an otherwise real-looking adult; the goal is a clip that opens close (waist or knees up), never from far away (the prompts aim for it, the render does not guarantee it); a mundane, minimal outfit inside platform rules, a different outfit per clip; any caption you write is short, deadpan and carries an AI label (for example \"AI\"); never write an em dash. RETRY SAFETY: pass a fresh request_id (a UUID) with confirm:true. If the response is lost, call again with the SAME input and request_id to recover the same job without a second charge.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "who": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 160,
+            "description": "A catalog who id (club_girl, pool_party_girl, festival_girl, glam_girl, bar_girl, laundromat_girl, drive_thru_girl, tracksuit_girl, casino_granny, crop_top_granny, speedo_grandpa, bbq_dad, beach_bro, gas_station_guy) or a short plain description of a new ADULT character, for example \"a 60-year-old lifeguard\" or \"a tired night-shift nurse\". Original people only: no celebrities, real people, franchise characters or brands. Describe positively (\"bald\", not \"no hair\")."
+          },
+          "who_gender": {
+            "type": "string",
+            "enum": ["female", "male"],
+            "description": "Required when who is a description: the character's gender (sets pronouns and the name)."
+          },
+          "who_age": {
+            "type": "integer",
+            "minimum": 21,
+            "maximum": 90,
+            "description": "Required when who is a description: an adult age, 21 to 90."
+          },
+          "outfit": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 160,
+            "description": "Optional, with a described who: what they wear (mundane, minimal, inside platform rules). Default: a minimal summer outfit (a cropped tank top, denim shorts and sneakers for a woman; a loud floral shirt, swim shorts and flip-flops for a man)."
+          },
+          "trait": {
+            "type": "string",
+            "enum": [
+              "two_heads",
+              "three_heads",
+              "four_arms",
+              "giant_beehive",
+              "pink_mohawk",
+              "bowl_cut",
+              "giant_quiff",
+              "ten_foot_hair",
+              "handlebar_mustache",
+              "unibrow",
+              "giant_glasses",
+              "mini_me",
+              "eight_feet_tall",
+              "giant_white_moustache"
+            ],
+            "description": "The ONE absurd trait. Castable now: two_heads, three_heads, four_arms, giant_beehive, pink_mohawk, bowl_cut, giant_quiff, ten_foot_hair, handlebar_mustache, unibrow, giant_glasses, mini_me, giant_white_moustache. list_crazy_traits says what each looks like."
+          },
+          "place": {
+            "type": "string",
+            "enum": [
+              "club_bathroom",
+              "casino",
+              "gas_station",
+              "pool_party",
+              "laundromat",
+              "bingo_hall",
+              "beach_bar",
+              "drive_thru",
+              "parking_lot_bbq",
+              "nail_salon",
+              "sports_bar",
+              "festival_field"
+            ],
+            "description": "Optional place (list_crazy_traits). A catalog who has its own places."
+          },
+          "move": {
+            "type": "string",
+            "enum": [
+              "strut",
+              "walk_past",
+              "full_dance",
+              "drop_jump",
+              "spin",
+              "club_dance",
+              "line_dance"
+            ],
+            "description": "Optional move; needs place, and must be one of that place's moves (list_crazy_traits)."
+          },
+          "confirm": {
+            "type": "boolean",
+            "description": "Leave out (or false) to get the price only: nothing is created or charged. Set true only after the user agreed to the price shown."
+          },
+          "request_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9._:-]{1,128}$",
+            "description": "Unique request identity (prefer a UUID), used with confirm:true. Reuse with identical inputs only to recover a lost response."
+          }
+        },
+        "required": ["who", "trait"],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "crazy_scene",
+      "title": "New Crazy Scene",
+      "read_only": false,
+      "spends_credits": true,
+      "description": "Make a NEW 10 second clip of a crazy character that already exists (a saved star from list_my_stars or create_crazy_character): the same face, name and trait in a new place and move (both optional, random otherwise). COST: 600 credits, for accounts with a plan or credits. Call it first WITHOUT confirm to get the price; after the user agrees, call again with confirm:true. Returns a job id for get_run_status. FORMAT RULES (the crazy character format): ONE absurd trait on an otherwise real-looking adult; the goal is a clip that opens close (waist or knees up), never from far away (the prompts aim for it, the render does not guarantee it); a mundane, minimal outfit inside platform rules, a different outfit per clip; any caption you write is short, deadpan and carries an AI label (for example \"AI\"); never write an em dash. RETRY SAFETY: pass a fresh request_id (a UUID) with confirm:true. If the response is lost, call again with the SAME input and request_id to recover the same job without a second charge.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "character_id": {
+            "type": "string",
+            "pattern": "^(char_[A-Za-z0-9]{4,24}|[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$",
+            "description": "The star's id (char_...) from list_my_stars or get_run_status."
+          },
+          "place": {
+            "type": "string",
+            "enum": [
+              "club_bathroom",
+              "casino",
+              "gas_station",
+              "pool_party",
+              "laundromat",
+              "bingo_hall",
+              "beach_bar",
+              "drive_thru",
+              "parking_lot_bbq",
+              "nail_salon",
+              "sports_bar",
+              "festival_field"
+            ],
+            "description": "Optional place (list_crazy_traits)."
+          },
+          "move": {
+            "type": "string",
+            "enum": [
+              "strut",
+              "walk_past",
+              "full_dance",
+              "drop_jump",
+              "spin",
+              "club_dance",
+              "line_dance"
+            ],
+            "description": "Optional move; needs place."
+          },
+          "confirm": {
+            "type": "boolean",
+            "description": "Leave out (or false) to get the price only: nothing is created or charged. Set true only after the user agreed to the price shown."
+          },
+          "request_id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9._:-]{1,128}$",
+            "description": "Unique request identity (prefer a UUID), used with confirm:true. Reuse with identical inputs only to recover a lost response."
+          }
+        },
+        "required": ["character_id"],
+        "additionalProperties": false
+      }
+    },
+    {
+      "name": "list_my_stars",
+      "title": "List My Crazy Stars",
+      "read_only": true,
+      "spends_credits": false,
+      "description": "List the crazy characters (stars) this account already created, newest first: character_id, name, who, trait and their photo and sheet. Costs nothing. Use the character_id with crazy_scene for a new clip.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 50,
+            "description": "Max stars to return (default 20)."
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    {
       "name": "open_upload_panel",
       "title": "Upload images",
       "read_only": false,
