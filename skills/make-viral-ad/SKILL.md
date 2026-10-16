@@ -3,7 +3,7 @@ name: 'make-viral-ad'
 description: 'Make a scroll-stopping crazy character video with agent-media in one call: a real-looking adult with ONE absurd trait (two heads, four arms, a unibrow, a mini me), a named character sheet saved as a reusable star, and a 10 second vertical clip with sound. Use when the user asks for a viral ad, a crazy or weird character, an AI influencer, or a recurring character for TikTok, Reels or Shorts.'
 allowed-tools: ['mcp__agent-media__list_crazy_traits', 'mcp__agent-media__create_crazy_character', 'mcp__agent-media__get_run_status', 'mcp__agent-media__list_my_stars', 'mcp__agent-media__crazy_scene']
 x-skill-slug: 'make-viral-ad'
-x-skill-version: '2.7.0'
+x-skill-version: '2.7.1'
 ---
 # Make a crazy character video
 

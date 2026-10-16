@@ -40,5 +40,5 @@ The image model behind every video: it draws the portrait, the multi-view charac
 
 ## How to select it
 
-- `generate_image` over MCP (the default, omit `model`, or pass `"model": "gpt-image-2"`); `POST /v2/generate/image` over REST. 20 credits per image. With `refs` it runs the image-edit endpoint (compose from the references); without, text-to-image
+- `generate_image` over MCP with `"model": "gpt-image-2"` (leaving `model` out picks the default, `gpt-image-2.5`); `POST /v2/generate/image` over REST, same body. 20 credits per image. With `refs` it runs the image-edit endpoint (compose from the references); without, text-to-image
 - Internal: pipeline stages A (portrait), B (sheet), C (wireframe) of the fixed video skills, included in those skills' credits

@@ -1,5 +1,5 @@
 {
-  "pack_version": "2.5.1",
+  "pack_version": "2.7.1",
   "source": "https://github.com/agent-media-ai/agent-media",
   "connector": {
     "url": "https://api.agent-media.ai/mcp",
@@ -20,8 +20,8 @@
       {
         "id": "chatgpt",
         "label": "ChatGPT (web)",
-        "how": "Enable Developer mode where your account or workspace permits it. Create a custom MCP app with the connector URL and OAuth, complete sign-in, then select Agent Media in the conversation. Refresh the app tools when the catalog changes.",
-        "note": "Settings labels and availability vary by account and workspace policy. See the linked official ChatGPT setup guide below."
+        "how": "Open chatgpt.com/plugins. Choose +, then Add custom MCP server. Name it, paste the connector URL, choose Create as a plugin, then complete sign-in. Availability depends on your ChatGPT plan.",
+        "note": "Labels and availability vary by plan and workspace policy. See the linked official ChatGPT setup guide below."
       },
       {
         "id": "codex",
@@ -56,7 +56,7 @@
       "title": "Make UGC Video",
       "read_only": false,
       "spends_credits": true,
-      "description": "Optional convenience workflow for one finished vertical UGC video from a script. Use it when the user wants the server to choose takes and timing, join a long monologue, and optionally burn captions. Use the direct generate_image, generate_video and generate_audio tools instead when the agent needs custom models, modes, shot structure, intermediate assets, or a different composition. Use `image` for a person photo, `product_image` for a product photo, or `character` for a saved character. Call `quote_ugc` with the exact same input first; it costs no credits. Ask before setting captions:true. After submission, keep calling get_run_status until it returns the finished video URL.\n\nWhen the user wants to provide a product photo, portrait, screenshot, or image reference, check tools/list. If open_upload_panel is available, offer it first: call open_upload_panel with {}, show its inline panel or returned browser link, and wait for the user to finish. Then call get_uploads with the returned session_id and use the exact ready image_url in refs, first_frame, last_frame, or the matching skill image field. Do not start a reference-dependent generation until the required images are ready. The panel accepts still PNG, JPEG, and WebP, up to 10 images and 25 MB each. Images expire 24 hours after the panel is created; show the returned expiry, request a new upload if expired, and never make a permanent copy. Uploading uses no generation credits. Do not ask the user for base64, shell commands, or a public hosting service; do not continuously poll while waiting for them. Only call these tool names when discovered. If they are missing from the connected tool catalog, call upload_image with {} to open the same panel; use the returned panel: upload_key with upload_image to retrieve images after the user finishes. If that reports the panel is unavailable, use upload_image only for an already accessible file or URL. Do not build an upload page or request a local folder as a substitute for the existing panel. Never invent access to a chat attachment: if you cannot read it, explain that and offer the panel when available. Browser fallback works without inline UI support; do not promise an inline panel in every client.\nInspect the native image previews returned with retrieved uploads before describing them or writing image-specific prompts. Never infer what the image shows from an email domain, account metadata, or filename. Use the original URLs for generation, not preview bytes. If the session ID was lost, call get_uploads with {} to list recent sessions, or upload_image with {\"upload_key\":\"panel:recent\"} for cached catalogs; retrieve the matching session before asking for re-upload. Account-wide recent uploads may belong to other conversations, so clarify ambiguous selection. Uploading stores an image; it does not attach it to a generation automatically. If the user already requested a generation with these images, continue that request using the returned URLs; do not stop at \"upload complete\" or ask again whether to use them. If make_ugc fits the requested outcome, pass a person photo as image or a product photo as product_image, then call quote_ugc before spending. Otherwise compose the direct generators: for generate_image, put the relevant image_url values in refs; for generate_video, use refs for product/person/appearance references, or first_frame for animating a still (last_frame only for an explicitly requested ending frame), and never combine refs with frame fields. Preserve the user's intended image roles and model limits; ask only if the role or selection is unclear. Include the URL in the tool arguments, not only in the prompt. Do not substitute a newly generated image for the uploaded reference. If the request was upload-only, report readiness and wait for a generation request; uploading alone does not authorize spending credits. After submitting, poll get_run_status and return the result.\n\nIMAGES: pass an https URL. If you only have raw bytes or a data: URL, call `upload_image` FIRST and pass the URL it returns. Never paste base64 into these arguments, the client prints tool arguments in the conversation, so a base64 image becomes a wall of text for the user and is re-sent on every retry.",
+      "description": "Optional convenience workflow for one finished vertical UGC video from a script. Use it when the user wants the server to choose takes and timing, join a long monologue, and optionally burn captions. Use the direct generate_image, generate_video and generate_audio tools instead when the agent needs custom models, modes, shot structure, intermediate assets, or a different composition. Use `image` for a person photo, `product_image` for a product photo, or `character` for a saved character. Use `scene` for where it happens (a beach, a gym, in bed, a car); without a place the video is set in an ordinary room. Call `quote_ugc` with the exact same input first; it costs no credits. Ask before setting captions:true. After submission, keep calling get_run_status until it returns the finished video URL. Files it lists under So far are intermediate, not the result.\n\nWhen the user wants to provide a product photo, portrait, screenshot, or image reference, check tools/list. If open_upload_panel is available, offer it first: call open_upload_panel with {}, show its inline panel or returned browser link, and wait for the user to finish. Then call get_uploads with the returned session_id and use the exact ready image_url in refs, first_frame, last_frame, or the matching skill image field. Do not start a reference-dependent generation until the required images are ready. The panel accepts still PNG, JPEG, and WebP, up to 10 images and 25 MB each. Images expire 24 hours after the panel is created; show the returned expiry, request a new upload if expired, and never make a permanent copy. Uploading uses no generation credits. Do not ask the user for base64, shell commands, or a public hosting service; do not continuously poll while waiting for them. Only call these tool names when discovered. If they are missing from the connected tool catalog, call upload_image with {} to open the same panel; use the returned panel: upload_key with upload_image to retrieve images after the user finishes. If that reports the panel is unavailable, use upload_image only for an already accessible file or URL. Do not build an upload page or request a local folder as a substitute for the existing panel. Never invent access to a chat attachment: if you cannot read it, explain that and offer the panel when available. Browser fallback works without inline UI support; do not promise an inline panel in every client.\nInspect the native image previews returned with retrieved uploads before describing them or writing image-specific prompts. Never infer what the image shows from an email domain, account metadata, or filename. Use the original URLs for generation, not preview bytes. If the session ID was lost, call get_uploads with {} to list recent sessions, or upload_image with {\"upload_key\":\"panel:recent\"} for cached catalogs; retrieve the matching session before asking for re-upload. Account-wide recent uploads may belong to other conversations, so clarify ambiguous selection. Uploading stores an image; it does not attach it to a generation automatically. If the user already requested a generation with these images, continue that request using the returned URLs; do not stop at \"upload complete\" or ask again whether to use them. If make_ugc fits the requested outcome, pass a person photo as image or a product photo as product_image, then call quote_ugc before spending. Otherwise compose the direct generators: for generate_image, put the relevant image_url values in refs; for generate_video, use refs for product/person/appearance references, or first_frame for animating a still (last_frame only for an explicitly requested ending frame), and never combine refs with frame fields. Preserve the user's intended image roles and model limits; ask only if the role or selection is unclear. Include the URL in the tool arguments, not only in the prompt. Do not substitute a newly generated image for the uploaded reference. If the request was upload-only, report readiness and wait for a generation request; uploading alone does not authorize spending credits. After submitting, poll get_run_status and return the result.\n\nIMAGES: pass an https URL. If you only have raw bytes or a data: URL, call `upload_image` FIRST and pass the URL it returns. Never paste base64 into these arguments, the client prints tool arguments in the conversation, so a base64 image becomes a wall of text for the user and is re-sent on every retry.",
       "input_schema": {
         "type": "object",
         "properties": {
@@ -77,6 +77,12 @@
             "minLength": 8,
             "maxLength": 400,
             "description": "Describe the person in words. Omit if you pass image or character."
+          },
+          "scene": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 120,
+            "description": "WHERE the video happens, in a few words: 'on a sunny beach, sea behind her', 'in a gym by the weights', 'in bed at night with a lamp on', 'in a parked car'. Set it whenever the user names a place. Without it the video is set in an ordinary room."
           },
           "image": {
             "type": "string",
@@ -185,6 +191,12 @@
             "maxLength": 400,
             "description": "Describe the person in words. Omit if you pass image or character."
           },
+          "scene": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 120,
+            "description": "WHERE the video happens, in a few words: 'on a sunny beach, sea behind her', 'in a gym by the weights', 'in bed at night with a lamp on', 'in a parked car'. Set it whenever the user names a place. Without it the video is set in an ordinary room."
+          },
           "image": {
             "type": "string",
             "description": "A photo of the person, an https URL. The face is locked to it. If you only hold bytes, call `upload_image` first and pass the URL it returns; base64 is still accepted here but it is printed into the user’s chat and re-sent on every retry."
@@ -270,7 +282,7 @@
       "title": "Generate Video",
       "read_only": false,
       "spends_credits": true,
-      "description": "Render a video clip from YOUR prompt on the model YOU choose, in one of three MODES that follow from the fields you pass: TEXT (prompt only), IMAGE-TO-VIDEO (`first_frame`: an https still that becomes frame one, optionally `last_frame` to end on; the clip animates the still) or REFERENCE (`refs`: https images such as a portrait, a character sheet from list_characters or a product photo whose identity/look is kept; `video_refs`: clips whose motion or framing is followed; `audio_refs`: a voice or sound to carry; address them in the prompt as @image1, @video1, @audio1). Frames and refs cannot be mixed. Write the shot like a director: who is in frame, where, what happens, camera, and the exact spoken words in quotes if anyone talks. Models: seedance-2.0, seedance-2.5 (default seedance-2.5; call list_models for each model's modes, limits, prices and recent results; or pass model:\"auto\"). Aspect: 9:16 default, also 16:9, 1:1, 4:3, 3:4, 21:9, adaptive. Quality: 480p, 720p, 1080p; omit for the selected model default; the price per second follows the quality (seedance-2.0: 30 credits/s at 480p, 60 credits/s at 720p, 150 credits/s at 1080p; seedance-2.5: 28 credits/s at 480p, 60 credits/s at 720p, 150 credits/s at 1080p). Reference clip seconds are billed like output seconds. Call `quote` first if the user cares about cost. Returns a job id, then call get_run_status until it is done and hand the user the URL.\n\nWhen the user wants to provide a product photo, portrait, screenshot, or image reference, check tools/list. If open_upload_panel is available, offer it first: call open_upload_panel with {}, show its inline panel or returned browser link, and wait for the user to finish. Then call get_uploads with the returned session_id and use the exact ready image_url in refs, first_frame, last_frame, or the matching skill image field. Do not start a reference-dependent generation until the required images are ready. The panel accepts still PNG, JPEG, and WebP, up to 10 images and 25 MB each. Images expire 24 hours after the panel is created; show the returned expiry, request a new upload if expired, and never make a permanent copy. Uploading uses no generation credits. Do not ask the user for base64, shell commands, or a public hosting service; do not continuously poll while waiting for them. Only call these tool names when discovered. If they are missing from the connected tool catalog, call upload_image with {} to open the same panel; use the returned panel: upload_key with upload_image to retrieve images after the user finishes. If that reports the panel is unavailable, use upload_image only for an already accessible file or URL. Do not build an upload page or request a local folder as a substitute for the existing panel. Never invent access to a chat attachment: if you cannot read it, explain that and offer the panel when available. Browser fallback works without inline UI support; do not promise an inline panel in every client.\nInspect the native image previews returned with retrieved uploads before describing them or writing image-specific prompts. Never infer what the image shows from an email domain, account metadata, or filename. Use the original URLs for generation, not preview bytes. If the session ID was lost, call get_uploads with {} to list recent sessions, or upload_image with {\"upload_key\":\"panel:recent\"} for cached catalogs; retrieve the matching session before asking for re-upload. Account-wide recent uploads may belong to other conversations, so clarify ambiguous selection. Uploading stores an image; it does not attach it to a generation automatically. If the user already requested a generation with these images, continue that request using the returned URLs; do not stop at \"upload complete\" or ask again whether to use them. If make_ugc fits the requested outcome, pass a person photo as image or a product photo as product_image, then call quote_ugc before spending. Otherwise compose the direct generators: for generate_image, put the relevant image_url values in refs; for generate_video, use refs for product/person/appearance references, or first_frame for animating a still (last_frame only for an explicitly requested ending frame), and never combine refs with frame fields. Preserve the user's intended image roles and model limits; ask only if the role or selection is unclear. Include the URL in the tool arguments, not only in the prompt. Do not substitute a newly generated image for the uploaded reference. If the request was upload-only, report readiness and wait for a generation request; uploading alone does not authorize spending credits. After submitting, poll get_run_status and return the result.\n\nIMAGES: pass an https URL. If you only have raw bytes or a data: URL, call `upload_image` FIRST and pass the URL it returns. Never paste base64 into these arguments, the client prints tool arguments in the conversation, so a base64 image becomes a wall of text for the user and is re-sent on every retry.\n\nRETRY SAFETY: set request_id to a fresh UUID for a new generation. Reuse the exact same request_id and inputs only to recover a lost response; that returns the original job without another charge. A deliberately new generation needs a new request_id. Keep the returned job_id and poll get_run_status. Never invent a refund.",
+      "description": "Render a video clip from YOUR prompt on the model YOU choose, in one of three MODES that follow from the fields you pass: TEXT (prompt only), IMAGE-TO-VIDEO (`first_frame`: an https still that becomes frame one, optionally `last_frame` to end on; the clip animates the still) or REFERENCE (`refs`: https images such as a portrait, a character sheet from list_characters or a product photo whose identity/look is kept; `video_refs`: clips whose motion or framing is followed; `audio_refs`: a voice or sound to carry; address them in the prompt as @image1, @video1, @audio1). Frames and refs cannot be mixed. Write the shot like a director: who is in frame, where, what happens, camera, and the exact spoken words in quotes if anyone talks. Models: seedance-2.0, seedance-2.5 (default seedance-2.5; call list_models for each model's modes, limits, prices and recent results; or pass model:\"auto\"). Aspect: 9:16 default, also 16:9, 1:1, 4:3, 3:4, 3:2, 2:3, 21:9, adaptive where the selected model supports it. Quality: 480p, 720p, 1080p, or 4k where the selected model supports it; omit for the selected model's default. The price per second follows the model and quality (seedance-2.5: 60 credits/s at 480p, 125 credits/s at 720p, 225 credits/s at 1080p; call list_models for the full table). Reference clip seconds are billed like output seconds. Call `quote` first if the user cares about cost. Returns a job id, then call get_run_status until it is done and hand the user the URL.\n\nWhen the user wants to provide a product photo, portrait, screenshot, or image reference, check tools/list. If open_upload_panel is available, offer it first: call open_upload_panel with {}, show its inline panel or returned browser link, and wait for the user to finish. Then call get_uploads with the returned session_id and use the exact ready image_url in refs, first_frame, last_frame, or the matching skill image field. Do not start a reference-dependent generation until the required images are ready. The panel accepts still PNG, JPEG, and WebP, up to 10 images and 25 MB each. Images expire 24 hours after the panel is created; show the returned expiry, request a new upload if expired, and never make a permanent copy. Uploading uses no generation credits. Do not ask the user for base64, shell commands, or a public hosting service; do not continuously poll while waiting for them. Only call these tool names when discovered. If they are missing from the connected tool catalog, call upload_image with {} to open the same panel; use the returned panel: upload_key with upload_image to retrieve images after the user finishes. If that reports the panel is unavailable, use upload_image only for an already accessible file or URL. Do not build an upload page or request a local folder as a substitute for the existing panel. Never invent access to a chat attachment: if you cannot read it, explain that and offer the panel when available. Browser fallback works without inline UI support; do not promise an inline panel in every client.\nInspect the native image previews returned with retrieved uploads before describing them or writing image-specific prompts. Never infer what the image shows from an email domain, account metadata, or filename. Use the original URLs for generation, not preview bytes. If the session ID was lost, call get_uploads with {} to list recent sessions, or upload_image with {\"upload_key\":\"panel:recent\"} for cached catalogs; retrieve the matching session before asking for re-upload. Account-wide recent uploads may belong to other conversations, so clarify ambiguous selection. Uploading stores an image; it does not attach it to a generation automatically. If the user already requested a generation with these images, continue that request using the returned URLs; do not stop at \"upload complete\" or ask again whether to use them. If make_ugc fits the requested outcome, pass a person photo as image or a product photo as product_image, then call quote_ugc before spending. Otherwise compose the direct generators: for generate_image, put the relevant image_url values in refs; for generate_video, use refs for product/person/appearance references, or first_frame for animating a still (last_frame only for an explicitly requested ending frame), and never combine refs with frame fields. Preserve the user's intended image roles and model limits; ask only if the role or selection is unclear. Include the URL in the tool arguments, not only in the prompt. Do not substitute a newly generated image for the uploaded reference. If the request was upload-only, report readiness and wait for a generation request; uploading alone does not authorize spending credits. After submitting, poll get_run_status and return the result.\n\nIMAGES: pass an https URL. If you only have raw bytes or a data: URL, call `upload_image` FIRST and pass the URL it returns. Never paste base64 into these arguments, the client prints tool arguments in the conversation, so a base64 image becomes a wall of text for the user and is re-sent on every retry.\n\nRETRY SAFETY: set request_id to a fresh UUID for a new generation. Reuse the exact same request_id and inputs only to recover a lost response; that returns the original job without another charge. A deliberately new generation needs a new request_id. Keep the returned job_id and poll get_run_status. Never invent a refund.",
       "input_schema": {
         "type": "object",
         "properties": {
@@ -336,24 +348,27 @@
               "1:1",
               "4:3",
               "3:4",
+              "3:2",
+              "2:3",
               "21:9",
               "adaptive"
             ],
-            "description": "9:16 (default for text and reference), 16:9, 1:1, 4:3, 3:4, 21:9, or adaptive (follows the first frame or reference; the default and the only option in image mode on seedance-2.5)."
+            "description": "9:16 (default for text and reference), 16:9, 1:1, 4:3, 3:4, 3:2, 2:3, 21:9, or adaptive (follows the first frame or reference; the default and the only option in image mode on seedance-2.5)."
           },
           "quality": {
             "type": "string",
             "enum": [
               "480p",
               "720p",
-              "1080p"
+              "1080p",
+              "4k"
             ],
-            "description": "480p (cheapest), 720p, 1080p (dearest). Omit for the model default: 480p on seedance-2.5, 720p on seedance-2.0. Price per second differs; see list_models."
+            "description": "One of 480p, 720p, 1080p, 4k where the selected model supports it. Omit for the model default. Price per second differs; see list_models."
           },
           "audio": {
             "type": "boolean",
             "default": true,
-            "description": "Render native audio (speech from the quoted words, ambience). false = silent clip."
+            "description": "Render native audio when the model supports an audio toggle (speech from the quoted words, ambience). false = silent clip on models that support silence."
           },
           "seed": {
             "type": "integer",
@@ -378,7 +393,7 @@
       "title": "Generate Image",
       "read_only": false,
       "spends_credits": true,
-      "description": "Render one image from YOUR prompt. Without refs it paints from the prompt; with refs (https URLs) it edits/composes from them, a portrait to re-light, a product to place in a hand, a character sheet to pose. Use it to build the reference a video needs (portrait first, then generate_video with that URL in refs). Models: gpt-image-2.5, gpt-image-2.5-flare, gpt-image-2 (default gpt-image-2.5). Spends credits per image (see list_models). Returns a job id, poll get_run_status for the image URL.\n\nWhen the user wants to provide a product photo, portrait, screenshot, or image reference, check tools/list. If open_upload_panel is available, offer it first: call open_upload_panel with {}, show its inline panel or returned browser link, and wait for the user to finish. Then call get_uploads with the returned session_id and use the exact ready image_url in refs, first_frame, last_frame, or the matching skill image field. Do not start a reference-dependent generation until the required images are ready. The panel accepts still PNG, JPEG, and WebP, up to 10 images and 25 MB each. Images expire 24 hours after the panel is created; show the returned expiry, request a new upload if expired, and never make a permanent copy. Uploading uses no generation credits. Do not ask the user for base64, shell commands, or a public hosting service; do not continuously poll while waiting for them. Only call these tool names when discovered. If they are missing from the connected tool catalog, call upload_image with {} to open the same panel; use the returned panel: upload_key with upload_image to retrieve images after the user finishes. If that reports the panel is unavailable, use upload_image only for an already accessible file or URL. Do not build an upload page or request a local folder as a substitute for the existing panel. Never invent access to a chat attachment: if you cannot read it, explain that and offer the panel when available. Browser fallback works without inline UI support; do not promise an inline panel in every client.\nInspect the native image previews returned with retrieved uploads before describing them or writing image-specific prompts. Never infer what the image shows from an email domain, account metadata, or filename. Use the original URLs for generation, not preview bytes. If the session ID was lost, call get_uploads with {} to list recent sessions, or upload_image with {\"upload_key\":\"panel:recent\"} for cached catalogs; retrieve the matching session before asking for re-upload. Account-wide recent uploads may belong to other conversations, so clarify ambiguous selection. Uploading stores an image; it does not attach it to a generation automatically. If the user already requested a generation with these images, continue that request using the returned URLs; do not stop at \"upload complete\" or ask again whether to use them. If make_ugc fits the requested outcome, pass a person photo as image or a product photo as product_image, then call quote_ugc before spending. Otherwise compose the direct generators: for generate_image, put the relevant image_url values in refs; for generate_video, use refs for product/person/appearance references, or first_frame for animating a still (last_frame only for an explicitly requested ending frame), and never combine refs with frame fields. Preserve the user's intended image roles and model limits; ask only if the role or selection is unclear. Include the URL in the tool arguments, not only in the prompt. Do not substitute a newly generated image for the uploaded reference. If the request was upload-only, report readiness and wait for a generation request; uploading alone does not authorize spending credits. After submitting, poll get_run_status and return the result.\n\nIMAGES: pass an https URL. If you only have raw bytes or a data: URL, call `upload_image` FIRST and pass the URL it returns. Never paste base64 into these arguments, the client prints tool arguments in the conversation, so a base64 image becomes a wall of text for the user and is re-sent on every retry.\n\nRETRY SAFETY: set request_id to a fresh UUID for a new generation. Reuse the exact same request_id and inputs only to recover a lost response; that returns the original job without another charge. A deliberately new generation needs a new request_id. Keep the returned job_id and poll get_run_status. Never invent a refund.",
+      "description": "Render one image from YOUR prompt. Without refs it paints from the prompt; with refs (https URLs) it edits/composes from them, a portrait to re-light, a product to place in a hand, a character sheet to pose. Use it to build the reference a video needs (portrait first, then generate_video with that URL in refs). Models: gpt-image-2.5, gpt-image-2.5-flare, gpt-image-2, nano-banana-pro (default gpt-image-2.5). Spends credits per image (see list_models). Returns a job id, poll get_run_status for the image URL.\n\nWhen the user wants to provide a product photo, portrait, screenshot, or image reference, check tools/list. If open_upload_panel is available, offer it first: call open_upload_panel with {}, show its inline panel or returned browser link, and wait for the user to finish. Then call get_uploads with the returned session_id and use the exact ready image_url in refs, first_frame, last_frame, or the matching skill image field. Do not start a reference-dependent generation until the required images are ready. The panel accepts still PNG, JPEG, and WebP, up to 10 images and 25 MB each. Images expire 24 hours after the panel is created; show the returned expiry, request a new upload if expired, and never make a permanent copy. Uploading uses no generation credits. Do not ask the user for base64, shell commands, or a public hosting service; do not continuously poll while waiting for them. Only call these tool names when discovered. If they are missing from the connected tool catalog, call upload_image with {} to open the same panel; use the returned panel: upload_key with upload_image to retrieve images after the user finishes. If that reports the panel is unavailable, use upload_image only for an already accessible file or URL. Do not build an upload page or request a local folder as a substitute for the existing panel. Never invent access to a chat attachment: if you cannot read it, explain that and offer the panel when available. Browser fallback works without inline UI support; do not promise an inline panel in every client.\nInspect the native image previews returned with retrieved uploads before describing them or writing image-specific prompts. Never infer what the image shows from an email domain, account metadata, or filename. Use the original URLs for generation, not preview bytes. If the session ID was lost, call get_uploads with {} to list recent sessions, or upload_image with {\"upload_key\":\"panel:recent\"} for cached catalogs; retrieve the matching session before asking for re-upload. Account-wide recent uploads may belong to other conversations, so clarify ambiguous selection. Uploading stores an image; it does not attach it to a generation automatically. If the user already requested a generation with these images, continue that request using the returned URLs; do not stop at \"upload complete\" or ask again whether to use them. If make_ugc fits the requested outcome, pass a person photo as image or a product photo as product_image, then call quote_ugc before spending. Otherwise compose the direct generators: for generate_image, put the relevant image_url values in refs; for generate_video, use refs for product/person/appearance references, or first_frame for animating a still (last_frame only for an explicitly requested ending frame), and never combine refs with frame fields. Preserve the user's intended image roles and model limits; ask only if the role or selection is unclear. Include the URL in the tool arguments, not only in the prompt. Do not substitute a newly generated image for the uploaded reference. If the request was upload-only, report readiness and wait for a generation request; uploading alone does not authorize spending credits. After submitting, poll get_run_status and return the result.\n\nIMAGES: pass an https URL. If you only have raw bytes or a data: URL, call `upload_image` FIRST and pass the URL it returns. Never paste base64 into these arguments, the client prints tool arguments in the conversation, so a base64 image becomes a wall of text for the user and is re-sent on every retry.\n\nRETRY SAFETY: set request_id to a fresh UUID for a new generation. Reuse the exact same request_id and inputs only to recover a lost response; that returns the original job without another charge. A deliberately new generation needs a new request_id. Keep the returned job_id and poll get_run_status. Never invent a refund.",
       "input_schema": {
         "type": "object",
         "properties": {
@@ -390,7 +405,7 @@
           },
           "model": {
             "type": "string",
-            "description": "A live image model id from list_models, or \"auto\" to let agent-media pick from recent results. Omit for the default (gpt-image-2)."
+            "description": "A live image model id from list_models, or \"auto\" to let agent-media pick from recent results. Omit for the default (gpt-image-2.5)."
           },
           "refs": {
             "type": "array",
@@ -428,7 +443,7 @@
       "title": "Generate Audio",
       "read_only": false,
       "spends_credits": true,
-      "description": "Speak text in a named voice (jessica, sarah, liam, chris, lily, bill, matilda, or a raw ElevenLabs voice id). Emotion tags like [excited] or [whispers] are honoured. For a talking-head clip you usually do NOT need this: generate_video renders native speech when the words are in the prompt. Use it for voiceover over b-roll or a standalone audio file. Models: elevenlabs-tts. Spends 1 credit per 100 characters, rounded up. Returns a job id, poll get_run_status for the mp3 URL. The mp3 URL can be passed as an audio_ref to generate_video.\n\nRETRY SAFETY: set request_id to a fresh UUID for a new generation. Reuse the exact same request_id and inputs only to recover a lost response; that returns the original job without another charge. A deliberately new generation needs a new request_id. Keep the returned job_id and poll get_run_status. Never invent a refund.",
+      "description": "Speak text in a named voice (jessica, sarah, liam, chris, lily, bill, matilda, or a raw ElevenLabs voice id). Emotion tags like [excited] or [whispers] are honoured. For a talking-head clip you usually do NOT need this: generate_video renders native speech when the words are in the prompt. Use it for voiceover over b-roll or a standalone audio file. Models: elevenlabs-tts. Spends 16 credits per 1,000 characters, rounded up. Returns a job id, poll get_run_status for the mp3 URL. The mp3 URL can be passed as an audio_ref to generate_video.\n\nRETRY SAFETY: set request_id to a fresh UUID for a new generation. Reuse the exact same request_id and inputs only to recover a lost response; that returns the original job without another charge. A deliberately new generation needs a new request_id. Keep the returned job_id and poll get_run_status. Never invent a refund.",
       "input_schema": {
         "type": "object",
         "properties": {
@@ -580,7 +595,7 @@
       "title": "List Models",
       "read_only": true,
       "spends_credits": false,
-      "description": "List the generation models agent-media can use: for each, its MODES (video: text, image-to-video via first_frame, reference via refs / video_refs / audio_refs) with the exact inputs, limits, aspects, qualities and credits per second of every mode, a \"pick when\" line, prompting tips, expected latency, how to select it, plus `recent`: the last 30 days of real runs per model (fail rate, auto-judge score, user ratings, median render time). Read this BEFORE choosing a model or a mode for generate_video / generate_image / generate_audio: the default seedance-2.5 is the recommended paid video model. Pass the id as `model`, or `model:\"auto\"` and the printed policy picks from the stats. Costs NO credits. Includes the same authenticated balance check as get_account; compare it with quote before generation. Set include_candidates:true to also see planned models that cannot be selected yet.",
+      "description": "List the generation models agent-media can use: for each, its MODES (video: text, image-to-video via first_frame, reference via refs / video_refs / audio_refs) with the exact inputs, limits, aspects, qualities and credits per second of every mode, a \"pick when\" line, prompting tips, expected latency, how to select it, plus `recent`: the last 30 days of real runs per model (fail rate, auto-judge score, user ratings, median render time). Read this BEFORE choosing a model or a mode for generate_video / generate_image / generate_audio: the default seedance-2.5 is right for most jobs. Pass the id as `model`, or `model:\"auto\"` and the printed policy picks from the stats. Costs NO credits. Includes the same authenticated balance check as get_account; compare it with quote before generation. Set include_candidates:true to also see planned models that cannot be selected yet.",
       "input_schema": {
         "type": "object",
         "properties": {
@@ -665,7 +680,10 @@
           },
           "who_gender": {
             "type": "string",
-            "enum": ["female", "male"],
+            "enum": [
+              "female",
+              "male"
+            ],
             "description": "Required when who is a description: the character's gender (sets pronouns and the name)."
           },
           "who_age": {
@@ -741,7 +759,10 @@
             "description": "Unique request identity (prefer a UUID), used with confirm:true. Reuse with identical inputs only to recover a lost response."
           }
         },
-        "required": ["who", "trait"],
+        "required": [
+          "who",
+          "trait"
+        ],
         "additionalProperties": false
       }
     },
@@ -800,7 +821,9 @@
             "description": "Unique request identity (prefer a UUID), used with confirm:true. Reuse with identical inputs only to recover a lost response."
           }
         },
-        "required": ["character_id"],
+        "required": [
+          "character_id"
+        ],
         "additionalProperties": false
       }
     },
@@ -895,6 +918,7 @@
                 "min": 4,
                 "max": 15
               },
+              "seconds_options": null,
               "aspects": [
                 "9:16",
                 "16:9",
@@ -937,6 +961,7 @@
                 "min": 4,
                 "max": 15
               },
+              "seconds_options": null,
               "aspects": [
                 "9:16",
                 "16:9",
@@ -982,6 +1007,7 @@
                 "min": 4,
                 "max": 15
               },
+              "seconds_options": null,
               "aspects": [
                 "9:16",
                 "16:9",
@@ -1022,6 +1048,7 @@
             "720p": 60,
             "1080p": 150
           },
+          "audio_credits_per_second": null,
           "default_quality": "720p",
           "timeout_minutes": 30
         },
@@ -1086,7 +1113,7 @@
             "POST /v2/crazy-look"
           ],
           "not_on": [
-            "make_ugc (always seedance-2.0)"
+            "make_ugc (paid runs use the Seedance 2.0 family; the free first ad uses seedance-2.5)"
           ]
         }
       },
@@ -1124,6 +1151,7 @@
                 "min": 4,
                 "max": 30
               },
+              "seconds_options": null,
               "aspects": [
                 "9:16",
                 "16:9",
@@ -1140,9 +1168,9 @@
                 "1080p"
               ],
               "credits_per_second": {
-                "480p": 28,
-                "720p": 60,
-                "1080p": 150
+                "480p": 60,
+                "720p": 125,
+                "1080p": 225
               },
               "seed": false,
               "prompt_syntax": null,
@@ -1166,6 +1194,7 @@
                 "min": 4,
                 "max": 30
               },
+              "seconds_options": null,
               "aspects": [
                 "adaptive"
               ],
@@ -1176,9 +1205,9 @@
                 "1080p"
               ],
               "credits_per_second": {
-                "480p": 28,
-                "720p": 60,
-                "1080p": 150
+                "480p": 60,
+                "720p": 125,
+                "1080p": 225
               },
               "seed": false,
               "prompt_syntax": null,
@@ -1205,6 +1234,7 @@
                 "min": 4,
                 "max": 30
               },
+              "seconds_options": null,
               "aspects": [
                 "9:16",
                 "16:9",
@@ -1221,15 +1251,15 @@
                 "1080p"
               ],
               "credits_per_second": {
-                "480p": 28,
-                "720p": 60,
-                "1080p": 150
+                "480p": 60,
+                "720p": 125,
+                "1080p": 225
               },
               "seed": false,
               "prompt_syntax": "@image1 @video1 @audio1 (numbered per list, from 1)",
               "notes": [
                 "Address references as @image1.., @video1.., @audio1.. (numbered per list).",
-                "Reference clips: 2 to 30 s each, 30 s in total, up to 4K, up to 200 MB; their seconds are billed like output seconds. Audio references may stand alone here.",
+                "Reference clips: 2 to 30 s each, 30 s in total, up to the provider high-resolution cap, up to 200 MB; their seconds are billed like output seconds. Audio references may stand alone here.",
                 "Never write edit or extend intent (\"edit the video\", \"add\", \"remove\", \"replace\", \"extend\", \"continue\") into a reference prompt: the provider reclassifies the task and fails it minutes later. Describe the NEW clip you want."
               ],
               "verified": {
@@ -1239,18 +1269,19 @@
             }
           ],
           "credits_per_second": {
-            "480p": 28,
-            "720p": 60,
-            "1080p": 150
+            "480p": 60,
+            "720p": 125,
+            "1080p": 225
           },
+          "audio_credits_per_second": null,
           "default_quality": "480p",
           "timeout_minutes": 90
         },
         "credits": {
           "unit": "second",
-          "perUnit": 60
+          "perUnit": 125
         },
-        "price_default": "28 credits per second at 480p",
+        "price_default": "60 credits per second at 480p",
         "quality": "premium",
         "speed": "slow",
         "best_for": [
@@ -1264,7 +1295,7 @@
           "anyone who cannot wait 15 to 30 minutes"
         ],
         "usage": {
-          "pick_when": "you are making paid video and the user did not explicitly ask for the older faster 2.0 engine; default 480p keeps the draft tier cheap",
+          "pick_when": "you are making paid video and the user did not explicitly ask for the older faster 2.0 engine; default 480p keeps the draft tier focused",
           "prompt_tips": [
             "Same director-style prompt and @image1 references as seedance-2.0.",
             "In image mode leave aspect out (it is adaptive); the frame decides the ratio.",
@@ -1304,7 +1335,7 @@
             "POST /v2/crazy-look"
           ],
           "not_on": [
-            "make_ugc (always seedance-2.0)"
+            "make_ugc (paid runs use the Seedance 2.0 family; the free first ad uses seedance-2.5)"
           ]
         }
       },
@@ -1497,6 +1528,72 @@
       },
       {
         "recent": null,
+        "id": "nano-banana-pro",
+        "kind": "image",
+        "tier": "premium",
+        "status": "live",
+        "provider": "evolink",
+        "modes": [
+          "text-to-image",
+          "image-edit"
+        ],
+        "features": [
+          "editing",
+          "reference",
+          "prompt-adherence",
+          "text-rendering",
+          "world-knowledge"
+        ],
+        "limits": {
+          "resolutions": [
+            "1K",
+            "2K"
+          ],
+          "refsMax": 4
+        },
+        "video": null,
+        "credits": {
+          "unit": "image",
+          "perUnit": 26
+        },
+        "price_default": "26 credits per image",
+        "quality": "premium",
+        "speed": "medium",
+        "best_for": [
+          "image edits with complex instructions",
+          "text-heavy product graphics",
+          "composites that need reasoning over references"
+        ],
+        "avoid_for": [
+          "cheap drafts",
+          "jobs where GPT Image identity continuity is already enough"
+        ],
+        "usage": {
+          "pick_when": "you need Gemini/Nano Banana Pro image reasoning, text rendering or reference editing from generate_image",
+          "prompt_tips": [
+            "Be explicit about text, layout and relationships between referenced objects.",
+            "With refs it edits or composes from them; pass only the images that must influence the final composition."
+          ],
+          "latency": "about 30 to 90 seconds"
+        },
+        "docs_url": "https://github.com/agent-media-ai/agent-media/blob/main/reference/models/nano-banana-pro.md",
+        "verified": {
+          "date": "2026-10-15",
+          "runId": "task-unified-1792050751-rm3sjsn6",
+          "note": "EvoLink gemini-3-pro-image-preview, 1K 9:16 text-to-image, 22 s; legible printed text"
+        },
+        "select_with": {
+          "field": "model",
+          "value": "nano-banana-pro",
+          "on": [
+            "generate_image (MCP)",
+            "POST /v2/generate/image"
+          ],
+          "not_on": []
+        }
+      },
+      {
+        "recent": null,
         "id": "elevenlabs-tts",
         "kind": "audio",
         "tier": "standard",
@@ -1514,9 +1611,9 @@
         "video": null,
         "credits": {
           "unit": "character",
-          "perUnit": 0.01
+          "perUnit": 0.016
         },
-        "price_default": "0.01 credits per character",
+        "price_default": "0.016 credits per character",
         "quality": "good",
         "speed": "fast",
         "best_for": [
@@ -1564,6 +1661,7 @@
             "min": 4,
             "max": 15
           },
+          "seconds_options": null,
           "aspects": [
             "9:16",
             "16:9",
@@ -1606,6 +1704,7 @@
             "min": 4,
             "max": 15
           },
+          "seconds_options": null,
           "aspects": [
             "9:16",
             "16:9",
@@ -1651,6 +1750,7 @@
             "min": 4,
             "max": 15
           },
+          "seconds_options": null,
           "aspects": [
             "9:16",
             "16:9",
@@ -1697,6 +1797,7 @@
             "min": 4,
             "max": 30
           },
+          "seconds_options": null,
           "aspects": [
             "9:16",
             "16:9",
@@ -1713,9 +1814,9 @@
             "1080p"
           ],
           "credits_per_second": {
-            "480p": 28,
-            "720p": 60,
-            "1080p": 150
+            "480p": 60,
+            "720p": 125,
+            "1080p": 225
           },
           "seed": false,
           "prompt_syntax": null,
@@ -1739,6 +1840,7 @@
             "min": 4,
             "max": 30
           },
+          "seconds_options": null,
           "aspects": [
             "adaptive"
           ],
@@ -1749,9 +1851,9 @@
             "1080p"
           ],
           "credits_per_second": {
-            "480p": 28,
-            "720p": 60,
-            "1080p": 150
+            "480p": 60,
+            "720p": 125,
+            "1080p": 225
           },
           "seed": false,
           "prompt_syntax": null,
@@ -1778,6 +1880,7 @@
             "min": 4,
             "max": 30
           },
+          "seconds_options": null,
           "aspects": [
             "9:16",
             "16:9",
@@ -1794,15 +1897,15 @@
             "1080p"
           ],
           "credits_per_second": {
-            "480p": 28,
-            "720p": 60,
-            "1080p": 150
+            "480p": 60,
+            "720p": 125,
+            "1080p": 225
           },
           "seed": false,
           "prompt_syntax": "@image1 @video1 @audio1 (numbered per list, from 1)",
           "notes": [
             "Address references as @image1.., @video1.., @audio1.. (numbered per list).",
-            "Reference clips: 2 to 30 s each, 30 s in total, up to 4K, up to 200 MB; their seconds are billed like output seconds. Audio references may stand alone here.",
+            "Reference clips: 2 to 30 s each, 30 s in total, up to the provider high-resolution cap, up to 200 MB; their seconds are billed like output seconds. Audio references may stand alone here.",
             "Never write edit or extend intent (\"edit the video\", \"add\", \"remove\", \"replace\", \"extend\", \"continue\") into a reference prompt: the provider reclassifies the task and fails it minutes later. Describe the NEW clip you want."
           ],
           "verified": {
@@ -2005,11 +2108,11 @@
       {
         "model": "seedance-2.5",
         "kind": "video",
-        "rate": "28 credits/s at 480p, 60 at 720p, 150 at 1080p, per output second; default quality 480p",
+        "rate": "60 credits/s at 480p, 125 at 720p, 225 at 1080p, per output second; default quality 480p",
         "per_quality": {
-          "480p": 28,
-          "720p": 60,
-          "1080p": 150
+          "480p": 60,
+          "720p": 125,
+          "1080p": 225
         },
         "reference_clips": "seconds of video_refs are measured at submit and billed at the same per-second rate as output seconds"
       },
@@ -2029,9 +2132,14 @@
         "rate": "20 credits per image"
       },
       {
+        "model": "nano-banana-pro",
+        "kind": "image",
+        "rate": "26 credits per image"
+      },
+      {
         "model": "elevenlabs-tts",
         "kind": "audio",
-        "rate": "1 credit per 100 characters, rounded up"
+        "rate": "16 credits per 1,000 characters, rounded up"
       },
       {
         "model": "get_account, quote, list_models, list_characters, get_run_status, upload_image, open_upload_panel, get_uploads, rate_run",
@@ -2044,71 +2152,77 @@
         "model": "seedance-2.5",
         "mode": "text",
         "quality": "480p",
-        "credits": 140,
-        "usd": 1.4,
-        "breakdown": "5s on seedance-2.5 (text mode, 480p) at 28 credits/second"
-      },
-      {
-        "model": "seedance-2.5",
-        "mode": "text",
-        "quality": "480p",
-        "credits": 280,
-        "usd": 2.8,
-        "breakdown": "10s on seedance-2.5 (text mode, 480p) at 28 credits/second"
-      },
-      {
-        "model": "seedance-2.5",
-        "mode": "text",
-        "quality": "480p",
-        "credits": 420,
-        "usd": 4.2,
-        "breakdown": "15s on seedance-2.5 (text mode, 480p) at 28 credits/second"
-      },
-      {
-        "model": "seedance-2.0",
-        "mode": "text",
-        "quality": "720p",
         "credits": 300,
         "usd": 3,
-        "breakdown": "5s on seedance-2.0 (text mode, 720p) at 60 credits/second"
+        "breakdown": "5s on seedance-2.5 (text mode, 480p) at 60 credits/second"
       },
       {
-        "model": "seedance-2.0",
+        "model": "seedance-2.5",
         "mode": "text",
         "quality": "480p",
-        "credits": 150,
-        "usd": 1.5,
-        "breakdown": "5s on seedance-2.0 (text mode, 480p) at 30 credits/second"
+        "credits": 600,
+        "usd": 6,
+        "breakdown": "10s on seedance-2.5 (text mode, 480p) at 60 credits/second"
       },
       {
-        "model": "seedance-2.0",
+        "model": "seedance-2.5",
+        "mode": "text",
+        "quality": "480p",
+        "credits": 900,
+        "usd": 9,
+        "breakdown": "15s on seedance-2.5 (text mode, 480p) at 60 credits/second"
+      },
+      {
+        "model": "seedance-2.5",
+        "mode": "text",
+        "quality": "480p",
+        "credits": 300,
+        "usd": 3,
+        "breakdown": "5s on seedance-2.5 (text mode, 480p) at 60 credits/second"
+      },
+      {
+        "model": "seedance-2.5",
         "mode": "text",
         "quality": "1080p",
-        "credits": 750,
-        "usd": 7.5,
-        "breakdown": "5s on seedance-2.0 (text mode, 1080p) at 150 credits/second"
+        "credits": 1125,
+        "usd": 11.25,
+        "breakdown": "5s on seedance-2.5 (text mode, 1080p) at 225 credits/second"
       },
       {
         "model": "seedance-2.5",
         "mode": "image",
         "quality": "480p",
-        "credits": 140,
-        "usd": 1.4,
-        "breakdown": "5s on seedance-2.5 (image mode, 480p) at 28 credits/second"
+        "credits": 300,
+        "usd": 3,
+        "breakdown": "5s on seedance-2.5 (image mode, 480p) at 60 credits/second"
       },
       {
         "model": "seedance-2.5",
         "mode": "reference",
         "quality": "480p",
-        "credits": 280,
-        "usd": 2.8,
-        "breakdown": "5s on seedance-2.5 (reference mode, 480p) at 28 credits/second + 5s of reference video at the same rate"
+        "credits": 600,
+        "usd": 6,
+        "breakdown": "5s on seedance-2.5 (reference mode, 480p) at 60 credits/second + 5s of reference video at the same rate"
+      },
+      {
+        "model": "seedance-2.5",
+        "mode": "text",
+        "quality": "480p",
+        "credits": 300,
+        "usd": 3,
+        "breakdown": "5s on seedance-2.5 (text mode, 480p) at 60 credits/second"
       },
       {
         "model": "gpt-image-2.5",
         "credits": 20,
         "usd": 0.2,
         "breakdown": "1 image on gpt-image-2.5 at 20 credits/image"
+      },
+      {
+        "model": "elevenlabs-tts",
+        "credits": 4,
+        "usd": 0.04,
+        "breakdown": "250 characters on elevenlabs-tts at 0.016 credits/character"
       }
     ],
     "refund": "Credits are deducted when a new generation is accepted. Failure and refund confirmation are separate: report a refund only when the service confirms it. A timeout or unavailable status does not prove failure or a refund."
@@ -2160,7 +2274,7 @@
         "720p",
         "1080p"
       ],
-      "quality_default": "720p",
+      "quality_default": "480p",
       "per_model": {
         "seedance-2.0": {
           "text": {
@@ -2477,7 +2591,7 @@
     {
       "id": "talking-head",
       "title": "Talking-head UGC clip",
-      "credits": "140 credits for 5 s on seedance-2.5 at 480p",
+      "credits": "300 credits for 5 s on seedance-2.5 at 480p",
       "steps": [
         {
           "tool": "generate_video",
@@ -2492,7 +2606,7 @@
     {
       "id": "product-in-hand",
       "title": "Product in hand",
-      "credits": "20 credits for the frame, then 140 for a 5 s clip at 480p",
+      "credits": "20 credits for the frame, then 300 for a 5 s clip at 480p",
       "steps": [
         {
           "tool": "upload_image",
@@ -2511,7 +2625,7 @@
     {
       "id": "animate-still",
       "title": "Animate a still (image-to-video)",
-      "credits": "140 credits for 5 s on seedance-2.5 at 480p (same rate as text mode)",
+      "credits": "300 credits for 5 s on seedance-2.5 at 480p (same rate as text mode)",
       "steps": [
         {
           "tool": "generate_image",
@@ -2530,7 +2644,7 @@
     {
       "id": "first-last-frame",
       "title": "First and last frame",
-      "credits": "140 credits for 5 s on seedance-2.5 at 480p; two stills first (20 credits each with generate_image)",
+      "credits": "300 credits for 5 s on seedance-2.5 at 480p; two stills first (20 credits each with generate_image)",
       "steps": [
         {
           "tool": "generate_image",
@@ -2545,7 +2659,7 @@
     {
       "id": "match-motion",
       "title": "Match a reference clip's motion (video_refs)",
-      "credits": "280 credits for a 5 s clip plus a 5 s reference clip on seedance-2.5 at 480p: the reference clip's seconds are billed at the same per-second rate",
+      "credits": "600 credits for a 5 s clip plus a 5 s reference clip on seedance-2.5 at 480p: the reference clip's seconds are billed at the same per-second rate",
       "steps": [
         {
           "tool": "quote",
@@ -2564,7 +2678,7 @@
     {
       "id": "crazy-look",
       "title": "Crazy look (silent reaction clip)",
-      "credits": "140 credits per 5 s clip at 480p",
+      "credits": "300 credits per 5 s clip at 480p",
       "steps": [
         {
           "tool": "generate_video",
@@ -2579,7 +2693,7 @@
     {
       "id": "voiceover",
       "title": "B-roll with voiceover",
-      "credits": "1 credit per 100 characters",
+      "credits": "16 credits per 1,000 characters",
       "steps": [
         {
           "tool": "generate_audio",
@@ -2594,7 +2708,7 @@
     {
       "id": "series",
       "title": "A series with one face",
-      "credits": "20 credits once, then 140 per 5 s clip at 480p",
+      "credits": "20 credits once, then 300 per 5 s clip at 480p",
       "steps": [
         {
           "tool": "generate_image",
@@ -2613,7 +2727,7 @@
     {
       "id": "two-people",
       "title": "Two people",
-      "credits": "140 to 420 credits per exchange at 480p",
+      "credits": "300 to 900 credits per exchange at 480p",
       "steps": [
         {
           "tool": "generate_video",
@@ -2624,7 +2738,7 @@
     {
       "id": "hero",
       "title": "The hero clip",
-      "credits": "28 credits/s at 480p, 60 at 720p, 150 at 1080p",
+      "credits": "60 credits/s at 480p, 125 at 720p, 225 at 1080p",
       "steps": [
         {
           "tool": "quote",

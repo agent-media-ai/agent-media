@@ -2,7 +2,7 @@
 
 > Generated facts come from `packages/schema/src/v2/models.ts`. Edit numbers there, not here.
 
-The premium video engine. Same inputs and pipeline as 2.0, the provider's newer generation, at roughly three times the credits. No side-by-side quality comparison has been recorded yet; treat the quality tier as the provider's claim.
+The premium video engine. Same inputs and pipeline as 2.0, the provider's newer generation, at about twice the credits per second of 2.0 at 480p and 720p, and 1.5 times at 1080p. No side-by-side quality comparison has been recorded yet; treat the quality tier as the provider's claim.
 
 | | |
 |---|---|
@@ -13,7 +13,7 @@ The premium video engine. Same inputs and pipeline as 2.0, the provider's newer 
 | Modes | text-to-video, image-to-video, reference-to-video |
 | Features | native-audio, lip-sync, first-frame, first-and-last-frame, image-references, video-references, audio-references |
 | Limits | 4 to 30 s (per mode below); worker waits up to 90 min |
-| User price | 28 credits/s at 480p, 60 credits/s at 720p, 150 credits/s at 1080p. Reference video seconds are billed at the same rate. |
+| User price | 60 credits/s at 480p, 125 credits/s at 720p, 225 credits/s at 1080p. Reference video seconds are billed at the same rate. |
 | Quality / speed | premium / slow |
 | Verified | modes: text, image, reference (see below) |
 
@@ -33,12 +33,12 @@ The mode is derived from the request: `first_frame` means image mode, `refs` / `
 - image: Frames only: refs, video_refs and audio_refs are not accepted in this mode.
 - reference: address references as @image1 @video1 @audio1 (numbered per list, from 1).
 - reference: Address references as @image1.., @video1.., @audio1.. (numbered per list).
-- reference: Reference clips: 2 to 30 s each, 30 s in total, up to 4K, up to 200 MB; their seconds are billed like output seconds. Audio references may stand alone here.
+- reference: Reference clips: 2 to 30 s each, 30 s in total, up to the provider high-resolution cap, up to 200 MB; their seconds are billed like output seconds. Audio references may stand alone here.
 - reference: Never write edit or extend intent ("edit the video", "add", "remove", "replace", "extend", "continue") into a reference prompt: the provider reclassifies the task and fails it minutes later. Describe the NEW clip you want.
 
 ## How to use it
 
-**Pick this when** you are making paid video and the user did not explicitly ask for the older faster 2.0 engine; default 480p keeps the draft tier cheap.
+**Pick this when** you are making paid video and the user did not explicitly ask for the older faster 2.0 engine; default 480p keeps the draft tier focused.
 
 **Best for:** paid video default; hero product ads; close-up faces; one clip that has to be the best.
 
@@ -57,11 +57,11 @@ The mode is derived from the request: `first_frame` means image mode, `refs` / `
 
 - This is the paid default for loose video generation and the paid fixed `selfie` / `crazy-look` engine.
 - Recorded runs: text mode job 431f82ba (2026-09-05, 4s, 396 credits, about 25 minutes at the provider) and a reference-mode 8s product clip (2026-09-06). Budget for the wait (2.0 renders 5s in about 3 minutes).
-- Max 15s per take through agent-media even though the provider allows up to 30s.
+- `generate_video` renders 4 to 30 s on it; the fixed `selfie` / `crazy-look` skills take 5, 10 or 15 s per take.
 
 ## How to select it
 
 - `generate_video` over MCP by omitting `model` (the paid default) or with `"model": "seedance-2.5"`; `POST /v2/generate/video` over REST, same body. The provider model follows the mode: `first_frame` uses `seedance-2.5-image-to-video`, references use `seedance-2.5-reference-to-video`, a bare prompt uses `seedance-2.5-text-to-video`
 - `agent-media selfie ...` or `agent-media crazy-look ...` with no `--engine`, or pass `--engine seedance-2.5` explicitly
 - `POST /v2/selfie` / `POST /v2/crazy-look` over REST with `"engine": "seedance-2.5"` or with `engine` omitted
-- `make_ugc` has no engine field and always renders on seedance-2.0
+- `make_ugc` has no engine field: a paid run renders on the Seedance 2.0 family; only the free first ad renders on seedance-2.5

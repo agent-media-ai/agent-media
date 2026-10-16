@@ -4,7 +4,7 @@ Generated from `packages/schema/src/v2/models.ts`. Call the `list_models` MCP to
 
 ## The one rule
 
-**Default paid video to `seedance-2.5`.** It is the recommended paid model for talking-head UGC, product-in-hand, animating a still and crazy-look at 28 credits/s at 480p, 60 at 720p, 150 at 1080p. `seedance-2.0` remains selectable for the older faster path at 30 credits/s at 480p, 60 at 720p, 150 at 1080p. Default quality: 480p on `seedance-2.5`, 720p on `seedance-2.0`; 480p is the cheap draft, 1080p the dear finish.
+**Default paid video to `seedance-2.5`.** It is the recommended paid model for talking-head UGC, product-in-hand, animating a still and crazy-look at 60 credits/s at 480p, 125 at 720p, 225 at 1080p. `seedance-2.0` remains selectable for the older faster path at 30 credits/s at 480p, 60 at 720p, 150 at 1080p. Default quality: 480p on `seedance-2.5`, 720p on `seedance-2.0`; 480p is the cheap draft, 1080p the dear finish.
 
 ## How to select
 
@@ -19,9 +19,9 @@ The mode follows from the fields: `first_frame` (and optional `last_frame`) is i
 | seedance-2.0 | text | prompt only | 4 to 15 | 9:16, 16:9, 1:1, 4:3, 3:4, 21:9, adaptive (default 9:16) | 30 at 480p, 60 at 720p, 150 at 1080p | 2026-09-06: 4s, 16:9, 480p, native audio; rendered in 231 s |
 | seedance-2.0 | image | first_frame + optional last_frame | 4 to 15 | 9:16, 16:9, 1:1, 4:3, 3:4, 21:9, adaptive (default adaptive) | 30 at 480p, 60 at 720p, 150 at 1080p | 2026-09-06: first_frame only (4s, 480p, adaptive) and first_frame + last_frame (task-unified-1788681109-w09254uu); both rendered in about 3 to 5 min |
 | seedance-2.0 | reference | refs up to 9, video_refs up to 3 (15 s total), audio_refs up to 3 (15 s total); audio needs an image or video beside it | 4 to 15 | 9:16, 16:9, 1:1, 4:3, 3:4, 21:9, adaptive (default 9:16) | 30 at 480p, 60 at 720p, 150 at 1080p | 2026-09-06: image ref (4s, 480p) and image ref + 8 s reference clip (task-unified-1788681110-hdbufncn); earlier 5s 720p portrait run b0011e92 via Claude Code |
-| seedance-2.5 | text | prompt only | 4 to 30 | 9:16, 16:9, 1:1, 4:3, 3:4, 21:9, adaptive (default 9:16) | 28 at 480p, 60 at 720p, 150 at 1080p | 2026-09-05: generate_video, text only, 4s, 720p, 396 credits; the provider took about 25 min |
-| seedance-2.5 | image | first_frame + optional last_frame | 4 to 30 | adaptive (default adaptive) | 28 at 480p, 60 at 720p, 150 at 1080p | 2026-09-06: first_frame, 4s, 480p, adaptive; rendered in 262 s |
-| seedance-2.5 | reference | refs up to 30, video_refs up to 10 (30 s total), audio_refs up to 10 (30 s total) | 4 to 30 | 9:16, 16:9, 1:1, 4:3, 3:4, 21:9, adaptive (default 9:16) | 28 at 480p, 60 at 720p, 150 at 1080p | 2026-09-06: generate_video with a product image ref via Claude Code, 8s, 720p (perfume UGC run) |
+| seedance-2.5 | text | prompt only | 4 to 30 | 9:16, 16:9, 1:1, 4:3, 3:4, 21:9, adaptive (default 9:16) | 60 at 480p, 125 at 720p, 225 at 1080p | 2026-09-05: generate_video, text only, 4s, 720p, 396 credits; the provider took about 25 min |
+| seedance-2.5 | image | first_frame + optional last_frame | 4 to 30 | adaptive (default adaptive) | 60 at 480p, 125 at 720p, 225 at 1080p | 2026-09-06: first_frame, 4s, 480p, adaptive; rendered in 262 s |
+| seedance-2.5 | reference | refs up to 30, video_refs up to 10 (30 s total), audio_refs up to 10 (30 s total) | 4 to 30 | 9:16, 16:9, 1:1, 4:3, 3:4, 21:9, adaptive (default 9:16) | 60 at 480p, 125 at 720p, 225 at 1080p | 2026-09-06: generate_video with a product image ref via Claude Code, 8s, 720p (perfume UGC run) |
 
 Notes for seedance-2.0:
 
@@ -41,7 +41,7 @@ Notes for seedance-2.5:
 - image: aspect must be "adaptive" on this model in image mode: the clip takes the frame's ratio. Any other aspect is refused.
 - image: Frames only: refs, video_refs and audio_refs are not accepted in this mode.
 - reference: Address references as @image1.., @video1.., @audio1.. (numbered per list).
-- reference: Reference clips: 2 to 30 s each, 30 s in total, up to 4K, up to 200 MB; their seconds are billed like output seconds. Audio references may stand alone here.
+- reference: Reference clips: 2 to 30 s each, 30 s in total, up to the provider high-resolution cap, up to 200 MB; their seconds are billed like output seconds. Audio references may stand alone here.
 - reference: Never write edit or extend intent ("edit the video", "add", "remove", "replace", "extend", "continue") into a reference prompt: the provider reclassifies the task and fails it minutes later. Describe the NEW clip you want.
 
 ## What the numbers mean
@@ -55,11 +55,12 @@ Notes for seedance-2.5:
 | Model | Kind | Tier | Price | Modes and limits | Best for | Avoid for |
 |---|---|---|---|---|---|---|
 | [seedance-2.0](models/seedance-2.0.md) | video | standard | 30 credits/s at 480p, 60 at 720p, 150 at 1080p | text (prompt only): 4 to 15 s, default aspect 9:16, 480p/720p/1080p; image-to-video (first_frame + optional last_frame): 4 to 15 s, default aspect adaptive, 480p/720p/1080p; reference (refs / video_refs / audio_refs, up to 9 images, 3 clips, 15 s total, 3 audio, 15 s total, not alone): 4 to 15 s, default aspect 9:16, 480p/720p/1080p | faster paid drafts; bulk daily posts; legacy 720p workflows; talking-head UGC; animating a still (first frame) into a clip | clips over 15s; hero shots where 2.5 detail is the default expectation; anything that needs a seed |
-| [seedance-2.5](models/seedance-2.5.md) (default) | video | premium | 28 credits/s at 480p, 60 at 720p, 150 at 1080p | text (prompt only): 4 to 30 s, default aspect 9:16, 480p/720p/1080p; image-to-video (first_frame + optional last_frame): 4 to 30 s, aspect adaptive only, 480p/720p/1080p; reference (refs / video_refs / audio_refs, up to 30 images, 10 clips, 30 s total, 10 audio, 30 s total): 4 to 30 s, default aspect 9:16, 480p/720p/1080p | paid video default; hero product ads; close-up faces; one clip that has to be the best | jobs where the user explicitly wants the older faster 2.0 engine; anyone who cannot wait 15 to 30 minutes |
+| [seedance-2.5](models/seedance-2.5.md) (default) | video | premium | 60 credits/s at 480p, 125 at 720p, 225 at 1080p | text (prompt only): 4 to 30 s, default aspect 9:16, 480p/720p/1080p; image-to-video (first_frame + optional last_frame): 4 to 30 s, aspect adaptive only, 480p/720p/1080p; reference (refs / video_refs / audio_refs, up to 30 images, 10 clips, 30 s total, 10 audio, 30 s total): 4 to 30 s, default aspect 9:16, 480p/720p/1080p | paid video default; hero product ads; close-up faces; one clip that has to be the best | jobs where the user explicitly wants the older faster 2.0 engine; anyone who cannot wait 15 to 30 minutes |
 | [gpt-image-2.5](models/gpt-image-2.5.md) (default) | image | premium | 20 credits per image | 1024x1024, 1024x1536, 1536x1024; refs up to 4 | portraits and character sheets that a video has to keep; the first frame of a clip; product in hand; edits that must not lose the face | bulk throwaway drafts where gpt-image-2.5-flare is faster |
 | [gpt-image-2.5-flare](models/gpt-image-2.5-flare.md) | image | standard | 20 credits per image | 1024x1024, 1024x1536, 1536x1024; refs up to 4 | variants and drafts at the same quality tier; batches of frames; anything where a few seconds matter | the one sheet a whole series depends on, where gpt-image-2.5 edits hold identity a little better |
 | [gpt-image-2](models/gpt-image-2.md) | image | standard | 20 credits per image | 1024x1024, 1024x1536, 1536x1024; refs up to 4 | the previous generation, kept selectable for runs that were built on it | new work: gpt-image-2.5 is the default and holds identity better |
-| [elevenlabs-tts](models/elevenlabs-tts.md) (default) | audio | standard | 1 credit per 100 characters | up to 4000 characters per call | voiceover on b-roll; narration; a standalone voice file; an audio reference for generate_video | lip-synced talking head: generate_video renders speech natively |
+| [nano-banana-pro](models/nano-banana-pro.md) | image | premium | 26 credits per image | 1K, 2K; refs up to 4 | image edits with complex instructions; text-heavy product graphics; composites that need reasoning over references | cheap drafts; jobs where GPT Image identity continuity is already enough |
+| [elevenlabs-tts](models/elevenlabs-tts.md) (default) | audio | standard | 16 credits per 1,000 characters | up to 4000 characters per call | voiceover on b-roll; narration; a standalone voice file; an audio reference for generate_video | lip-synced talking head: generate_video renders speech natively |
 
 ## How to use each model
 
@@ -83,11 +84,11 @@ From the catalog `usage` card. `list_models` returns the same text plus the last
 
 ### seedance-2.5 (default video)
 
-- **Pick it when** you are making paid video and the user did not explicitly ask for the older faster 2.0 engine; default 480p keeps the draft tier cheap.
+- **Pick it when** you are making paid video and the user did not explicitly ask for the older faster 2.0 engine; default 480p keeps the draft tier focused.
 - **Best for:** paid video default; hero product ads; close-up faces; one clip that has to be the best.
 - **Avoid for:** jobs where the user explicitly wants the older faster 2.0 engine; anyone who cannot wait 15 to 30 minutes.
 - **Latency:** 12 to 25 minutes per clip; plan the wait.
-- **Price:** 28 credits/s at 480p, 60 at 720p, 150 at 1080p; reference clip seconds (video_refs) are billed at the same per-second rate as output seconds.
+- **Price:** 60 credits/s at 480p, 125 at 720p, 225 at 1080p; reference clip seconds (video_refs) are billed at the same per-second rate as output seconds.
 - **Modes:**
   - text (prompt only): 4 to 30 s, default aspect 9:16, 480p/720p/1080p
   - image-to-video (first_frame + optional last_frame): 4 to 30 s, aspect adaptive only, 480p/720p/1080p
@@ -130,32 +131,26 @@ From the catalog `usage` card. `list_models` returns the same text plus the last
   - Concrete subject, age, framing, light, what the hands do; it follows layout instructions like "headroom for a caption".
   - With refs it EDITS or composes from them (a product into a hand, a portrait re-lit); without refs it paints from the prompt alone.
 
+### nano-banana-pro
+
+- **Pick it when** you need Gemini/Nano Banana Pro image reasoning, text rendering or reference editing from generate_image.
+- **Best for:** image edits with complex instructions; text-heavy product graphics; composites that need reasoning over references.
+- **Avoid for:** cheap drafts; jobs where GPT Image identity continuity is already enough.
+- **Latency:** about 30 to 90 seconds.
+- **Price:** 26 credits per image.
+- **Prompting:**
+  - Be explicit about text, layout and relationships between referenced objects.
+  - With refs it edits or composes from them; pass only the images that must influence the final composition.
+
 ### elevenlabs-tts (default audio)
 
 - **Pick it when** you need a clean voice track and no face.
 - **Best for:** voiceover on b-roll; narration; a standalone voice file; an audio reference for generate_video.
 - **Avoid for:** lip-synced talking head: generate_video renders speech natively.
 - **Latency:** seconds.
-- **Price:** 1 credit per 100 characters.
+- **Price:** 16 credits per 1,000 characters.
 - **Prompting:**
   - Emotion tags like [excited] or [whispers] are honoured; keep sentences short for pacing.
   - Seven named voices (sarah default) or a raw ElevenLabs voice id.
-
-## Planned (not selectable, no price yet)
-
-Each goes live only after a real run is recorded and a user price is set.
-
-| Model | Kind | Tier | Best for |
-|---|---|---|---|
-| [seedance-2.0-mini](models/seedance-2.0-mini.md) | video | draft | drafts |
-| [kling-o3](models/kling-o3.md) | video | premium | 1080p hero shots with a non-Seedance look |
-| [wan-3.0](models/wan-3.0.md) | video | standard | single takes of 15 to 30 s |
-| [omnihuman-1.5](models/omnihuman-1.5.md) | video | premium | lip-syncing one photo to an existing recording |
-| [sora-2](models/sora-2.md) | video | premium | cinematic b-roll without a locked face |
-| [nano-banana-2](models/nano-banana-2.md) | image | standard | product placement into a character frame |
-| [seedream-5.0-pro](models/seedream-5.0-pro.md) | image | premium | multi-reference composites: person + product + setting |
-| [z-image-turbo](models/z-image-turbo.md) | image | draft | framing wireframes |
-| [doubao-seed-audio-1.0](models/doubao-seed-audio-1.0.md) | audio | draft | cloning a voice from a short reference clip |
-| [suno](models/suno.md) | audio | standard | a music bed under a clip |
 
 100 credits = 1 USD.

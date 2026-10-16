@@ -2,7 +2,7 @@
 
 > Generated facts come from `packages/schema/src/v2/models.ts`. Edit numbers there, not here.
 
-The older faster standard video engine. It takes image references and renders clips with native audio and lip-sync.
+The older, faster video engine, still selectable; `seedance-2.5` is the paid default. It takes a character sheet plus a framing wireframe as image references and renders a 9:16 clip with native audio and lip-sync.
 
 | | |
 |---|---|
@@ -56,7 +56,7 @@ The mode is derived from the request: `first_frame` means image mode, `refs` / `
 
 ## Usage notes
 
-- Use it when the user explicitly wants the older faster path, or when shorter wait time matters more than 2.5 detail.
+- Use it when the user asks for the older faster engine, or for volume drafts where the shorter wait matters more than 2.5 detail.
 - Script length sets the duration: about 2.2 words per second, capped at 15s per take. Longer scripts become multi-take.
 - Reference images must be https URLs. Use `upload_image` for bytes.
 - Typical wall time 3 to 4 minutes for a 5 s clip (the fixed skills add about 2 minutes for captions).
@@ -65,5 +65,5 @@ The mode is derived from the request: `first_frame` means image mode, `refs` / `
 
 - `generate_video` over MCP by passing `"model": "seedance-2.0"`; `POST /v2/generate/video` over REST, same body. Omitting `model` uses the paid default, `seedance-2.5`. The provider model follows the mode: `first_frame` uses `seedance-2.0-image-to-video`, references use `seedance-2.0-reference-to-video`, a bare prompt uses `seedance-2.0-text-to-video`
 - `agent-media selfie --engine seedance-2.0 ...` when you explicitly want the older faster engine
-- `POST /v2/selfie` / `POST /v2/crazy-look` over REST with `"engine": "seedance-2.0"`
-- `make_ugc` (hosted connector, REST, and dashboard) always uses this engine
+- `POST /v2/selfie` / `POST /v2/crazy-look` over REST with `"engine": "seedance-2.0"` (their default engine is `seedance-2.5`)
+- `make_ugc` (hosted connector, REST, and dashboard) uses the Seedance 2.0 family for paid runs; the free first ad renders on `seedance-2.5`

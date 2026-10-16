@@ -6,13 +6,13 @@
   },
   "metadata": {
     "description": "One media toolbox for agents: uploads, images, storyboards, video and voice. Browser sign-in.",
-    "version": "2.7.0"
+    "version": "2.7.1"
   },
   "plugins": [
     {
       "name": "agent-media",
       "source": "./",
-      "description": "One media toolbox for agents: upload, images, storyboards, video and voice over one hosted MCP connection, plus a free first ad for eligible new OAuth accounts.",
+      "description": "One media toolbox for agents: upload, images, storyboards, video and voice over one hosted MCP connection.",
       "minClientVersions": {
         "cursor": "3.13.0"
       }

@@ -38,7 +38,7 @@ Check setup without spending credits: call `get_account` (or `list_models` for a
 
 ## Free first ad
 
-New accounts signed in through the hosted connector with OAuth, not `ma_` API keys, can have one free first ad. `get_account` shows `free_first_ad_available`; when it is true, `quote_ugc` or `quote` tells the agent the next eligible video is free. The first eligible `make_ugc` or `generate_video` call uses the grant: one 10 second, 480p, 9:16, watermarked Seedance 2.5 video at 0 credits. If the request does not fit those limits, the quote response tells the agent to ask whether to fit the free limits or use the normal paid workflow.
+An eligible new account (a confirmed email and no paid plan yet) can have one free first ad. `get_account` shows `free_first_ad_available`; when it is true, `quote_ugc` or `quote` tells the agent the next eligible video is free. The first eligible `make_ugc` or `generate_video` call uses the grant: one 10 second, 480p, 9:16, watermarked Seedance 2.5 video at 0 credits. If the request does not fit those limits, the quote response tells the agent to ask whether to fit the free limits or use the normal paid workflow.
 
 ## AI UGC test loop skill
 
@@ -66,9 +66,9 @@ OAuth (above) is the default and needs no key. You need credits on the account, 
 |---|---|---|
 | `make_ugc` | Optional shortcut: full script plus an optional person photo, product photo, saved character or b-roll; returns one finished vertical video. Captions are opt-in. | Exact cost from `quote_ugc` |
 | `quote_ugc` | Price the exact `make_ugc` input and check spendable balance without starting a run. | 0 |
-| `generate_video` | A clip from your prompt on the model you pick, in one of three modes: text (prompt only), image-to-video (`first_frame`, optional `last_frame`) or reference (`refs`, `video_refs`, `audio_refs`, addressed as @image1 @video1 @audio1). Native speech when the words are in the prompt. | seconds x the per-second rate at the chosen quality (seedance-2.0: 30 credits/s at 480p, 60 at 720p, 150 at 1080p; seedance-2.5: 28 credits/s at 480p, 60 at 720p, 150 at 1080p); reference clip seconds are billed like output seconds |
-| `generate_image` | One image from your prompt; with refs it edits/composes from them. The way to build a portrait, a product frame or a first frame for a video. | 20 per image |
-| `generate_audio` | Text to speech in a named voice. For voiceover over b-roll, or an audio reference for a clip; a talking head does not need it. | 1 per 100 characters |
+| `generate_video` | A clip from your prompt on the model you pick, in one of three modes: text (prompt only), image-to-video (`first_frame`, optional `last_frame`) or reference (`refs`, `video_refs`, `audio_refs`, addressed as @image1 @video1 @audio1). Native speech when the words are in the prompt. | seconds x the per-second rate at the chosen quality (seedance-2.0: 30 credits/s at 480p, 60 at 720p, 150 at 1080p; seedance-2.5: 60 credits/s at 480p, 125 at 720p, 225 at 1080p); reference clip seconds are billed like output seconds |
+| `generate_image` | One image from your prompt; with refs it edits/composes from them. The way to build a portrait, a product frame or a first frame for a video. | 20 per image (26 on nano-banana-pro) |
+| `generate_audio` | Text to speech in a named voice. For voiceover over b-roll, or an audio reference for a clip; a talking head does not need it. | 16 credits per 1,000 characters |
 | `get_account` | Authenticated connection and credit balance, with the next step. No billing changes. | 0 |
 | `quote` | The price of any of the above without running it. | 0 |
 | `list_models` | The catalog: modes, limits, prices per quality, what each model is good and bad at, how to select it, recent results. | 0 |
@@ -77,6 +77,10 @@ OAuth (above) is the default and needs no key. You need credits on the account, 
 | `upload_image` | An already accessible file, bytes, or a foreign URL in; an https URL out. Prefer the panel for user uploads when available. | 0 |
 | `open_upload_panel`, `get_uploads` (when available) | Let the user drag and drop images, then retrieve ready URLs. Images expire after 24 hours. | 0 |
 | `rate_run` | Say what you thought of a finished run, 1 to 5 plus a note. Feeds the per-model stats and `model:"auto"`. | 0 |
+| `list_crazy_traits` | Crazy characters: every trait (castable or not), the catalog whos, places, moves, prices and whether this account can cast. | 0 |
+| `create_crazy_character` | ONE call: a new adult (catalog who or described) with ONE absurd trait, its named sheet saved as a star, and a 10s clip with sound. Without `confirm` it only quotes. Plan or credits needed. | 725 |
+| `crazy_scene` | A new 10s clip of a saved crazy character. Without `confirm` it only quotes. | 600 |
+| `list_my_stars` | The crazy characters this account already made, with their `character_id`. | 0 |
 
 ## User-provided images
 
@@ -102,13 +106,14 @@ Same face across a series: `generate_image` a portrait once, then pass that URL 
 | Model | Kind | Price | Modes and limits | Best for |
 |---|---|---|---|---|
 | `seedance-2.0` | video | 30 credits/s at 480p, 60 at 720p, 150 at 1080p | text (prompt only): 4 to 15 s, default aspect 9:16, 480p/720p/1080p; image-to-video (first_frame + optional last_frame): 4 to 15 s, default aspect adaptive, 480p/720p/1080p; reference (refs / video_refs / audio_refs, up to 9 images, 3 clips, 15 s total, 3 audio, 15 s total, not alone): 4 to 15 s, default aspect 9:16, 480p/720p/1080p | faster paid drafts; bulk daily posts |
-| `seedance-2.5` (default) | video | 28 credits/s at 480p, 60 at 720p, 150 at 1080p | text (prompt only): 4 to 30 s, default aspect 9:16, 480p/720p/1080p; image-to-video (first_frame + optional last_frame): 4 to 30 s, aspect adaptive only, 480p/720p/1080p; reference (refs / video_refs / audio_refs, up to 30 images, 10 clips, 30 s total, 10 audio, 30 s total): 4 to 30 s, default aspect 9:16, 480p/720p/1080p | paid video default; hero product ads; close-up faces |
+| `seedance-2.5` (default) | video | 60 credits/s at 480p, 125 at 720p, 225 at 1080p | text (prompt only): 4 to 30 s, default aspect 9:16, 480p/720p/1080p; image-to-video (first_frame + optional last_frame): 4 to 30 s, aspect adaptive only, 480p/720p/1080p; reference (refs / video_refs / audio_refs, up to 30 images, 10 clips, 30 s total, 10 audio, 30 s total): 4 to 30 s, default aspect 9:16, 480p/720p/1080p | paid video default; hero product ads |
 | `gpt-image-2.5` (default) | image | 20 credits per image | 1024x1024, 1024x1536, 1536x1024; refs up to 4 | portraits and character sheets that a video has to keep; the first frame of a clip |
 | `gpt-image-2.5-flare` | image | 20 credits per image | 1024x1024, 1024x1536, 1536x1024; refs up to 4 | variants and drafts at the same quality tier; batches of frames |
 | `gpt-image-2` | image | 20 credits per image | 1024x1024, 1024x1536, 1536x1024; refs up to 4 | the previous generation, kept selectable for runs that were built on it |
-| `elevenlabs-tts` (default) | audio | 1 credit per 100 characters | up to 4000 characters per call | voiceover on b-roll; narration |
+| `nano-banana-pro` | image | 26 credits per image | 1K, 2K; refs up to 4 | image edits with complex instructions; text-heavy product graphics |
+| `elevenlabs-tts` (default) | audio | 16 credits per 1,000 characters | up to 4000 characters per call | voiceover on b-roll; narration |
 
-Full guide with the avoid-for column, the per-mode table and one page per model: [reference/models.md](reference/models.md). Planned models are listed there too, they cannot be selected until a real run is recorded. `list_models` also carries `recent`: the last 30 days of real runs per model (fail rate, auto-judge score, user ratings, typical render time); pass `model: "auto"` and the printed policy picks from those numbers.
+Full guide with the avoid-for column, the per-mode table and one page per model: [reference/models.md](reference/models.md). It lists only the models you can pick today, the same set `list_models` returns. `list_models` also carries `recent`: the last 30 days of real runs per model (fail rate, auto-judge score, user ratings, typical render time); pass `model: "auto"` and the printed policy picks from those numbers.
 
 ## 6. REST
 
@@ -125,6 +130,8 @@ Post a generated video to the user's TikTok / Instagram / X via `POST /v1/social
 ## Reference docs
 
 - [skills/agent-media/SKILL.md](skills/agent-media/SKILL.md), the skill: modes, prompting, recipes, rules
+- [skills/make-viral-ad/SKILL.md](skills/make-viral-ad/SKILL.md), crazy characters: one trait, one call, price first
+- [skills/ai-ugc-test-loop/SKILL.md](skills/ai-ugc-test-loop/SKILL.md), research-first test loop: references, one variable per variant, one test take, publish packet
 - [reference/models.md](reference/models.md), which model for what, with the per-mode limits and prices
 - [reference/prompting.md](reference/prompting.md), how to write a prompt that comes out real
 - [reference/recipes.md](reference/recipes.md), talking head, product in hand, animate a still, first and last frame, match a reference clip, crazy look, b-roll voiceover, series

@@ -13,7 +13,7 @@ Text to speech and dubbing, used when a voice track is needed outside Seedance's
 | Modes | text-to-speech |
 | Features | voice-clone, multilingual, dubbing |
 | Limits | none |
-| User price | 1 credit per 100 characters (`generate_audio`), rounded up |
+| User price | 16 credits per 1,000 characters (`generate_audio`), rounded up |
 | Quality / speed | good / fast |
 | Verified | 2026-09-05. wired in media-worker-v2 (tts.js, dubbing.js); standalone via generate_audio |
 
@@ -37,9 +37,9 @@ Text to speech and dubbing, used when a voice track is needed outside Seedance's
 
 - Talking-head clips use Seedance native audio, not this.
 - Used by the dubbing and voiceover paths in media-worker-v2 (`tts.js`, `dubbing.js`).
-- Standalone via `generate_audio` (1 credit per 100 characters); the fixed skills include it in their video credits.
+- Standalone via `generate_audio` (16 credits per 1,000 characters); the fixed skills include it in their video credits.
 
 ## How to select it
 
-- `generate_audio` over MCP (the default, omit `model`, or pass `"model": "elevenlabs-tts"`); `POST /v2/generate/audio` over REST. 1 credit per 100 characters, rounded up. Named voices: jessica, sarah, liam, chris, lily, bill, matilda, or a raw voice id
+- `generate_audio` over MCP (the default, omit `model`, or pass `"model": "elevenlabs-tts"`); `POST /v2/generate/audio` over REST. 16 credits per 1,000 characters, rounded up. Named voices: jessica, sarah, liam, chris, lily, bill, matilda, or a raw voice id
 - Internal: b-roll narration and dubbing inside the fixed skills

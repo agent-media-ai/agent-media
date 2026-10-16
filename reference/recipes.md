@@ -4,14 +4,14 @@ What the fixed skills used to do, as sequences of the loose tools. 100 credits =
 
 ## 1. Talking-head UGC clip
 
-_140 credits for 5 s on seedance-2.5 at 480p_
+_300 credits for 5 s on seedance-2.5 at 480p_
 
 1. `generate_video`, Script in quotes in the prompt; seconds from the word count (about 2.3 per second); refs = a portrait if the face must persist, addressed as @image1.
 2. `get_run_status`, Poll with wait:true until completed; hand over the URL.
 
 ## 2. Product in hand
 
-_20 credits for the frame, then 140 for a 5 s clip at 480p_
+_20 credits for the frame, then 300 for a 5 s clip at 480p_
 
 1. `upload_image`, The product photo becomes an https URL.
 2. `generate_image`, "... holding THIS product up to the lens, label facing camera ..." with the product URL (and a portrait, if any) in refs.
@@ -19,7 +19,7 @@ _20 credits for the frame, then 140 for a 5 s clip at 480p_
 
 ## 3. Animate a still (image-to-video)
 
-_140 credits for 5 s on seedance-2.5 at 480p (same rate as text mode)_
+_300 credits for 5 s on seedance-2.5 at 480p (same rate as text mode)_
 
 1. `generate_image`, The still: a portrait, a product shot, a scene. Or upload_image a photo the user has.
 2. `generate_video`, That URL as first_frame; the prompt says what moves and what is said. Leave aspect out (adaptive follows the frame). No refs in this call: frames and refs cannot be mixed on Seedance.
@@ -27,14 +27,14 @@ _140 credits for 5 s on seedance-2.5 at 480p (same rate as text mode)_
 
 ## 4. First and last frame
 
-_140 credits for 5 s on seedance-2.5 at 480p; two stills first (20 credits each with generate_image)_
+_300 credits for 5 s on seedance-2.5 at 480p; two stills first (20 credits each with generate_image)_
 
 1. `generate_image`, Twice: the opening still and the closing still, same person and setting wording, a different pose or state.
 2. `generate_video`, first_frame = the opening still, last_frame = the closing still; the prompt describes the move between them. The model animates from one to the other.
 
 ## 5. Match a reference clip's motion (video_refs)
 
-_280 credits for a 5 s clip plus a 5 s reference clip on seedance-2.5 at 480p: the reference clip's seconds are billed at the same per-second rate_
+_600 credits for a 5 s clip plus a 5 s reference clip on seedance-2.5 at 480p: the reference clip's seconds are billed at the same per-second rate_
 
 1. `quote`, With video_refs the quote adds the reference clip seconds at the same rate (measured at submit); price it first.
 2. `generate_video`, The clip in video_refs (https mp4/mov), a portrait in refs, and a prompt like "@image1 performs the same move as @video1, in a bright kitchen ...". Describe the NEW clip; never write edit or extend wording.
@@ -42,21 +42,21 @@ _280 credits for a 5 s clip plus a 5 s reference clip on seedance-2.5 at 480p: t
 
 ## 6. Crazy look (silent reaction clip)
 
-_140 credits per 5 s clip at 480p_
+_300 credits per 5 s clip at 480p_
 
 1. `generate_video`, "Extreme close-up, face fills the frame, one exaggerated bug-eyed shock held straight into the lens, slow lean-in, no speech"; audio: false; seconds: 5; a portrait in refs (@image1) so it is the same face every time.
 2. Burn the caption in the editor, or ask for a static caption in the prompt. Volume: same prompt + same refs, N calls, N performances.
 
 ## 7. B-roll with voiceover
 
-_1 credit per 100 characters_
+_16 credits per 1,000 characters_
 
 1. `generate_audio`, The narration, a named voice, a tone.
 2. For a finished narrated b-roll UGC video, pass the narration as script and the footage as broll_url to make_ugc, after quote_ugc. For direct generate_audio output, the mp3 URL also works as an audio_refs entry for generate_video.
 
 ## 8. A series with one face
 
-_20 credits once, then 140 per 5 s clip at 480p_
+_20 credits once, then 300 per 5 s clip at 480p_
 
 1. `generate_image`, Once: a clean head-and-shoulders portrait.
 2. `generate_video`, Every clip: the same portrait URL in refs as @image1, the same person/setting wording, a different script. The reference is what keeps the face.
@@ -64,13 +64,13 @@ _20 credits once, then 140 per 5 s clip at 480p_
 
 ## 9. Two people
 
-_140 to 420 credits per exchange at 480p_
+_300 to 900 credits per exchange at 480p_
 
 1. `generate_video`, Both portraits in refs and a prompt that names who says what: "@image1 and @image2 on a couch. @image1 says: ... @image2 laughs and says: ...". Keep it to 10 to 15 s per exchange.
 
 ## 10. The hero clip
 
-_28 credits/s at 480p, 60 at 720p, 150 at 1080p_
+_60 credits/s at 480p, 125 at 720p, 225 at 1080p_
 
 1. `quote`, Price it first: omit model or pass "seedance-2.5", seconds up to 10, the quality the user asked for.
 2. `generate_video`, One take, a strong reference. In image mode leave aspect out (adaptive only). Expect 12 to 25 minutes per clip; plan the wait. Use "seedance-2.0" only when the user explicitly asks for the older faster path.

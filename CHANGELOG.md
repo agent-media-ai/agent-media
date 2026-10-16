@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.7.1
+
+- The installed skill is self-contained: `npx skills add agent-media-ai/agent-media` now brings `reference/` inside `skills/agent-media/`, with one page per live model, and every link in the skill resolves inside the installed folder.
+- The model index and the model pages list only models an agent can pick today (the set `list_models` returns). Planned and unavailable models are gone from the pack.
+- The directory manifests (`plugin.json`, `glama.json`, `skills.sh.json`), the ai-ugc-test-loop skill and the README sections on the free first ad, the test loop and crazy characters are generated with the pack, so a sync keeps them.
+- Corrected: a 5 s clip plus a 5 s reference clip on seedance-2.5 is 600 credits at its default 480p and 1,250 at 720p; the default quality is per model (480p on seedance-2.5, 720p on seedance-2.0) and the live video models take 480p, 720p and 1080p. The free first ad text follows the server: an eligible new account (a confirmed email and no paid plan yet). Leaving out `model` on generate_image picks gpt-image-2.5.
+
 ## 2.7.0
 
 - Add crazy characters for agents: `list_crazy_traits`, `create_crazy_character` (one call: one take, a named sheet saved as a star, and a 10 second clip with sound, quoted first and confirmed with `confirm: true`), `crazy_scene` (a new clip of a saved star) and `list_my_stars`. A who is a catalog id or a described new adult; agents may cast every castable trait. Needs a plan or credits.
@@ -36,7 +43,7 @@
 
 ## 2.3.1
 
-- Link the public documentation hub for setup, uploads, account checks, troubleshooting, REST and self-hosting. Generation still requires paid credits.
+- Link the public documentation hub for setup, uploads, account checks, troubleshooting, REST and self-hosting. Free accounts can connect and use the free first ad; paid generation requires a plan.
 
 ## 2.3.0
 

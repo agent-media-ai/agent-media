@@ -3,20 +3,20 @@ name: 'ai-ugc-test-loop'
 description: 'Research public AI UGC patterns, score references against the account baseline, test one variable at a time, render one agent-media test take, then finish with real app footage, captions and a UTM publish packet.'
 allowed-tools: ['mcp__agent-media__make_ugc', 'mcp__agent-media__quote_ugc', 'mcp__agent-media__generate_video', 'mcp__agent-media__generate_image', 'mcp__agent-media__generate_audio', 'mcp__agent-media__quote', 'mcp__agent-media__list_models', 'mcp__agent-media__get_account', 'mcp__agent-media__list_characters', 'mcp__agent-media__get_run_status', 'mcp__agent-media__upload_image', 'mcp__agent-media__rate_run', 'mcp__agent-media__open_upload_panel', 'mcp__agent-media__get_uploads']
 x-skill-slug: 'ai-ugc-test-loop'
-x-skill-version: '1.0.0'
+x-skill-version: '1.0.1'
 ---
 # AI UGC Test Loop
 
 Run a research-first AI UGC testing loop. Agent Media makes the video take; you handle reference intake, outlier scoring, prompt writing, review, finishing, and the publish packet. This workflow is inspired by public AI UGC workflows in general terms. Do not copy exact scripts, protected likenesses, trademarks, or shots from references.
 
-Use only Agent Media MCP tools that are listed in the user's client. This skill may use `get_account`, `list_models`, `list_characters`, `open_upload_panel`, `get_uploads`, `upload_image`, `quote_ugc`, `make_ugc`, `quote`, `generate_image`, `generate_video`, `generate_audio`, `get_run_status`, and `rate_run`. Missing steps are handled with normal files, local editing, the user's pasted references, and your own analysis. There is no Agent Media scraper, reference analyzer, campaign tool, batch tool, app-screen insertion tool, caption exporter, or publish packet exporter.
+Use only Agent Media MCP tools that are listed in the user's client. This skill may use `get_account`, `list_models`, `list_characters`, `open_upload_panel`, `get_uploads`, `upload_image`, `quote_ugc`, `make_ugc`, `quote`, `generate_image`, `generate_video`, `generate_audio`, `get_run_status`, and `rate_run`. Missing steps are handled with normal files, local editing, the user's pasted references, and your own analysis. There is no Agent Media scraper, reference analyzer, campaign tool, batch tool, tool that cuts an app screen recording into a take, caption exporter, or publish packet exporter.
 
 ## Operating rules
 
 - Research first. Ask for product context, account baseline, and 3 to 10 references before rendering.
 - Score references against the account's own baseline. Use `outlier_score = reference_views / account_baseline_views` when both numbers exist.
 - Change one variable per test. Good variables are hook, creator type, starting frame, objection, proof moment, offer, and CTA.
-- Render one test take first through Agent Media. New OAuth connector accounts may use the free first ad when `get_account.free_first_ad_available` is true and the quote confirms a 0-credit, 10 second, 480p, watermarked video.
+- Render one test take first through Agent Media. An eligible new account may use the free first ad when `get_account.free_first_ad_available` is true and the quote confirms a 0-credit, 10 second, 480p, watermarked video.
 - Batch only after the user approves the first take and says to render more variants.
 - Finish final variants with a real app screen recording and captions. Do not fake app screens when the user can supply a recording.
 - Build a publish packet with final URLs or files, variant IDs, post copy, CTA, thumbnail notes, baseline metric, and UTM links that include `utm_source=skill`.
@@ -100,7 +100,7 @@ Only batch after the user says yes. Keep variant IDs tied to the matrix. Change 
 
 ## 9. Finish with real app screen and captions
 
-Use the user's real app screen recording for the final proof moment. Agent Media does not insert app recordings today, so finish with local editing when files are available: trim the take, append or overlay the screen recording, add captions from the final transcript, keep title-safe framing, and export 9:16 MP4 files named by variant ID.
+Use the user's real app screen recording for the final proof moment. Agent Media does not cut a screen recording into a take. `make_ugc` with `broll_url` (an https video) can overlay one on the lower half while the person narrates, as a paid run; for anything else, finish with local editing when files are available: trim the take, append or overlay the screen recording, add captions from the final transcript, keep title-safe framing, and export 9:16 MP4 files named by variant ID.
 
 If the screen recording path is missing, ask for it or skip that finish step. Do not fake app screens.
 

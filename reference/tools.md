@@ -34,6 +34,12 @@ The JSON schema is the envelope; the per-model, per-mode limits (seconds, aspect
       "maxLength": 400,
       "description": "Describe the person in words. Omit if you pass image or character."
     },
+    "scene": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 120,
+      "description": "WHERE the video happens, in a few words: 'on a sunny beach, sea behind her', 'in a gym by the weights', 'in bed at night with a lamp on', 'in a parked car'. Set it whenever the user names a place. Without it the video is set in an ordinary room."
+    },
     "image": {
       "type": "string",
       "description": "A photo of the person, an https URL. The face is locked to it. If you only hold bytes, call `upload_image` first and pass the URL it returns; base64 is still accepted here but it is printed into the user’s chat and re-sent on every retry."
@@ -138,6 +144,12 @@ The JSON schema is the envelope; the per-model, per-mode limits (seconds, aspect
       "minLength": 8,
       "maxLength": 400,
       "description": "Describe the person in words. Omit if you pass image or character."
+    },
+    "scene": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 120,
+      "description": "WHERE the video happens, in a few words: 'on a sunny beach, sea behind her', 'in a gym by the weights', 'in bed at night with a lamp on', 'in a parked car'. Set it whenever the user names a place. Without it the video is set in an ordinary room."
     },
     "image": {
       "type": "string",
@@ -288,24 +300,27 @@ The JSON schema is the envelope; the per-model, per-mode limits (seconds, aspect
         "1:1",
         "4:3",
         "3:4",
+        "3:2",
+        "2:3",
         "21:9",
         "adaptive"
       ],
-      "description": "9:16 (default for text and reference), 16:9, 1:1, 4:3, 3:4, 21:9, or adaptive (follows the first frame or reference; the default and the only option in image mode on seedance-2.5)."
+      "description": "9:16 (default for text and reference), 16:9, 1:1, 4:3, 3:4, 3:2, 2:3, 21:9, or adaptive (follows the first frame or reference; the default and the only option in image mode on seedance-2.5)."
     },
     "quality": {
       "type": "string",
       "enum": [
         "480p",
         "720p",
-        "1080p"
+        "1080p",
+        "4k"
       ],
-      "description": "480p (cheapest), 720p, 1080p (dearest). Omit for the model default: 480p on seedance-2.5, 720p on seedance-2.0. Price per second differs; see list_models."
+      "description": "One of 480p, 720p, 1080p, 4k where the selected model supports it. Omit for the model default. Price per second differs; see list_models."
     },
     "audio": {
       "type": "boolean",
       "default": true,
-      "description": "Render native audio (speech from the quoted words, ambience). false = silent clip."
+      "description": "Render native audio when the model supports an audio toggle (speech from the quoted words, ambience). false = silent clip on models that support silence."
     },
     "seed": {
       "type": "integer",
@@ -340,7 +355,7 @@ The JSON schema is the envelope; the per-model, per-mode limits (seconds, aspect
     },
     "model": {
       "type": "string",
-      "description": "A live image model id from list_models, or \"auto\" to let agent-media pick from recent results. Omit for the default (gpt-image-2)."
+      "description": "A live image model id from list_models, or \"auto\" to let agent-media pick from recent results. Omit for the default (gpt-image-2.5)."
     },
     "refs": {
       "type": "array",
@@ -571,31 +586,6 @@ The JSON schema is the envelope; the per-model, per-mode limits (seconds, aspect
 }
 ```
 
-## open_upload_panel
-
-```json
-{
-  "type": "object",
-  "properties": {},
-  "additionalProperties": false
-}
-```
-
-## get_uploads
-
-```json
-{
-  "type": "object",
-  "properties": {
-    "session_id": {
-      "type": "string",
-      "format": "uuid"
-    }
-  },
-  "additionalProperties": false
-}
-```
-
 ## list_crazy_traits
 
 ```json
@@ -777,6 +767,31 @@ The JSON schema is the envelope; the per-model, per-mode limits (seconds, aspect
       "minimum": 1,
       "maximum": 50,
       "description": "Max stars to return (default 20)."
+    }
+  },
+  "additionalProperties": false
+}
+```
+
+## open_upload_panel
+
+```json
+{
+  "type": "object",
+  "properties": {},
+  "additionalProperties": false
+}
+```
+
+## get_uploads
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "session_id": {
+      "type": "string",
+      "format": "uuid"
     }
   },
   "additionalProperties": false
