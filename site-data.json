@@ -1,5 +1,5 @@
 {
-  "pack_version": "2.7.1",
+  "pack_version": "2.8.0",
   "source": "https://github.com/agent-media-ai/agent-media",
   "connector": {
     "url": "https://api.agent-media.ai/mcp",
@@ -48,7 +48,7 @@
       }
     ],
     "prompt": "Set up agent-media so I can generate videos, images and voice from here.\n1. Add the MCP server: https://api.agent-media.ai/mcp (Streamable HTTP).\n2. Authenticate: complete the sign-in in the browser it opens.\n3. Call get_account and tell me whether the account is ready.\n4. Explain that you can freely combine the direct generators or use make_ugc as an optional composed shortcut.\n5. Open the existing image upload panel using open_upload_panel, or upload_image with {} if only the older tools are available. Do not generate anything yet.",
-    "polling": "Every generate tool returns a job id. Call get_run_status with wait:true; each call blocks up to about 45 seconds, a video usually needs several calls (seedance-2.0: about 3 minutes for a 5 s clip at 720p; seedance-2.5: 12 to 25 minutes per clip; plan the wait). Never report a result before get_run_status returned its URL."
+    "polling": "Every generate tool returns a job id. Call get_run_status with wait:true; each call blocks up to about 45 seconds, a video usually needs several calls (seedance-2.0: about 7 minutes per clip (30-day median), up to about 16; seedance-2.5: about 10 minutes per clip (30-day median), up to about 24; plan the wait). Never report a result before get_run_status returned its URL."
   },
   "tools": [
     {
@@ -64,7 +64,7 @@
             "type": "string",
             "minLength": 1,
             "maxLength": 1200,
-            "description": "What the person SAYS (lip-synced), any length. A one-liner makes one clip; a full monologue makes the full multi-take video automatically, never trimmed. Usually the only field you set. EXCEPTION: when you also pass product_image the video is a SINGLE take of at most 15s, so the script must be ~33 words or fewer."
+            "description": "What the person SAYS (lip-synced), any length. A one-liner makes one clip; a full monologue makes the full multi-take video automatically, never trimmed. Usually the only field you set. EXCEPTION: when you also pass product_image the video is a SINGLE take of at most 15s, so the script must be 46 words or fewer."
           },
           "scene_action": {
             "type": "string",
@@ -94,7 +94,7 @@
           },
           "product_image": {
             "type": "string",
-            "description": "A photo of a PRODUCT to show/hold/wear, an https URL. If you only hold bytes, call `upload_image` first and pass the URL it returns: base64 travels inside this tool call, is printed into the user’s chat, and is re-sent on every retry. Turns the video into a product ad; needs a `character` to hold it, and limits `script` to ONE take of at most 15s (~33 words)."
+            "description": "A photo of a PRODUCT to show/hold/wear, an https URL. If you only hold bytes, call `upload_image` first and pass the URL it returns: base64 travels inside this tool call, is printed into the user’s chat, and is re-sent on every retry. Turns the video into a product ad; needs a `character` to hold it, and limits `script` to ONE take of at most 15s (46 words)."
           },
           "name": {
             "type": "string",
@@ -117,7 +117,7 @@
               25,
               30
             ],
-            "description": "IGNORED when `script` is set, length is derived from the word count (≤11 words → 5s, ≤22 → 10s, else 15s) because the renderer requires the script to fit the take. To get a shorter clip, write a shorter script. Only used for a silent `scene_action` clip, which has no words to measure."
+            "description": "IGNORED when `script` is set: length follows how long the words take to say (~2.9 words/sec; one take: up to 15 words → 5s, up to 31 → 10s, up to 46 → 15s; longer scripts become several takes sized the same way). A video is never stretched to reach a requested duration; silence between takes and at the end is cut, so the final video runs about as long as the speech. To get a longer video, write more words (~2.8 words per extra second). The response's take_plan shows the takes. Only used for a silent `scene_action` clip, which has no words to measure."
           },
           "captions": {
             "type": "boolean",
@@ -177,7 +177,7 @@
             "type": "string",
             "minLength": 1,
             "maxLength": 1200,
-            "description": "What the person SAYS (lip-synced), any length. A one-liner makes one clip; a full monologue makes the full multi-take video automatically, never trimmed. Usually the only field you set. EXCEPTION: when you also pass product_image the video is a SINGLE take of at most 15s, so the script must be ~33 words or fewer."
+            "description": "What the person SAYS (lip-synced), any length. A one-liner makes one clip; a full monologue makes the full multi-take video automatically, never trimmed. Usually the only field you set. EXCEPTION: when you also pass product_image the video is a SINGLE take of at most 15s, so the script must be 46 words or fewer."
           },
           "scene_action": {
             "type": "string",
@@ -207,7 +207,7 @@
           },
           "product_image": {
             "type": "string",
-            "description": "A photo of a PRODUCT to show/hold/wear, an https URL. If you only hold bytes, call `upload_image` first and pass the URL it returns: base64 travels inside this tool call, is printed into the user’s chat, and is re-sent on every retry. Turns the video into a product ad; needs a `character` to hold it, and limits `script` to ONE take of at most 15s (~33 words)."
+            "description": "A photo of a PRODUCT to show/hold/wear, an https URL. If you only hold bytes, call `upload_image` first and pass the URL it returns: base64 travels inside this tool call, is printed into the user’s chat, and is re-sent on every retry. Turns the video into a product ad; needs a `character` to hold it, and limits `script` to ONE take of at most 15s (46 words)."
           },
           "name": {
             "type": "string",
@@ -230,7 +230,7 @@
               25,
               30
             ],
-            "description": "IGNORED when `script` is set, length is derived from the word count (≤11 words → 5s, ≤22 → 10s, else 15s) because the renderer requires the script to fit the take. To get a shorter clip, write a shorter script. Only used for a silent `scene_action` clip, which has no words to measure."
+            "description": "IGNORED when `script` is set: length follows how long the words take to say (~2.9 words/sec; one take: up to 15 words → 5s, up to 31 → 10s, up to 46 → 15s; longer scripts become several takes sized the same way). A video is never stretched to reach a requested duration; silence between takes and at the end is cut, so the final video runs about as long as the speech. To get a longer video, write more words (~2.8 words per extra second). The response's take_plan shows the takes. Only used for a silent `scene_action` clip, which has no words to measure."
           },
           "captions": {
             "type": "boolean",
@@ -538,7 +538,7 @@
       "title": "Get Run Status",
       "read_only": true,
       "spends_credits": false,
-      "description": "Check a generation you already submitted, and get its output URL (video, image or audio) when it is done. Pass the id ANY agent-media tool returned (run id, skill run id, or job id), this resolves all of them. Set wait:true to block until the job reaches a terminal state (up to ~45 seconds per call; if it is still running, just call again: seedance-2.0 needs about 3 minutes for a 5 s clip, seedance-2.5 12 to 25 minutes, so keep calling until it is done). ALWAYS call this after submitting: without it you cannot tell whether the video succeeded, and cannot give the user a link.",
+      "description": "Check a generation you already submitted, and get its output URL (video, image or audio) when it is done. Pass the id ANY agent-media tool returned (run id, skill run id, or job id), this resolves all of them. Set wait:true to block until the job reaches a terminal state (up to ~45 seconds per call; if it is still running, just call again: a video often takes several minutes, and list_models `recent` has each model's median render time, so keep calling until it is done). ALWAYS call this after submitting: without it you cannot tell whether the video succeeded, and cannot give the user a link.",
       "input_schema": {
         "type": "object",
         "properties": {
@@ -656,7 +656,7 @@
       "title": "List Crazy Character Traits",
       "read_only": true,
       "spends_credits": false,
-      "description": "List what a crazy character can be made of, before creating one: every TRAIT (one per character, for example two heads or four arms) with what it looks like, whether an agent can cast it now (castable) and whether it is also on the agent-media app board (app_live); the catalog WHOS with a short description; the PLACES and their MOVES; the prices (a new character with its first clip, a new scene of a saved star); and whether this account can cast right now. Costs nothing and creates nothing. Call this before create_crazy_character.",
+      "description": "List what a crazy character can be made of, before creating one: the quick-pick TRAITS (one per character, for example two heads or four arms; any other trait the user describes works too) with what each looks like, whether an agent can cast it now (castable) and whether it is also on the agent-media app board (app_live); the catalog WHOS with a short description; the PLACES and their MOVES; the prices (a new character with its first clip, a new scene of a saved star); and whether this account can cast right now. Costs nothing and creates nothing. Call this before create_crazy_character.",
       "input_schema": {
         "type": "object",
         "properties": {},
@@ -668,7 +668,7 @@
       "title": "Create Crazy Character",
       "read_only": false,
       "spends_credits": true,
-      "description": "Create ONE new crazy character and its first video in a single call: a photoreal adult with ONE absurd trait, a landscape character sheet with their name (saved as a reusable star), and a 10 second vertical clip with sound (Seedance 2.5, 480p, with a burned-in \"AI · agent-media.ai\" mark). There is no second take and no picking step. Needs a plan or credits: free accounts get VIRAL_CAST_NEEDS_PLAN and nothing is charged. WHO is either a catalog who id from list_crazy_traits (for example casino_granny) or your own short description of a NEW adult character (for example \"a 60-year-old lifeguard\"); a description also needs who_gender and who_age. TRAIT is one castable trait from list_crazy_traits. place and move are optional; left out, they are picked to suit the who. COST: 725 credits, charged once when it starts and refunded if it fails. Call it FIRST WITHOUT confirm: you get the server's price quote and nothing is created or charged. Show the price to the user; after they agree, call again with the same input plus confirm:true (the quoted price is sent along, so a price that changed in between is refused before any charge). Then call get_run_status with the returned job id (wait:true) and keep calling until it is completed or failed. Afterwards offer crazy_scene (600 credits per new clip). FORMAT RULES (the crazy character format): ONE absurd trait on an otherwise real-looking adult; the goal is a clip that opens close (waist or knees up), never from far away (the prompts aim for it, the render does not guarantee it); a mundane, minimal outfit inside platform rules, a different outfit per clip; any caption you write is short, deadpan and carries an AI label (for example \"AI\"); never write an em dash. RETRY SAFETY: pass a fresh request_id (a UUID) with confirm:true. If the response is lost, call again with the SAME input and request_id to recover the same job without a second charge.",
+      "description": "Create ONE new crazy character and its first video in a single call: a photoreal adult with ONE absurd trait, a landscape character sheet with their name (saved as a reusable star), and a 10 second vertical clip with sound (Seedance 2.5, 480p, with a burned-in \"AI · agent-media.ai\" mark). There is no second take and no picking step. Needs a plan or credits: free accounts get VIRAL_CAST_NEEDS_PLAN and nothing is charged. WHO is either a catalog who id from list_crazy_traits (for example casino_granny) or your own short description of a NEW adult character (for example \"a 60-year-old lifeguard\"); a description also needs who_gender and who_age. TRAIT is ONE absurd look: a quick-pick id from list_crazy_traits, or the user's own short description (for example \"small head, big body\" or \"six arms\"); any trait the user describes works, at the same price. place and move are optional; left out, they are picked to suit the who. COST: 725 credits, charged once when it starts and refunded if it fails. Call it FIRST WITHOUT confirm: you get the server's price quote and nothing is created or charged. Show the price to the user; after they agree, call again with the same input plus confirm:true (the quoted price is sent along, so a price that changed in between is refused before any charge). Then call get_run_status with the returned job id (wait:true) and keep calling until it is completed or failed. Afterwards offer crazy_scene (600 credits per new clip). FORMAT RULES (the crazy character format): ONE absurd trait on an otherwise real-looking adult; the goal is a clip that opens close (waist or knees up), never from far away (the prompts aim for it, the render does not guarantee it); a mundane, minimal outfit inside platform rules, a different outfit per clip; any caption you write is short, deadpan and carries an AI label (for example \"AI\"); never write an em dash. RETRY SAFETY: pass a fresh request_id (a UUID) with confirm:true. If the response is lost, call again with the SAME input and request_id to recover the same job without a second charge.",
       "input_schema": {
         "type": "object",
         "properties": {
@@ -700,23 +700,9 @@
           },
           "trait": {
             "type": "string",
-            "enum": [
-              "two_heads",
-              "three_heads",
-              "four_arms",
-              "giant_beehive",
-              "pink_mohawk",
-              "bowl_cut",
-              "giant_quiff",
-              "ten_foot_hair",
-              "handlebar_mustache",
-              "unibrow",
-              "giant_glasses",
-              "mini_me",
-              "eight_feet_tall",
-              "giant_white_moustache"
-            ],
-            "description": "The ONE absurd trait. Castable now: two_heads, three_heads, four_arms, giant_beehive, pink_mohawk, bowl_cut, giant_quiff, ten_foot_hair, handlebar_mustache, unibrow, giant_glasses, mini_me, giant_white_moustache. list_crazy_traits says what each looks like."
+            "minLength": 3,
+            "maxLength": 120,
+            "description": "The ONE absurd trait: a quick-pick id (two_heads, three_heads, four_arms, giant_beehive, pink_mohawk, bowl_cut, giant_quiff, ten_foot_hair, handlebar_mustache, unibrow, giant_glasses, mini_me, giant_white_moustache) or the user's own short description of ONE absurd look (it may touch more than one body part, for example \"small head, big body\" or \"six arms\"). Describe positively (\"bald\", not \"no hair\"); nothing sexual, gory or hateful, no real people or brands. Same price either way."
           },
           "place": {
             "type": "string",
@@ -1060,25 +1046,24 @@
         "quality": "good",
         "speed": "medium",
         "best_for": [
-          "faster paid drafts",
-          "bulk daily posts",
-          "legacy 720p workflows",
+          "the fastest Seedance render",
           "talking-head UGC",
+          "drafts and bulk daily posts",
           "animating a still (first frame) into a clip"
         ],
         "avoid_for": [
           "clips over 15s",
-          "hero shots where 2.5 detail is the default expectation",
+          "one hero shot that has to have 2.5 detail",
           "anything that needs a seed"
         ],
         "usage": {
-          "pick_when": "you explicitly want the older faster standard engine, or you are making volume drafts where the shorter wait matters more than 2.5 detail",
+          "pick_when": "you want the fastest Seedance render and up to 15 s is enough (drafts, talking heads, daily posts); 480p is the quickest",
           "prompt_tips": [
             "Write the shot as a director: who (age, look), where (setting, light), what happens, phone framing, and the exact spoken words in quotes. About 2.3 words per second.",
             "Keep a person consistent across clips with refs (a portrait or a character sheet), addressed as @image1; the model has no seed.",
             "To animate a specific still, pass it as first_frame; add last_frame to control where the motion ends."
           ],
-          "latency": "about 3 minutes for a 5 s clip at 720p"
+          "latency": "about 7 minutes per clip (30-day median), up to about 16"
         },
         "docs_url": "https://github.com/agent-media-ai/agent-media/blob/main/reference/models/seedance-2.0.md",
         "verified": [
@@ -1285,23 +1270,23 @@
         "quality": "premium",
         "speed": "slow",
         "best_for": [
-          "paid video default",
           "hero product ads",
           "close-up faces",
-          "one clip that has to be the best"
+          "one clip that has to be the best",
+          "clips longer than 15 s"
         ],
         "avoid_for": [
-          "jobs where the user explicitly wants the older faster 2.0 engine",
-          "anyone who cannot wait 15 to 30 minutes"
+          "quick drafts where the shorter seedance-2.0 wait matters more than detail",
+          "anyone who cannot wait 10 to 25 minutes"
         ],
         "usage": {
-          "pick_when": "you are making paid video and the user did not explicitly ask for the older faster 2.0 engine; default 480p keeps the draft tier focused",
+          "pick_when": "the user asks for Seedance 2.5 or the best quality, or the clip needs what only 2.5 makes (longer than 15 s, more references, audio references alone)",
           "prompt_tips": [
             "Same director-style prompt and @image1 references as seedance-2.0.",
             "In image mode leave aspect out (it is adaptive); the frame decides the ratio.",
             "Do not put edit or extend wording in a reference prompt."
           ],
-          "latency": "12 to 25 minutes per clip; plan the wait"
+          "latency": "about 10 minutes per clip (30-day median), up to about 24; plan the wait"
         },
         "docs_url": "https://github.com/agent-media-ai/agent-media/blob/main/reference/models/seedance-2.5.md",
         "verified": [
@@ -2746,7 +2731,7 @@
         },
         {
           "tool": "generate_video",
-          "text": "One take, a strong reference. In image mode leave aspect out (adaptive only). Expect 12 to 25 minutes per clip; plan the wait. Use \"seedance-2.0\" only when the user explicitly asks for the older faster path."
+          "text": "One take, a strong reference. In image mode leave aspect out (adaptive only). Expect about 10 minutes per clip (30-day median), up to about 24; plan the wait. Use \"seedance-2.0\" only when the user explicitly asks for the older faster path."
         }
       ]
     }

@@ -20,7 +20,7 @@ The JSON schema is the envelope; the per-model, per-mode limits (seconds, aspect
       "type": "string",
       "minLength": 1,
       "maxLength": 1200,
-      "description": "What the person SAYS (lip-synced), any length. A one-liner makes one clip; a full monologue makes the full multi-take video automatically, never trimmed. Usually the only field you set. EXCEPTION: when you also pass product_image the video is a SINGLE take of at most 15s, so the script must be ~33 words or fewer."
+      "description": "What the person SAYS (lip-synced), any length. A one-liner makes one clip; a full monologue makes the full multi-take video automatically, never trimmed. Usually the only field you set. EXCEPTION: when you also pass product_image the video is a SINGLE take of at most 15s, so the script must be 46 words or fewer."
     },
     "scene_action": {
       "type": "string",
@@ -50,7 +50,7 @@ The JSON schema is the envelope; the per-model, per-mode limits (seconds, aspect
     },
     "product_image": {
       "type": "string",
-      "description": "A photo of a PRODUCT to show/hold/wear, an https URL. If you only hold bytes, call `upload_image` first and pass the URL it returns: base64 travels inside this tool call, is printed into the user’s chat, and is re-sent on every retry. Turns the video into a product ad; needs a `character` to hold it, and limits `script` to ONE take of at most 15s (~33 words)."
+      "description": "A photo of a PRODUCT to show/hold/wear, an https URL. If you only hold bytes, call `upload_image` first and pass the URL it returns: base64 travels inside this tool call, is printed into the user’s chat, and is re-sent on every retry. Turns the video into a product ad; needs a `character` to hold it, and limits `script` to ONE take of at most 15s (46 words)."
     },
     "name": {
       "type": "string",
@@ -73,7 +73,7 @@ The JSON schema is the envelope; the per-model, per-mode limits (seconds, aspect
         25,
         30
       ],
-      "description": "IGNORED when `script` is set, length is derived from the word count (≤11 words → 5s, ≤22 → 10s, else 15s) because the renderer requires the script to fit the take. To get a shorter clip, write a shorter script. Only used for a silent `scene_action` clip, which has no words to measure."
+      "description": "IGNORED when `script` is set: length follows how long the words take to say (~2.9 words/sec; one take: up to 15 words → 5s, up to 31 → 10s, up to 46 → 15s; longer scripts become several takes sized the same way). A video is never stretched to reach a requested duration; silence between takes and at the end is cut, so the final video runs about as long as the speech. To get a longer video, write more words (~2.8 words per extra second). The response's take_plan shows the takes. Only used for a silent `scene_action` clip, which has no words to measure."
     },
     "captions": {
       "type": "boolean",
@@ -131,7 +131,7 @@ The JSON schema is the envelope; the per-model, per-mode limits (seconds, aspect
       "type": "string",
       "minLength": 1,
       "maxLength": 1200,
-      "description": "What the person SAYS (lip-synced), any length. A one-liner makes one clip; a full monologue makes the full multi-take video automatically, never trimmed. Usually the only field you set. EXCEPTION: when you also pass product_image the video is a SINGLE take of at most 15s, so the script must be ~33 words or fewer."
+      "description": "What the person SAYS (lip-synced), any length. A one-liner makes one clip; a full monologue makes the full multi-take video automatically, never trimmed. Usually the only field you set. EXCEPTION: when you also pass product_image the video is a SINGLE take of at most 15s, so the script must be 46 words or fewer."
     },
     "scene_action": {
       "type": "string",
@@ -161,7 +161,7 @@ The JSON schema is the envelope; the per-model, per-mode limits (seconds, aspect
     },
     "product_image": {
       "type": "string",
-      "description": "A photo of a PRODUCT to show/hold/wear, an https URL. If you only hold bytes, call `upload_image` first and pass the URL it returns: base64 travels inside this tool call, is printed into the user’s chat, and is re-sent on every retry. Turns the video into a product ad; needs a `character` to hold it, and limits `script` to ONE take of at most 15s (~33 words)."
+      "description": "A photo of a PRODUCT to show/hold/wear, an https URL. If you only hold bytes, call `upload_image` first and pass the URL it returns: base64 travels inside this tool call, is printed into the user’s chat, and is re-sent on every retry. Turns the video into a product ad; needs a `character` to hold it, and limits `script` to ONE take of at most 15s (46 words)."
     },
     "name": {
       "type": "string",
@@ -184,7 +184,7 @@ The JSON schema is the envelope; the per-model, per-mode limits (seconds, aspect
         25,
         30
       ],
-      "description": "IGNORED when `script` is set, length is derived from the word count (≤11 words → 5s, ≤22 → 10s, else 15s) because the renderer requires the script to fit the take. To get a shorter clip, write a shorter script. Only used for a silent `scene_action` clip, which has no words to measure."
+      "description": "IGNORED when `script` is set: length follows how long the words take to say (~2.9 words/sec; one take: up to 15 words → 5s, up to 31 → 10s, up to 46 → 15s; longer scripts become several takes sized the same way). A video is never stretched to reach a requested duration; silence between takes and at the end is cut, so the final video runs about as long as the speech. To get a longer video, write more words (~2.8 words per extra second). The response's take_plan shows the takes. Only used for a silent `scene_action` clip, which has no words to measure."
     },
     "captions": {
       "type": "boolean",
@@ -630,23 +630,9 @@ The JSON schema is the envelope; the per-model, per-mode limits (seconds, aspect
     },
     "trait": {
       "type": "string",
-      "enum": [
-        "two_heads",
-        "three_heads",
-        "four_arms",
-        "giant_beehive",
-        "pink_mohawk",
-        "bowl_cut",
-        "giant_quiff",
-        "ten_foot_hair",
-        "handlebar_mustache",
-        "unibrow",
-        "giant_glasses",
-        "mini_me",
-        "eight_feet_tall",
-        "giant_white_moustache"
-      ],
-      "description": "The ONE absurd trait. Castable now: two_heads, three_heads, four_arms, giant_beehive, pink_mohawk, bowl_cut, giant_quiff, ten_foot_hair, handlebar_mustache, unibrow, giant_glasses, mini_me, giant_white_moustache. list_crazy_traits says what each looks like."
+      "minLength": 3,
+      "maxLength": 120,
+      "description": "The ONE absurd trait: a quick-pick id (two_heads, three_heads, four_arms, giant_beehive, pink_mohawk, bowl_cut, giant_quiff, ten_foot_hair, handlebar_mustache, unibrow, giant_glasses, mini_me, giant_white_moustache) or the user's own short description of ONE absurd look (it may touch more than one body part, for example \"small head, big body\" or \"six arms\"). Describe positively (\"bald\", not \"no hair\"); nothing sexual, gory or hateful, no real people or brands. Same price either way."
     },
     "place": {
       "type": "string",

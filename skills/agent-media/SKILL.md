@@ -3,7 +3,7 @@ name: 'agent-media'
 description: 'Use Agent Media as one composable media toolbox: upload and inspect reference images, generate or edit images, build storyboards and frames, generate video and speech, reuse characters, quote costs and track runs. For an upload-only request, open the existing panel with open_upload_panel, or upload_image with {} if only older tools are available; show the browser link and wait. Do not build an upload page or request a local folder. Select live models with list_models, quote when needed, generate, then poll get_run_status. Covers UGC, portraits, product photos, image-to-video, reference video, voiceover and recurring characters.'
 allowed-tools: ['mcp__agent-media__make_ugc', 'mcp__agent-media__quote_ugc', 'mcp__agent-media__generate_video', 'mcp__agent-media__generate_image', 'mcp__agent-media__generate_audio', 'mcp__agent-media__quote', 'mcp__agent-media__list_models', 'mcp__agent-media__get_account', 'mcp__agent-media__list_characters', 'mcp__agent-media__get_run_status', 'mcp__agent-media__upload_image', 'mcp__agent-media__rate_run', 'mcp__agent-media__list_crazy_traits', 'mcp__agent-media__create_crazy_character', 'mcp__agent-media__crazy_scene', 'mcp__agent-media__list_my_stars', 'mcp__agent-media__open_upload_panel', 'mcp__agent-media__get_uploads']
 x-skill-slug: 'agent-media'
-x-skill-version: '2.7.1'
+x-skill-version: '2.8.0'
 x-surface: 'loose'
 ---
 # agent-media, the skill
@@ -121,10 +121,10 @@ From the catalog `usage` card. `list_models` returns the same text plus the last
 
 ### seedance-2.0
 
-- **Pick it when** you explicitly want the older faster standard engine, or you are making volume drafts where the shorter wait matters more than 2.5 detail.
-- **Best for:** faster paid drafts; bulk daily posts; legacy 720p workflows; talking-head UGC; animating a still (first frame) into a clip.
-- **Avoid for:** clips over 15s; hero shots where 2.5 detail is the default expectation; anything that needs a seed.
-- **Latency:** about 3 minutes for a 5 s clip at 720p.
+- **Pick it when** you want the fastest Seedance render and up to 15 s is enough (drafts, talking heads, daily posts); 480p is the quickest.
+- **Best for:** the fastest Seedance render; talking-head UGC; drafts and bulk daily posts; animating a still (first frame) into a clip.
+- **Avoid for:** clips over 15s; one hero shot that has to have 2.5 detail; anything that needs a seed.
+- **Latency:** about 7 minutes per clip (30-day median), up to about 16.
 - **Price:** 30 credits/s at 480p, 60 at 720p, 150 at 1080p; reference clip seconds (video_refs) are billed at the same per-second rate as output seconds.
 - **Modes:**
   - text (prompt only): 4 to 15 s, default aspect 9:16, 480p/720p/1080p
@@ -137,10 +137,10 @@ From the catalog `usage` card. `list_models` returns the same text plus the last
 
 ### seedance-2.5 (default video)
 
-- **Pick it when** you are making paid video and the user did not explicitly ask for the older faster 2.0 engine; default 480p keeps the draft tier focused.
-- **Best for:** paid video default; hero product ads; close-up faces; one clip that has to be the best.
-- **Avoid for:** jobs where the user explicitly wants the older faster 2.0 engine; anyone who cannot wait 15 to 30 minutes.
-- **Latency:** 12 to 25 minutes per clip; plan the wait.
+- **Pick it when** the user asks for Seedance 2.5 or the best quality, or the clip needs what only 2.5 makes (longer than 15 s, more references, audio references alone).
+- **Best for:** hero product ads; close-up faces; one clip that has to be the best; clips longer than 15 s.
+- **Avoid for:** quick drafts where the shorter seedance-2.0 wait matters more than detail; anyone who cannot wait 10 to 25 minutes.
+- **Latency:** about 10 minutes per clip (30-day median), up to about 24; plan the wait.
 - **Price:** 60 credits/s at 480p, 125 at 720p, 225 at 1080p; reference clip seconds (video_refs) are billed at the same per-second rate as output seconds.
 - **Modes:**
   - text (prompt only): 4 to 30 s, default aspect 9:16, 480p/720p/1080p
@@ -250,7 +250,7 @@ The things the old fixed skills did, as prompts you write yourself, see [referen
 - Every image, clip and audio URL must be https (upload_image first for images). Refs are kept private to the account.
 - Never downscale a photo the user gave you. `upload_image` with `file_bytes` streams the original file straight to storage (up to 25 MB) and hands back a URL; resizing to fit a context window is what turns a customer product shot into a thumbnail.
 - One mode per call: a first frame OR references, never both on Seedance.
-- Poll until `completed`; a clip takes minutes (seedance-2.0: about 3 minutes for a 5 s clip at 720p; seedance-2.5: 12 to 25 minutes per clip; plan the wait), an image under a minute, audio seconds. If a job fails, the credits are refunded automatically, say so and retry with a clearer prompt.
+- Poll until `completed`; a clip takes minutes (seedance-2.0: about 7 minutes per clip (30-day median), up to about 16; seedance-2.5: about 10 minutes per clip (30-day median), up to about 24; plan the wait), an image under a minute, audio seconds. If a job fails, the credits are refunded automatically, say so and retry with a clearer prompt.
 - Do not claim a video exists until get_run_status returned its URL.
 - After the user reacts to an output, call rate_run with an honest score. It is how the catalog learns.
 

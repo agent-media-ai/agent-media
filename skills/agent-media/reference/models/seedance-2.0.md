@@ -39,11 +39,11 @@ The mode is derived from the request: `first_frame` means image mode, `refs` / `
 
 ## How to use it
 
-**Pick this when** you explicitly want the older faster standard engine, or you are making volume drafts where the shorter wait matters more than 2.5 detail.
+**Pick this when** you want the fastest Seedance render and up to 15 s is enough (drafts, talking heads, daily posts); 480p is the quickest.
 
-**Best for:** faster paid drafts; bulk daily posts; legacy 720p workflows; talking-head UGC; animating a still (first frame) into a clip.
+**Best for:** the fastest Seedance render; talking-head UGC; drafts and bulk daily posts; animating a still (first frame) into a clip.
 
-**Avoid for:** clips over 15s; hero shots where 2.5 detail is the default expectation; anything that needs a seed.
+**Avoid for:** clips over 15s; one hero shot that has to have 2.5 detail; anything that needs a seed.
 
 **Prompting:**
 
@@ -51,7 +51,7 @@ The mode is derived from the request: `first_frame` means image mode, `refs` / `
 - Keep a person consistent across clips with refs (a portrait or a character sheet), addressed as @image1; the model has no seed.
 - To animate a specific still, pass it as first_frame; add last_frame to control where the motion ends.
 
-**Latency:** about 3 minutes for a 5 s clip at 720p.
+**Latency:** about 7 minutes per clip (30-day median), up to about 16.
 <!-- /generated -->
 
 ## Usage notes

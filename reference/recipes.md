@@ -73,4 +73,4 @@ _300 to 900 credits per exchange at 480p_
 _60 credits/s at 480p, 125 at 720p, 225 at 1080p_
 
 1. `quote`, Price it first: omit model or pass "seedance-2.5", seconds up to 10, the quality the user asked for.
-2. `generate_video`, One take, a strong reference. In image mode leave aspect out (adaptive only). Expect 12 to 25 minutes per clip; plan the wait. Use "seedance-2.0" only when the user explicitly asks for the older faster path.
+2. `generate_video`, One take, a strong reference. In image mode leave aspect out (adaptive only). Expect about 10 minutes per clip (30-day median), up to about 24; plan the wait. Use "seedance-2.0" only when the user explicitly asks for the older faster path.
