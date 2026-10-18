@@ -38,11 +38,11 @@ The mode is derived from the request: `first_frame` means image mode, `refs` / `
 
 ## How to use it
 
-**Pick this when** you are making paid video and the user did not explicitly ask for the older faster 2.0 engine; default 480p keeps the draft tier focused.
+**Pick this when** the user asks for Seedance 2.5 or the best quality, or the clip needs what only 2.5 makes (longer than 15 s, more references, audio references alone).
 
-**Best for:** paid video default; hero product ads; close-up faces; one clip that has to be the best.
+**Best for:** hero product ads; close-up faces; one clip that has to be the best; clips longer than 15 s.
 
-**Avoid for:** jobs where the user explicitly wants the older faster 2.0 engine; anyone who cannot wait 15 to 30 minutes.
+**Avoid for:** quick drafts where the shorter seedance-2.0 wait matters more than detail; anyone who cannot wait 10 to 25 minutes.
 
 **Prompting:**
 
@@ -50,7 +50,7 @@ The mode is derived from the request: `first_frame` means image mode, `refs` / `
 - In image mode leave aspect out (it is adaptive); the frame decides the ratio.
 - Do not put edit or extend wording in a reference prompt.
 
-**Latency:** 12 to 25 minutes per clip; plan the wait.
+**Latency:** about 10 minutes per clip (30-day median), up to about 24; plan the wait.
 <!-- /generated -->
 
 ## Usage notes
