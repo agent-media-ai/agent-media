@@ -1,0 +1,11 @@
+{
+  "name": "agent-media",
+  "version": "2.8.0",
+  "description": "One AI agent for your video ads: video, images and voiceovers from Gemini CLI.",
+  "contextFileName": "GEMINI.md",
+  "mcpServers": {
+    "agent-media": {
+      "httpUrl": "https://api.agent-media.ai/mcp"
+    }
+  }
+}

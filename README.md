@@ -3,7 +3,6 @@
 [![npm, mcp-server](https://img.shields.io/npm/v/%40agentmedia%2Fmcp-server?label=%40agentmedia%2Fmcp-server)](https://www.npmjs.com/package/@agentmedia/mcp-server)
 [![npm, CLI](https://img.shields.io/npm/v/agent-media-cli?label=agent-media-cli)](https://www.npmjs.com/package/agent-media-cli)
 [![Claude plugin](https://img.shields.io/badge/claude-%2Fplugin%20install-A78BFA)](https://github.com/agent-media-ai/agent-media)
-[![Cursor plugin](https://img.shields.io/badge/cursor-plugin-A78BFA)](https://cursor.com/marketplace)
 [![License](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
 
 Public documentation: [docs.agent-media.ai](https://docs.agent-media.ai). Setup, uploads, models, billing, troubleshooting and self-hosting.
@@ -30,15 +29,15 @@ Set up agent-media for me so I can generate videos, images and voice from here.
 Once that's done, call list_models and tell me what you can make.
 ```
 
-Other routes: **Claude.ai / Desktop**: Customize > Connectors > + > Add custom connector > paste the URL > Connect and sign in. **Claude Code**: `claude mcp add --transport http --scope user agent-media https://api.agent-media.ai/mcp`. **Codex**: `codex mcp add agent-media --url https://api.agent-media.ai/mcp`. **Grok**: `grok mcp add agent-media -t http https://api.agent-media.ai/mcp`. **Claude Code plugin**: `/plugin marketplace add agent-media-ai/agent-media` then `/plugin install agent-media@agent-media`. **Cursor plugin**: Settings > Plugins > search Agent Media > Install, or `/add-plugin agent-media` in chat; the plugin ships this skill plus the hosted MCP server, and Cursor opens the sign-in for you.
+Other routes: **Claude.ai / Desktop**: Customize > Connectors > + > Add custom connector > paste the URL > Connect and sign in. **Claude Code**: `claude mcp add --transport http --scope user agent-media https://api.agent-media.ai/mcp`. **Codex**: `codex mcp add agent-media --url https://api.agent-media.ai/mcp`. **Grok**: `grok mcp add agent-media -t http https://api.agent-media.ai/mcp`. **Claude Code plugin**: `/plugin marketplace add agent-media-ai/agent-media` then `/plugin install agent-media@agent-media`. **Cursor**: add the URL as a remote server in `~/.cursor/mcp.json`, then sign in when Cursor asks.
 
 Claude Code: after adding the server, run `/mcp`, select agent-media, and sign in. The command above uses user scope, so it works across projects. Codex: run `codex mcp login agent-media`. If Agent Media is already connected through a plugin or connector, use that connection instead of installing a duplicate.
 
 Check setup without spending credits: call `get_account` (or `list_models` for a cached catalog), then open the existing image upload panel (`open_upload_panel` when listed, otherwise `upload_image` with `{}`). Use the account check for credit balance; opening the panel checks upload access separately. Ask for a quote before the first generation.
 
-## Free first ad
+## First video free
 
-An eligible new account (a confirmed email and no paid plan yet) can have one free first ad. `get_account` shows `free_first_ad_available`; when it is true, `quote_ugc` or `quote` tells the agent the next eligible video is free. The first eligible `make_ugc` or `generate_video` call uses the grant: one 10 second, 480p, 9:16, watermarked Seedance 2.5 video at 0 credits. If the request does not fit those limits, the quote response tells the agent to ask whether to fit the free limits or use the normal paid workflow.
+An eligible new account (a confirmed email and no paid plan yet) gets its first video free. `get_account` shows `free_first_ad_available`; when it is true, `quote_ugc` or `quote` tells the agent the next eligible video is free. The first eligible `make_ugc` or `generate_video` call uses the grant: one 10 second, 480p, 9:16, watermarked Seedance 2.5 video at 0 credits. If the request does not fit those limits, the quote response tells the agent to ask whether to fit the free limits or use the normal paid workflow.
 
 ## AI UGC test loop skill
 
