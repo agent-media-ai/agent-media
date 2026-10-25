@@ -1,30 +1,24 @@
 ---
 name: 'agent-media'
 description: 'Use Agent Media as one composable media toolbox: upload and inspect reference images, generate or edit images, build storyboards and frames, generate video and speech, reuse characters, quote costs and track runs. For an upload-only request, open the existing panel with open_upload_panel, or upload_image with {} if only older tools are available; show the browser link and wait. Do not build an upload page or request a local folder. Select live models with list_models, quote when needed, generate, then poll get_run_status. Covers UGC, portraits, product photos, image-to-video, reference video, voiceover and recurring characters.'
-allowed-tools: ['mcp__agent-media__make_ugc', 'mcp__agent-media__quote_ugc', 'mcp__agent-media__generate_video', 'mcp__agent-media__generate_image', 'mcp__agent-media__generate_audio', 'mcp__agent-media__quote', 'mcp__agent-media__list_models', 'mcp__agent-media__get_account', 'mcp__agent-media__list_characters', 'mcp__agent-media__get_run_status', 'mcp__agent-media__upload_image', 'mcp__agent-media__rate_run', 'mcp__agent-media__list_crazy_traits', 'mcp__agent-media__create_crazy_character', 'mcp__agent-media__crazy_scene', 'mcp__agent-media__list_my_stars', 'mcp__agent-media__open_upload_panel', 'mcp__agent-media__get_uploads']
+allowed-tools: ['mcp__agent-media__make_ugc', 'mcp__agent-media__quote_ugc', 'mcp__agent-media__generate_video', 'mcp__agent-media__generate_image', 'mcp__agent-media__generate_audio', 'mcp__agent-media__quote', 'mcp__agent-media__list_models', 'mcp__agent-media__get_account', 'mcp__agent-media__list_characters', 'mcp__agent-media__get_run_status', 'mcp__agent-media__upload_image', 'mcp__agent-media__rate_run', 'mcp__agent-media__open_upload_panel', 'mcp__agent-media__get_uploads']
 x-skill-slug: 'agent-media'
-x-skill-version: '2.8.0'
+x-skill-version: '2.9.0'
 x-surface: 'loose'
 ---
 # agent-media, the skill
 
 Treat Agent Media as one composable media toolbox. Start from the user's outcome, then freely combine uploads, image inspection, `generate_image`, `generate_video`, `generate_audio`, saved characters, quotes and status. Use `generate_image` for any needed storyboard, contact sheet, keyframe or intermediate visual; pass the returned URLs into later calls. Use `make_ugc` only as an optional shortcut when the user wants its server-composed vertical-video result.
 
-## Free first ad for new accounts
+## Plans
 
-An eligible new account (a confirmed email and no paid plan yet) can have one free first ad. Call `get_account` before the first generation and read `free_first_ad_available`; when it is true, tell the user the next eligible video is free. The first eligible `make_ugc` or `generate_video` call consumes it as one 10 second, 480p, 9:16, watermarked Seedance 2.5 video at 0 credits. `quote_ugc` and `quote` say when the next video is free and return a 0-credit quote for eligible inputs; still ask the user to approve the free watermarked ad before submitting.
-
-Keep the free request inside the free limits. For `make_ugc`, use a short script that fits one 10 second take, no captions, no music, no b-roll, and at most two eligible image references. For `generate_video`, use a prompt with optional eligible `refs`, 10 seconds, 480p, 9:16, and audio on. If the quote or submit response says the request cannot be served as the free first ad, ask whether to fit the free limits or use the normal paid workflow. If `free_first_ad_available` is false or missing, use the normal quote and balance flow.
+Generation needs a paid plan: Just checking is $14.90 a month for up to 10 ten-second ads at 480p, Solo founder is $39 for up to 25, and Real business is $99 for up to 80. There is no trial and no free video. Quote before every generation and compare it with the balance from `get_account`.
 
 ## User-provided images: offer the upload panel
 
 Before the first generation, call get_account to confirm this connection and read available credits. If get_account is absent from a cached tool catalog, list_models includes the same account check. Then call the matching quote tool with the intended inputs: quote_ugc for make_ugc, or quote for generate_image, generate_video and generate_audio. Compare the quoted credits to the available balance before submitting. A public model catalog or an upload alone does not prove credit readiness. If the balance check is unavailable, retry it; do not assume zero credits or ask the user to pay again. A balance snapshot does not reserve credits or guarantee provider availability. Upload-only requests do not need generation credits.
 When the user wants to provide a product photo, portrait, screenshot, or image reference, check tools/list. If open_upload_panel is available, offer it first: call open_upload_panel with {}, show its inline panel or returned browser link, and wait for the user to finish. Then call get_uploads with the returned session_id and use the exact ready image_url in refs, first_frame, last_frame, or the matching skill image field. Do not start a reference-dependent generation until the required images are ready. The panel accepts still PNG, JPEG, and WebP, up to 10 images and 25 MB each. Images expire 24 hours after the panel is created; show the returned expiry, request a new upload if expired, and never make a permanent copy. Uploading uses no generation credits. Do not ask the user for base64, shell commands, or a public hosting service; do not continuously poll while waiting for them. Only call these tool names when discovered. If they are missing from the connected tool catalog, call upload_image with {} to open the same panel; use the returned panel: upload_key with upload_image to retrieve images after the user finishes. If that reports the panel is unavailable, use upload_image only for an already accessible file or URL. Do not build an upload page or request a local folder as a substitute for the existing panel. Never invent access to a chat attachment: if you cannot read it, explain that and offer the panel when available. Browser fallback works without inline UI support; do not promise an inline panel in every client.
 Inspect the native image previews returned with retrieved uploads before describing them or writing image-specific prompts. Never infer what the image shows from an email domain, account metadata, or filename. Use the original URLs for generation, not preview bytes. If the session ID was lost, call get_uploads with {} to list recent sessions, or upload_image with {"upload_key":"panel:recent"} for cached catalogs; retrieve the matching session before asking for re-upload. Account-wide recent uploads may belong to other conversations, so clarify ambiguous selection. Uploading stores an image; it does not attach it to a generation automatically. If the user already requested a generation with these images, continue that request using the returned URLs; do not stop at "upload complete" or ask again whether to use them. If make_ugc fits the requested outcome, pass a person photo as image or a product photo as product_image, then call quote_ugc before spending. Otherwise compose the direct generators: for generate_image, put the relevant image_url values in refs; for generate_video, use refs for product/person/appearance references, or first_frame for animating a still (last_frame only for an explicitly requested ending frame), and never combine refs with frame fields. Preserve the user's intended image roles and model limits; ask only if the role or selection is unclear. Include the URL in the tool arguments, not only in the prompt. Do not substitute a newly generated image for the uploaded reference. If the request was upload-only, report readiness and wait for a generation request; uploading alone does not authorize spending credits. After submitting, poll get_run_status and return the result.
-
-## Crazy characters
-
-For a viral crazy character (a real-looking adult with ONE absurd trait), use `create_crazy_character`: one call makes the take, the named sheet saved as a star and a 10s clip with sound, for 725 credits. Call `list_crazy_traits` first, then `create_crazy_character` without `confirm` for the price, and again with `confirm: true` after the user agrees. `crazy_scene` makes a new clip of a saved star (600 credits). Plan or credits needed. The full flow is in the make-viral-ad skill.
 
 ## Optional composed UGC loop
 
@@ -78,10 +72,11 @@ Image-to-video:
 }
 ```
 
-- `seconds` 4 to 30 on the live Seedance models (the exact range per model and mode is below), `aspect` `9:16`, `16:9`, `1:1`, `4:3`, `3:4`, `21:9`, `adaptive`, `quality` `480p`, `720p`, `1080p` (default 720p on seedance-2.0, 480p on seedance-2.5), `audio` true by default, `model` a live video id.
-- Price ladder, credits per output second: seedance-2.0: 30 credits/s at 480p, 60 at 720p, 150 at 1080p; seedance-2.5: 60 credits/s at 480p, 125 at 720p, 225 at 1080p. A 5 s clip plus a 5 s reference clip on seedance-2.5 is 600 credits at 480p and 1250 at 720p.
+- `seconds` 4 to 30 on the live Seedance models (the exact range per model and mode is below), `aspect` `9:16`, `16:9`, `1:1`, `4:3`, `3:4`, `21:9`, `adaptive`, `quality` `480p`, `720p`, `1080p` (default 720p on seedance-2.0, 480p on seedance-2.5, 480p on wan-3.0-prime), `audio` true by default, `model` a live video id.
+- Price ladder, credits per output second: seedance-2.0: 30 credits/s at 480p, 60 at 720p, 150 at 1080p; seedance-2.5: 60 credits/s at 480p, 125 at 720p, 225 at 1080p; wan-3.0-prime: 12 credits/s at 480p, 24 at 720p, 48 at 1080p. A 5 s clip plus a 5 s reference clip on seedance-2.5 is 600 credits at 480p and 1250 at 720p.
 - seedance-2.0 modes: text (prompt only): 4 to 15 s, default aspect 9:16, 480p/720p/1080p; image-to-video (first_frame + optional last_frame): 4 to 15 s, default aspect adaptive, 480p/720p/1080p; reference (refs / video_refs / audio_refs, up to 9 images, 3 clips, 15 s total, 3 audio, 15 s total, not alone): 4 to 15 s, default aspect 9:16, 480p/720p/1080p.
 - seedance-2.5 modes: text (prompt only): 4 to 30 s, default aspect 9:16, 480p/720p/1080p; image-to-video (first_frame + optional last_frame): 4 to 30 s, aspect adaptive only, 480p/720p/1080p; reference (refs / video_refs / audio_refs, up to 30 images, 10 clips, 30 s total, 10 audio, 30 s total): 4 to 30 s, default aspect 9:16, 480p/720p/1080p.
+- wan-3.0-prime modes: text (prompt only): 2 to 30 s, default aspect 9:16, 480p/720p/1080p; image-to-video (first_frame + optional last_frame): 2 to 30 s, aspect adaptive only, 480p/720p/1080p; reference (refs / video_refs / audio_refs, up to 10 images, 5 clips, 15 s total, 5 audio, 15 s total): 2 to 30 s, default aspect 9:16, 480p/720p/1080p.
 - Speech: put the exact words in quotes in the prompt and leave `audio: true`. The model renders the voice and lip-sync natively, you do not need `generate_audio` for a talking head.
 - Pace the words: about 2.3 words per second. 5 s is 10 to 12 words, 10 s is 20 to 25, 15 s is 30 to 35. A longer script is several clips.
 
@@ -100,7 +95,7 @@ Image-to-video:
 { "text": "[excited] Three things nobody tells you about launching...", "voice": "sarah", "tone": "energetic" }
 ```
 
-- Voices: `jessica` (young female), `sarah` (female), `liam` (young male), `chris` (male), `lily` (elder female), `bill` (elder male), `matilda` (warm, mom); or a raw ElevenLabs voice id. Emotion tags like `[excited]`, `[whispers]` are honoured.
+- Voices: `jessica` (young female), `sarah` (female), `liam` (young male), `chris` (male), `lily` (elder female), `bill` (elder male), `matilda` (warm, mom), `roger` (male); or a raw ElevenLabs voice id. Emotion tags like `[excited]`, `[whispers]` are honoured.
 - Use it for voiceover over b-roll, a standalone audio file, or an `audio_refs` entry for generate_video. Not for a talking head (see generate_video).
 
 ### quote
@@ -206,6 +201,22 @@ From the catalog `usage` card. `list_models` returns the same text plus the last
   - Emotion tags like [excited] or [whispers] are honoured; keep sentences short for pacing.
   - Seven named voices (sarah default) or a raw ElevenLabs voice id.
 
+### wan-3.0-prime
+
+- **Pick it when** the default for ads: a creator and the product, 10 s, at 480p or 720p; fast and the cheapest per second.
+- **Best for:** 10 s UGC and talking ads; a creator holding the product from two reference images; many drafts fast.
+- **Avoid for:** lip-sync to a given audio track; shots that must keep small printed text on a label.
+- **Latency:** about 1 to 2 minutes for 10 s.
+- **Price:** 12 credits/s at 480p, 24 at 720p, 48 at 1080p; reference clip seconds (video_refs) are billed at the same per-second rate as output seconds.
+- **Modes:**
+  - text (prompt only): 2 to 30 s, default aspect 9:16, 480p/720p/1080p
+  - image-to-video (first_frame + optional last_frame): 2 to 30 s, aspect adaptive only, 480p/720p/1080p
+  - reference (refs / video_refs / audio_refs, up to 10 images, 5 clips, 15 s total, 5 audio, 15 s total): 2 to 30 s, default aspect 9:16, 480p/720p/1080p
+- **Prompting:**
+  - Put the person in refs first and the product second, then write "the woman in Image 1 holds the bottle from Image 2".
+  - Say what the hands do and that there are exactly two hands; say "no captions, no on-screen text".
+  - Write the spoken line in quotes; keep it under about 25 words for 10 s.
+
 ## Writing a prompt that comes out real
 
 The fixed pipelines used to inject this rubric into every prompt. Now it is yours to include, put the relevant lines in your `prompt`, in your own words:
@@ -238,7 +249,7 @@ The things the old fixed skills did, as prompts you write yourself, see [referen
 - **Animate a still (image-to-video)**, generate_image or upload_image the still, then generate_video with it as `first_frame` and a prompt that says what moves.
 - **First and last frame**, two stills as `first_frame` and `last_frame`; the model animates from one to the other.
 - **Match a reference clip's motion (video_refs)**, the clip in `video_refs`, a portrait in `refs`, and a prompt like "@image1 performs the same move as @video1 ..."; the clip's seconds are billed like output seconds.
-- **Crazy look**, silent 5 s extreme close-up, one exaggerated expression held to the lens, `audio: false`; burn the caption in your editor or ask for it in the prompt.
+- **Silent reaction**, silent 5 s extreme close-up, one exaggerated expression held to the lens, `audio: false`; burn the caption in your editor or ask for it in the prompt.
 - **B-roll voiceover**, generate_audio the narration; the user overlays it on their footage (agent-media does not mux external video on this surface).
 - **A series with one face**, one generate_image portrait, then N generate_video calls with the same `refs` and the same person and setting wording.
 - **Older faster path**, when the user explicitly wants it: `model: "seedance-2.0"` (30 credits/s at 480p, 60 at 720p, 150 at 1080p). Keep `seedance-2.5` as the paid default.
@@ -250,7 +261,7 @@ The things the old fixed skills did, as prompts you write yourself, see [referen
 - Every image, clip and audio URL must be https (upload_image first for images). Refs are kept private to the account.
 - Never downscale a photo the user gave you. `upload_image` with `file_bytes` streams the original file straight to storage (up to 25 MB) and hands back a URL; resizing to fit a context window is what turns a customer product shot into a thumbnail.
 - One mode per call: a first frame OR references, never both on Seedance.
-- Poll until `completed`; a clip takes minutes (seedance-2.0: about 7 minutes per clip (30-day median), up to about 16; seedance-2.5: about 10 minutes per clip (30-day median), up to about 24; plan the wait), an image under a minute, audio seconds. If a job fails, the credits are refunded automatically, say so and retry with a clearer prompt.
+- Poll until `completed`; a clip takes minutes (seedance-2.0: about 7 minutes per clip (30-day median), up to about 16; seedance-2.5: about 10 minutes per clip (30-day median), up to about 24; plan the wait; wan-3.0-prime: about 1 to 2 minutes for 10 s), an image under a minute, audio seconds. If a job fails, the credits are refunded automatically, say so and retry with a clearer prompt.
 - Do not claim a video exists until get_run_status returned its URL.
 - After the user reacts to an output, call rate_run with an honest score. It is how the catalog learns.
 

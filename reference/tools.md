@@ -328,6 +328,64 @@ The JSON schema is the envelope; the per-model, per-mode limits (seconds, aspect
       "maximum": 2147483647,
       "description": "Only for models whose mode lists seed support (none of the live Seedance modes). Refused elsewhere."
     },
+    "voiceover": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000,
+          "description": "Every word the person says, nothing else."
+        },
+        "language": {
+          "type": "string",
+          "pattern": "^[a-z]{2}$",
+          "description": "ISO 639-1 code of the words (he for Hebrew). Omit to take it from the letters."
+        },
+        "voice": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64,
+          "description": "sulafat (female) or achird (male) for the Gemini voice, or an ElevenLabs stock voice name (sarah, roger, ...). Omit to match the speaker: the gender field, the prompt, or the person in the image. A cloned voice cannot speak Hebrew: the Gemini voice of the same gender speaks instead."
+        },
+        "gender": {
+          "type": "string",
+          "enum": [
+            "female",
+            "male"
+          ],
+          "description": "Who speaks, when no voice is named."
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "additionalProperties": false,
+      "description": "Speech in a language the video models cannot speak (Hebrew): the line is spoken by Gemini TTS and a front-facing still (first_frame, or a keyframe made from the prompt and refs) is lip-synced to it by OmniHuman 1.5. Hebrew lines in quotes get this automatically. 9:16 or 1:1, up to 35 s; not with video_refs or audio_refs. Priced as the voice + the keyframe (when there is no first_frame) + the lip-sync seconds, not the model's per-second rate."
+    },
+    "captions": {
+      "type": "string",
+      "enum": [
+        "hormozi",
+        "minimal",
+        "bold",
+        "karaoke",
+        "clean",
+        "tiktok",
+        "neon",
+        "fire",
+        "glow",
+        "pop",
+        "aesthetic",
+        "impact",
+        "pastel",
+        "electric",
+        "boxed",
+        "gradient",
+        "spotlight"
+      ],
+      "description": "Optional: burn word-timed captions in this style into the finished clip (a second step after the render, the subtitle price added). Leave out for no captions."
+    },
     "request_id": {
       "type": "string",
       "pattern": "^[A-Za-z0-9._:-]{1,128}$",
@@ -409,7 +467,7 @@ The JSON schema is the envelope; the per-model, per-mode limits (seconds, aspect
       "type": "string",
       "minLength": 1,
       "default": "sarah",
-      "description": "A voice name: jessica (young female), sarah (female), liam (young male), chris (male), lily (elder female), bill (elder male), matilda (warm), or a raw ElevenLabs voice id."
+      "description": "A voice name: jessica (young female), sarah (female), liam (young male), chris (male), roger (male), lily (elder female), bill (elder male), matilda (warm), or a raw ElevenLabs voice id. A cloned voice cannot speak Hebrew: a stock voice of the same gender speaks a Hebrew line."
     },
     "tone": {
       "type": "string",
@@ -582,179 +640,6 @@ The JSON schema is the envelope; the per-model, per-mode limits (seconds, aspect
     "run_id",
     "score"
   ],
-  "additionalProperties": false
-}
-```
-
-## list_crazy_traits
-
-```json
-{
-  "type": "object",
-  "properties": {},
-  "additionalProperties": false
-}
-```
-
-## create_crazy_character
-
-```json
-{
-  "type": "object",
-  "properties": {
-    "who": {
-      "type": "string",
-      "minLength": 3,
-      "maxLength": 160,
-      "description": "A catalog who id (club_girl, pool_party_girl, festival_girl, glam_girl, bar_girl, laundromat_girl, drive_thru_girl, tracksuit_girl, casino_granny, crop_top_granny, speedo_grandpa, bbq_dad, beach_bro, gas_station_guy) or a short plain description of a new ADULT character, for example \"a 60-year-old lifeguard\" or \"a tired night-shift nurse\". Original people only: no celebrities, real people, franchise characters or brands. Describe positively (\"bald\", not \"no hair\")."
-    },
-    "who_gender": {
-      "type": "string",
-      "enum": [
-        "female",
-        "male"
-      ],
-      "description": "Required when who is a description: the character's gender (sets pronouns and the name)."
-    },
-    "who_age": {
-      "type": "integer",
-      "minimum": 21,
-      "maximum": 90,
-      "description": "Required when who is a description: an adult age, 21 to 90."
-    },
-    "outfit": {
-      "type": "string",
-      "minLength": 3,
-      "maxLength": 160,
-      "description": "Optional, with a described who: what they wear (mundane, minimal, inside platform rules). Default: a minimal summer outfit (a cropped tank top, denim shorts and sneakers for a woman; a loud floral shirt, swim shorts and flip-flops for a man)."
-    },
-    "trait": {
-      "type": "string",
-      "minLength": 3,
-      "maxLength": 120,
-      "description": "The ONE absurd trait: a quick-pick id (two_heads, three_heads, four_arms, giant_beehive, pink_mohawk, bowl_cut, giant_quiff, ten_foot_hair, handlebar_mustache, unibrow, giant_glasses, mini_me, giant_white_moustache) or the user's own short description of ONE absurd look (it may touch more than one body part, for example \"small head, big body\" or \"six arms\"). Describe positively (\"bald\", not \"no hair\"); nothing sexual, gory or hateful, no real people or brands. Same price either way."
-    },
-    "place": {
-      "type": "string",
-      "enum": [
-        "club_bathroom",
-        "casino",
-        "gas_station",
-        "pool_party",
-        "laundromat",
-        "bingo_hall",
-        "beach_bar",
-        "drive_thru",
-        "parking_lot_bbq",
-        "nail_salon",
-        "sports_bar",
-        "festival_field"
-      ],
-      "description": "Optional place (list_crazy_traits). A catalog who has its own places."
-    },
-    "move": {
-      "type": "string",
-      "enum": [
-        "strut",
-        "walk_past",
-        "full_dance",
-        "drop_jump",
-        "spin",
-        "club_dance",
-        "line_dance"
-      ],
-      "description": "Optional move; needs place, and must be one of that place's moves (list_crazy_traits)."
-    },
-    "confirm": {
-      "type": "boolean",
-      "description": "Leave out (or false) to get the price only: nothing is created or charged. Set true only after the user agreed to the price shown."
-    },
-    "request_id": {
-      "type": "string",
-      "pattern": "^[A-Za-z0-9._:-]{1,128}$",
-      "description": "Unique request identity (prefer a UUID), used with confirm:true. Reuse with identical inputs only to recover a lost response."
-    }
-  },
-  "required": [
-    "who",
-    "trait"
-  ],
-  "additionalProperties": false
-}
-```
-
-## crazy_scene
-
-```json
-{
-  "type": "object",
-  "properties": {
-    "character_id": {
-      "type": "string",
-      "pattern": "^(char_[A-Za-z0-9]{4,24}|[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$",
-      "description": "The star's id (char_...) from list_my_stars or get_run_status."
-    },
-    "place": {
-      "type": "string",
-      "enum": [
-        "club_bathroom",
-        "casino",
-        "gas_station",
-        "pool_party",
-        "laundromat",
-        "bingo_hall",
-        "beach_bar",
-        "drive_thru",
-        "parking_lot_bbq",
-        "nail_salon",
-        "sports_bar",
-        "festival_field"
-      ],
-      "description": "Optional place (list_crazy_traits)."
-    },
-    "move": {
-      "type": "string",
-      "enum": [
-        "strut",
-        "walk_past",
-        "full_dance",
-        "drop_jump",
-        "spin",
-        "club_dance",
-        "line_dance"
-      ],
-      "description": "Optional move; needs place."
-    },
-    "confirm": {
-      "type": "boolean",
-      "description": "Leave out (or false) to get the price only: nothing is created or charged. Set true only after the user agreed to the price shown."
-    },
-    "request_id": {
-      "type": "string",
-      "pattern": "^[A-Za-z0-9._:-]{1,128}$",
-      "description": "Unique request identity (prefer a UUID), used with confirm:true. Reuse with identical inputs only to recover a lost response."
-    }
-  },
-  "required": [
-    "character_id"
-  ],
-  "additionalProperties": false
-}
-```
-
-## list_my_stars
-
-```json
-{
-  "type": "object",
-  "properties": {
-    "limit": {
-      "type": "integer",
-      "minimum": 1,
-      "maximum": 50,
-      "description": "Max stars to return (default 20)."
-    }
-  },
   "additionalProperties": false
 }
 ```

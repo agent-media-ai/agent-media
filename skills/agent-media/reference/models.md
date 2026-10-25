@@ -4,7 +4,7 @@ Generated from `packages/schema/src/v2/models.ts`. Call the `list_models` MCP to
 
 ## The one rule
 
-**Default paid video to `seedance-2.5`.** It is the recommended paid model for talking-head UGC, product-in-hand, animating a still and crazy-look at 60 credits/s at 480p, 125 at 720p, 225 at 1080p. `seedance-2.0` remains selectable for the older faster path at 30 credits/s at 480p, 60 at 720p, 150 at 1080p. Default quality: 480p on `seedance-2.5`, 720p on `seedance-2.0`; 480p is the cheap draft, 1080p the dear finish.
+**Default paid video to `seedance-2.5`.** It is the recommended paid model for talking-head UGC, product-in-hand, animating a still and silent reaction clips at 60 credits/s at 480p, 125 at 720p, 225 at 1080p. `seedance-2.0` remains selectable for the older faster path at 30 credits/s at 480p, 60 at 720p, 150 at 1080p. Default quality: 480p on `seedance-2.5`, 720p on `seedance-2.0`; 480p is the cheap draft, 1080p the dear finish.
 
 ## How to select
 
@@ -22,6 +22,9 @@ The mode follows from the fields: `first_frame` (and optional `last_frame`) is i
 | seedance-2.5 | text | prompt only | 4 to 30 | 9:16, 16:9, 1:1, 4:3, 3:4, 21:9, adaptive (default 9:16) | 60 at 480p, 125 at 720p, 225 at 1080p | 2026-09-05: generate_video, text only, 4s, 720p, 396 credits; the provider took about 25 min |
 | seedance-2.5 | image | first_frame + optional last_frame | 4 to 30 | adaptive (default adaptive) | 60 at 480p, 125 at 720p, 225 at 1080p | 2026-09-06: first_frame, 4s, 480p, adaptive; rendered in 262 s |
 | seedance-2.5 | reference | refs up to 30, video_refs up to 10 (30 s total), audio_refs up to 10 (30 s total) | 4 to 30 | 9:16, 16:9, 1:1, 4:3, 3:4, 21:9, adaptive (default 9:16) | 60 at 480p, 125 at 720p, 225 at 1080p | 2026-09-06: generate_video with a product image ref via Claude Code, 8s, 720p (perfume UGC run) |
+| wan-3.0-prime | text | prompt only | 2 to 30 | 9:16, 16:9, 1:1, 4:3, 3:4, adaptive (default 9:16) | 12 at 480p, 24 at 720p, 48 at 1080p | 2026-10-23: text only, 5s, 480p, 9:16, audio; rendered in about 60 s |
+| wan-3.0-prime | image | first_frame + optional last_frame | 2 to 30 | adaptive (default adaptive) | 12 at 480p, 24 at 720p, 48 at 1080p | 2026-10-23: first_frame, 5s, 480p, audio; rendered in about 50 s |
+| wan-3.0-prime | reference | refs up to 10, video_refs up to 5 (15 s total), audio_refs up to 5 (15 s total) | 2 to 30 | 9:16, 16:9, 1:1, 4:3, 3:4, adaptive (default 9:16) | 12 at 480p, 24 at 720p, 48 at 1080p | 2026-10-23: creator portrait + product image refs, 10s, 720p, 9:16, audio; about 80 to 120 s a render (X ad batch, Oct 22-23) |
 
 Notes for seedance-2.0:
 
@@ -44,6 +47,14 @@ Notes for seedance-2.5:
 - reference: Reference clips: 2 to 30 s each, 30 s in total, up to the provider high-resolution cap, up to 200 MB; their seconds are billed like output seconds. Audio references may stand alone here.
 - reference: Never write edit or extend intent ("edit the video", "add", "remove", "replace", "extend", "continue") into a reference prompt: the provider reclassifies the task and fails it minutes later. Describe the NEW clip you want.
 
+Notes for wan-3.0-prime:
+
+- text: Text only. No negative_prompt.
+- image: first_frame becomes frame one; last_frame (optional) becomes the final frame.
+- image: Frames only: refs, video_refs and audio_refs are not accepted in this mode.
+- reference: Address references as "Image 1", "Image 2" (numbered per list, in array order). Each image should hold one subject: a person, or a product.
+- reference: Reference video seconds are billed like output seconds.
+
 ## What the numbers mean
 
 `list_models` / `GET /v1/models` add a `recent` block per model: the last 30 days of loose-surface runs, `runs`, `fail_rate`, `auto_score` (0 to 1, an auto-judge grades every job: 3 frames or the image against the realism rubric, prompt adherence, identity match when refs were given), `scored`, `user_score` (1 to 5 from `rate_run`), `rated`, `p50_seconds`. `null` until a model has run.
@@ -61,6 +72,7 @@ Notes for seedance-2.5:
 | [gpt-image-2](models/gpt-image-2.md) | image | standard | 20 credits per image | 1024x1024, 1024x1536, 1536x1024; refs up to 4 | the previous generation, kept selectable for runs that were built on it | new work: gpt-image-2.5 is the default and holds identity better |
 | [nano-banana-pro](models/nano-banana-pro.md) | image | premium | 26 credits per image | 1K, 2K; refs up to 4 | image edits with complex instructions; text-heavy product graphics; composites that need reasoning over references | cheap drafts; jobs where GPT Image identity continuity is already enough |
 | [elevenlabs-tts](models/elevenlabs-tts.md) (default) | audio | standard | 16 credits per 1,000 characters | up to 4000 characters per call | voiceover on b-roll; narration; a standalone voice file; an audio reference for generate_video | lip-synced talking head: generate_video renders speech natively |
+| [wan-3.0-prime](models/wan-3.0-prime.md) | video | standard | 12 credits/s at 480p, 24 at 720p, 48 at 1080p | text (prompt only): 2 to 30 s, default aspect 9:16, 480p/720p/1080p; image-to-video (first_frame + optional last_frame): 2 to 30 s, aspect adaptive only, 480p/720p/1080p; reference (refs / video_refs / audio_refs, up to 10 images, 5 clips, 15 s total, 5 audio, 15 s total): 2 to 30 s, default aspect 9:16, 480p/720p/1080p | 10 s UGC and talking ads; a creator holding the product from two reference images; many drafts fast | lip-sync to a given audio track; shots that must keep small printed text on a label |
 
 ## How to use each model
 
@@ -152,5 +164,21 @@ From the catalog `usage` card. `list_models` returns the same text plus the last
 - **Prompting:**
   - Emotion tags like [excited] or [whispers] are honoured; keep sentences short for pacing.
   - Seven named voices (sarah default) or a raw ElevenLabs voice id.
+
+### wan-3.0-prime
+
+- **Pick it when** the default for ads: a creator and the product, 10 s, at 480p or 720p; fast and the cheapest per second.
+- **Best for:** 10 s UGC and talking ads; a creator holding the product from two reference images; many drafts fast.
+- **Avoid for:** lip-sync to a given audio track; shots that must keep small printed text on a label.
+- **Latency:** about 1 to 2 minutes for 10 s.
+- **Price:** 12 credits/s at 480p, 24 at 720p, 48 at 1080p; reference clip seconds (video_refs) are billed at the same per-second rate as output seconds.
+- **Modes:**
+  - text (prompt only): 2 to 30 s, default aspect 9:16, 480p/720p/1080p
+  - image-to-video (first_frame + optional last_frame): 2 to 30 s, aspect adaptive only, 480p/720p/1080p
+  - reference (refs / video_refs / audio_refs, up to 10 images, 5 clips, 15 s total, 5 audio, 15 s total): 2 to 30 s, default aspect 9:16, 480p/720p/1080p
+- **Prompting:**
+  - Put the person in refs first and the product second, then write "the woman in Image 1 holds the bottle from Image 2".
+  - Say what the hands do and that there are exactly two hands; say "no captions, no on-screen text".
+  - Write the spoken line in quotes; keep it under about 25 words for 10 s.
 
 100 credits = 1 USD.

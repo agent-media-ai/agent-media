@@ -16,7 +16,7 @@ Use only Agent Media MCP tools that are listed in the user's client. This skill 
 - Research first. Ask for product context, account baseline, and 3 to 10 references before rendering.
 - Score references against the account's own baseline. Use `outlier_score = reference_views / account_baseline_views` when both numbers exist.
 - Change one variable per test. Good variables are hook, creator type, starting frame, objection, proof moment, offer, and CTA.
-- Render one test take first through Agent Media. An eligible new account may use the free first ad when `get_account.free_first_ad_available` is true and the quote confirms a 0-credit, 10 second, 480p, watermarked video.
+- Render one test take first through Agent Media, after quoting it.
 - Batch only after the user approves the first take and says to render more variants.
 - Finish final variants with a real app screen recording and captions. Do not fake app screens when the user can supply a recording.
 - Build a publish packet with final URLs or files, variant IDs, post copy, CTA, thumbnail notes, baseline metric, and UTM links that include `utm_source=skill`.
@@ -96,7 +96,7 @@ Do not auto-remake. Ask what to fix.
 
 Ask: `Do you want me to render the next variants from the matrix now?`
 
-Only batch after the user says yes. Keep variant IDs tied to the matrix. Change one variable per variant. Quote before spending when the free first ad is not available. Poll every run with `get_run_status`.
+Only batch after the user says yes. Keep variant IDs tied to the matrix. Change one variable per variant. Quote before spending. Poll every run with `get_run_status`.
 
 ## 9. Finish with real app screen and captions
 

@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.9.0
+
+- Align the public pack with the hosted media tools and move the retired character skill outside the active skills directory.
+
 ## 2.8.0
 
 - Crazy characters take any trait the user describes: `create_crazy_character` `trait` is a quick-pick id or the user's own words for one absurd look (for example "small head, big body" or "six arms"), screened and moderated, at the same price. The catalog traits stay as quick picks.

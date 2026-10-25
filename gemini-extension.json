@@ -1,6 +1,6 @@
 {
   "name": "agent-media",
-  "version": "2.8.0",
+  "version": "2.9.0",
   "description": "One AI agent for your video ads: video, images and voiceovers from Gemini CLI.",
   "contextFileName": "GEMINI.md",
   "mcpServers": {

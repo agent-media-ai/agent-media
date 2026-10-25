@@ -40,7 +40,7 @@ _600 credits for a 5 s clip plus a 5 s reference clip on seedance-2.5 at 480p: t
 2. `generate_video`, The clip in video_refs (https mp4/mov), a portrait in refs, and a prompt like "@image1 performs the same move as @video1, in a bright kitchen ...". Describe the NEW clip; never write edit or extend wording.
 3. `get_run_status`, Poll until completed.
 
-## 6. Crazy look (silent reaction clip)
+## 6. Silent reaction clip
 
 _300 credits per 5 s clip at 480p_
 
