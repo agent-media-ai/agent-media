@@ -5,7 +5,7 @@
   "minClientVersions": {
     "cursor": "3.13.0"
   },
-  "description": "Ask Cursor for a video, image or voiceover in plain words. Seedance video, GPT Image or Nano Banana Pro images, ElevenLabs voice. Cost quoted up front. Plans from $14.90 a month.",
+  "description": "Make short drama series and vertical videos from Claude, ChatGPT or Codex. One MCP connection, OAuth sign-in, same cast every episode.",
   "author": {
     "name": "agent-media",
     "email": "info@agent-media.ai"
@@ -16,22 +16,24 @@
   "license": "Apache-2.0",
   "logo": "assets/icon-512.png",
   "keywords": [
-    "video",
-    "ai-video",
-    "ugc",
-    "image-generation",
-    "text-to-speech",
-    "seedance",
     "mcp",
+    "model-context-protocol",
+    "short-drama",
+    "micro-drama",
+    "sitcom",
+    "k-drama",
+    "vertical-video",
+    "ai-video",
+    "series",
     "agent-media"
   ],
   "category": "integrations",
   "tags": [
-    "video",
-    "media",
-    "mcp",
+    "short-drama",
+    "micro-drama",
+    "vertical-video",
     "ai-video",
-    "ugc"
+    "mcp"
   ],
   "skills": "./skills/",
   "mcpServers": "./mcp.json"

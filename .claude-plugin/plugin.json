@@ -1,6 +1,6 @@
 {
   "name": "agent-media",
-  "description": "Make UGC video ads from your AI agent. Describe your product and get a ready-to-post vertical video with an AI actor, voice and captions, plus images, Seedance clips and voiceovers. One connection, browser sign-in, plans from $14.90 a month, and a price quote before anything is spent. Tools: make_ugc, generate_video, generate_image, generate_audio, quote.",
+  "description": "Make short drama series (micro-dramas, sitcoms, K-drama style, any language) and other short vertical videos from your AI. It writes the script, casts two leads, builds three locations, shows you the cast, the Ep1 script and the price for approval, films a pilot, then the rest of the season with the same cast. One MCP connection, OAuth sign-in, no API keys. Plans from $49 a month.",
   "version": "2.9.0",
   "author": {
     "name": "agent-media",
@@ -11,18 +11,16 @@
   "license": "Apache-2.0",
   "keywords": [
     "claude-plugin",
-    "claude-skill",
     "claude-code",
     "mcp",
     "model-context-protocol",
-    "ugc-video",
+    "short-drama",
+    "micro-drama",
+    "sitcom",
+    "k-drama",
+    "vertical-video",
     "ai-video",
-    "ai-actors",
-    "tiktok",
-    "hormozi-subtitles",
-    "gpt-image-2",
-    "seedance",
-    "video-generation",
+    "series",
     "agent-media"
   ]
 }

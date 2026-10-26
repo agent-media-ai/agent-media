@@ -5,14 +5,14 @@
     "url": "https://github.com/agent-media-ai"
   },
   "metadata": {
-    "description": "Agent-Media for Claude Code: AI video, images and voice with you as the director. Your prompt, your model, your modes (text, image-to-video, reference), your references, with plans from $14.90 a month.",
+    "description": "Make short drama series and vertical videos from Claude, ChatGPT or Codex. One MCP connection, OAuth sign-in, same cast every episode.",
     "version": "2.9.0"
   },
   "plugins": [
     {
       "name": "agent-media",
       "source": "./",
-      "description": "Make UGC video ads from your AI agent. Describe your product and get a ready-to-post vertical video with an AI actor, voice and captions, plus images, Seedance clips and voiceovers. One connection, browser sign-in, plans from $14.90 a month, and a price quote before anything is spent. Tools: make_ugc, generate_video, generate_image, generate_audio, quote."
+      "description": "Make short drama series (micro-dramas, sitcoms, K-drama style, any language) and other short vertical videos from your AI. It writes the script, casts two leads, builds three locations, shows you the cast, the Ep1 script and the price for approval, films a pilot, then the rest of the season with the same cast. One MCP connection, OAuth sign-in, no API keys. Plans from $49 a month."
     }
   ]
 }

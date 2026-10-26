@@ -5,14 +5,14 @@
     "email": "info@agent-media.ai"
   },
   "metadata": {
-    "description": "One media toolbox for agents: uploads, images, storyboards, video and voice. Browser sign-in.",
+    "description": "Make short drama series and vertical videos from Claude, ChatGPT or Codex. One MCP connection, OAuth sign-in, same cast every episode.",
     "version": "2.9.0"
   },
   "plugins": [
     {
       "name": "agent-media",
       "source": "./",
-      "description": "One media toolbox for agents: upload, images, storyboards, video and voice over one hosted MCP connection.",
+      "description": "Make short drama series and vertical videos from Claude, ChatGPT or Codex. One MCP connection, OAuth sign-in, same cast every episode.",
       "minClientVersions": {
         "cursor": "3.13.0"
       }

@@ -1,7 +1,7 @@
 {
   "name": "agent-media",
   "version": "2.9.0",
-  "description": "One AI agent for your video ads: video, images and voiceovers from Gemini CLI.",
+  "description": "Make short drama series and vertical videos through one MCP connection. Same cast every episode.",
   "contextFileName": "GEMINI.md",
   "mcpServers": {
     "agent-media": {

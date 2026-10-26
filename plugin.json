@@ -2,7 +2,7 @@
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "agent-media",
   "version": "2.9.0",
-  "description": "The video step for Claude/Codex UGC workflows: skills and a hosted MCP server for captioned vertical videos, narrated b-roll, reusable characters, images and voice.",
+  "description": "Make short drama series and vertical videos from Claude, ChatGPT or Codex. One MCP connection, OAuth sign-in, same cast every episode.",
   "author": {
     "name": "agent-media",
     "email": "info@agent-media.ai",
@@ -12,13 +12,15 @@
   "repository": "https://github.com/agent-media-ai/agent-media",
   "license": "Apache-2.0",
   "keywords": [
-    "ugc",
-    "video",
-    "ai-video",
-    "agent-skills",
     "mcp",
-    "codex",
-    "claude-code",
-    "cursor"
+    "model-context-protocol",
+    "short-drama",
+    "micro-drama",
+    "sitcom",
+    "k-drama",
+    "vertical-video",
+    "ai-video",
+    "series",
+    "agent-media"
   ]
 }
