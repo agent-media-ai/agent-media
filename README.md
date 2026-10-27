@@ -40,6 +40,10 @@ https://api.agent-media.ai/mcp
 - "Start a sitcom about two roommates who share one tiny apartment. Show me the cast and the Ep1 script before you film anything."
 - "Make a short drama series in Spanish at 720p. Film the pilot, then the rest of the season with the same cast."
 
+## Help and community
+
+Questions, ideas or an episode to share: join the [agent-media Discord](https://discord.gg/qx3v5Xj93E). Account and billing: support@agent-media.ai.
+
 ## Plans
 
 | Plan | Seconds at 480p | Seconds at 720p |

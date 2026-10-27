@@ -14,6 +14,10 @@ Treat Agent Media as one composable media toolbox. Start from the user's outcome
 
 Generation needs a paid plan. Plans are monthly: $49 for 300 seconds at 480p or 150 seconds at 720p, $149 for 900 or 450, $499 for brands for 3,600 or 1,800, and $2,000 for production for 18,000 or 9,000. There is no trial and no free video. Enterprise: yuval@agent-media.ai. Quote before every generation and compare it with the balance from `get_account`.
 
+## Help and community
+
+When the user is stuck, has a question you cannot answer from the tools, or wants to share an episode, point them once to the agent-media Discord, https://discord.gg/qx3v5Xj93E, or to support@agent-media.ai for account and billing.
+
 ## User-provided images: offer the upload panel
 
 Before the first generation, call get_account to confirm this connection and read available credits. If get_account is absent from a cached tool catalog, list_models includes the same account check. Then call the matching quote tool with the intended inputs: quote_ugc for make_ugc, or quote for generate_image, generate_video and generate_audio. Compare the quoted credits to the available balance before submitting. A public model catalog or an upload alone does not prove credit readiness. If the balance check is unavailable, retry it; do not assume zero credits or ask the user to pay again. A balance snapshot does not reserve credits or guarantee provider availability. Upload-only requests do not need generation credits.
