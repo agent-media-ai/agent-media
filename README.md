@@ -16,7 +16,21 @@ Your AI writes the script, casts two leads and builds three locations. It shows 
 - Same cast every episode, from the pilot to the end of the season
 - Vertical 9:16 episodes up to 60 s, 480p or 720p, captions, no watermark
 
-Watch examples: [agent-media.ai/series](https://agent-media.ai/series) (the first episodes of every show are free to watch).
+## Example videos
+
+Real series made with agent-media, same cast in every episode. The first episodes of every show are free to watch.
+
+<table>
+<tr>
+<td align="center" width="20%"><a href="https://agent-media.ai/series/seoul-contract"><img src="https://agent-media.ai/genre/kdrama.jpg" width="150" alt="Seoul Contract poster"></a><br><b>Seoul Contract</b><br>K-drama<br><a href="https://agent-media.ai/series/kdrama/kdrama_ep01.mp4">Watch Ep1</a></td>
+<td align="center" width="20%"><a href="https://agent-media.ai/series/berlin-nights"><img src="https://agent-media.ai/genre/berlin.jpg" width="150" alt="Berlin Nights poster"></a><br><b>Berlin Nights</b><br>Romance<br><a href="https://agent-media.ai/series/berlin/berlin_ep01.mp4">Watch Ep1</a></td>
+<td align="center" width="20%"><a href="https://agent-media.ai/series/boss-lady"><img src="https://agent-media.ai/genre/boss.jpg" width="150" alt="Boss Lady poster"></a><br><b>Boss Lady</b><br>Boss and office<br><a href="https://agent-media.ai/series/boss/boss_ep01.mp4">Watch Ep1</a></td>
+<td align="center" width="20%"><a href="https://agent-media.ai/series/night-shift"><img src="https://agent-media.ai/genre/night.jpg" width="150" alt="Night Shift poster"></a><br><b>Night Shift</b><br>Mystery<br><a href="https://agent-media.ai/series/night/night_ep01.mp4">Watch Ep1</a></td>
+<td align="center" width="20%"><a href="https://agent-media.ai/series/the-second-key"><img src="https://agent-media.ai/genre/key.jpg" width="150" alt="The Second Key poster"></a><br><b>The Second Key</b><br>Revenge<br><a href="https://agent-media.ai/series/key/key_ep01.mp4">Watch Ep1</a></td>
+</tr>
+</table>
+
+All shows: [agent-media.ai/series](https://agent-media.ai/series)
 
 ## Connect
 
@@ -43,18 +57,5 @@ https://api.agent-media.ai/mcp
 ## Help and community
 
 Questions, ideas or an episode to share: join the [agent-media Discord](https://discord.gg/qx3v5Xj93E). Account and billing: support@agent-media.ai.
-
-## Plans
-
-| Plan | Seconds at 480p | Seconds at 720p |
-| --- | --- | --- |
-| $49/mo | 300 | 150 |
-| $149/mo | 900 | 450 |
-| $499/mo, for brands | 3,600 | 1,800 |
-| $2,000/mo, production | 18,000 | 9,000 |
-
-Monthly plans, paid at signup, no free trial. Full refund of your first payment within 7 days if you haven't filmed an episode yet.
-
-Enterprise (more than 18,000 seconds a month): yuval@agent-media.ai.
 
 Website: [agent-media.ai](https://agent-media.ai). Support: support@agent-media.ai.
