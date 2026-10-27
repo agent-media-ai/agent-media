@@ -42,7 +42,7 @@ https://api.agent-media.ai/mcp
 
 ## Help and community
 
-Questions, ideas or an episode to share: join the [agent-media Discord](https://discord.gg/quSTCdmnF). Account and billing: support@agent-media.ai.
+Questions, ideas or an episode to share: join the [agent-media Discord](https://discord.gg/qx3v5Xj93E). Account and billing: support@agent-media.ai.
 
 ## Plans
 

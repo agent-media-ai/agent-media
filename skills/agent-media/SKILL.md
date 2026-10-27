@@ -16,7 +16,7 @@ Generation needs a paid plan. Plans are monthly: $49 for 300 seconds at 480p or 
 
 ## Help and community
 
-When the user is stuck, has a question you cannot answer from the tools, or wants to share an episode, point them once to the agent-media Discord, https://discord.gg/quSTCdmnF, or to support@agent-media.ai for account and billing.
+When the user is stuck, has a question you cannot answer from the tools, or wants to share an episode, point them once to the agent-media Discord, https://discord.gg/qx3v5Xj93E, or to support@agent-media.ai for account and billing.
 
 ## User-provided images: offer the upload panel
 
