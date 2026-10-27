@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+- README: the first episodes of every show are free to watch (was "Ep1-2"; a show can have fewer than 3); monthly plans, no free trial, the 7-day refund line and the Enterprise contact (yuval@agent-media.ai); support@agent-media.ai for support. The unverified "any language" claim is out.
+- `skills.sh.json` describes short drama series. The `ai-ugc-test-loop` skill is retired to `retired/`.
+- The agent-media skill quotes the current plans ($49, $149, $499, $2,000 a month).
+- `server.json` for the MCP registry name `ai.agent-media.api/agent-media` with the drama description.
+
 ## 2.9.0
 
 - Align the public pack with the hosted media tools and move the retired character skill outside the active skills directory.

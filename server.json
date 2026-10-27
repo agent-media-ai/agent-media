@@ -1,0 +1,18 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "ai.agent-media.api/agent-media",
+  "title": "agent-media",
+  "description": "Short drama series from Claude, ChatGPT or Codex. Same cast every episode. OAuth, from $49 a month.",
+  "websiteUrl": "https://agent-media.ai",
+  "version": "0.4.0",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://api.agent-media.ai/mcp"
+    }
+  ],
+  "repository": {
+    "url": "https://github.com/agent-media-ai/agent-media",
+    "source": "github"
+  }
+}
