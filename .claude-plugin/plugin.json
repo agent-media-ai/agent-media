@@ -1,6 +1,6 @@
 {
   "name": "agent-media",
-  "description": "Make short drama series (micro-dramas, sitcoms, K-drama style, any language) and other short vertical videos from your AI. It writes the script, casts two leads, builds three locations, shows you the cast, the Ep1 script and the price for approval, films a pilot, then the rest of the season with the same cast. One MCP connection, OAuth sign-in, no API keys. Plans from $49 a month.",
+  "description": "Make short drama series (micro-dramas, sitcoms, K-drama style, any language) and other short vertical videos from your AI. It writes the script, casts two leads, builds three locations, shows you the cast, the Ep1 script and the price for approval, films a pilot, then the rest of the season with the same cast. One MCP connection, OAuth sign-in, no API keys. Plans from $49 a month. Affiliates earn 30% of every plan payment for life: agent-media.ai/affiliates.",
   "version": "2.9.0",
   "author": {
     "name": "agent-media",

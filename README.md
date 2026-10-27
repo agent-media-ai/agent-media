@@ -53,4 +53,8 @@ Monthly plans, paid at signup, no free trial. Full refund of your first payment 
 
 Enterprise (more than 18,000 seconds a month): yuval@agent-media.ai.
 
+## Earn 30%
+
+Share agent-media and earn 30% of every plan payment, for life, from every friend who subscribes. Join the affiliate program at [agent-media.ai/affiliates](https://agent-media.ai/affiliates?utm_source=github&utm_medium=readme&utm_campaign=affiliates).
+
 Website: [agent-media.ai](https://agent-media.ai). Support: support@agent-media.ai.
