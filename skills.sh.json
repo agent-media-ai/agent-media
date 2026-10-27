@@ -3,11 +3,10 @@
   "notGrouped": "bottom",
   "groupings": [
     {
-      "title": "Video",
-      "description": "UGC video, media generation and publishing skills for agent workflows.",
+      "title": "Short drama",
+      "description": "Short drama series and vertical videos made from Claude, ChatGPT or Codex.",
       "skills": [
         "agent-media",
-        "ai-ugc-test-loop",
         "publish-to-social"
       ]
     }

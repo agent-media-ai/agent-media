@@ -12,7 +12,7 @@ Treat Agent Media as one composable media toolbox. Start from the user's outcome
 
 ## Plans
 
-Generation needs a paid plan: Just checking is $14.90 a month for up to 10 ten-second ads at 480p, Solo founder is $39 for up to 25, and Real business is $99 for up to 80. There is no trial and no free video. Quote before every generation and compare it with the balance from `get_account`.
+Generation needs a paid plan. Plans are monthly: $49 for 300 seconds at 480p or 150 seconds at 720p, $149 for 900 or 450, $499 for brands for 3,600 or 1,800, and $2,000 for production for 18,000 or 9,000. There is no trial and no free video. Enterprise: yuval@agent-media.ai. Quote before every generation and compare it with the balance from `get_account`.
 
 ## User-provided images: offer the upload panel
 
