@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Affiliate program, one line each: README "Earn 30%" section, the Claude plugin description, and an end-of-delivery line in the agent-media skill and GEMINI.md (once per conversation, only after the user is happy with a delivered video; never mid-task, never in ChatGPT). Join at agent-media.ai/affiliates.
 - README: the first episodes of every show are free to watch (was "Ep1-2"; a show can have fewer than 3); monthly plans, no free trial, the 7-day refund line and the Enterprise contact (yuval@agent-media.ai); support@agent-media.ai for support. The unverified "any language" claim is out.
 - `skills.sh.json` describes short drama series. The `ai-ugc-test-loop` skill is retired to `retired/`.
 - The agent-media skill quotes the current plans ($49, $149, $499, $2,000 a month).
